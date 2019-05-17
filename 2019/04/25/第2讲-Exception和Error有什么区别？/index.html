@@ -6,21 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>GIT常用命令速查 | Hexo</title>
+  <title>第2讲-Exception和Error有什么区别？ | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一、 Git 常用命令速查 git branch 查看本地所有分支git status 查看当前状态git commit 提交git branch -a 查看所有的分支git branch -r 查看远程所有分支git commit -am “init” 提交并且加注释git remote add origin git@192.168.1.119:ndshowgit push origin ma">
+  <meta name="description" content="第2讲-Exception和Error有什么区别？杨晓峰 2018-05-05 极客时间版权所有: https://time.geekbang.org/column/article/6845 请对比Exception和Error，另外，运行时异常与一般异常有什么区别？ 典型回答 Exception和Error都是继承了Throwable类，在java中只有Throwable类型的实例才可以被抛出（">
 <meta property="og:type" content="article">
-<meta property="og:title" content="GIT常用命令速查">
-<meta property="og:url" content="http://yoursite.com/2018/10/26/test/index.html">
+<meta property="og:title" content="第2讲-Exception和Error有什么区别？">
+<meta property="og:url" content="http://yoursite.com/2019/04/25/第2讲-Exception和Error有什么区别？/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="一、 Git 常用命令速查 git branch 查看本地所有分支git status 查看当前状态git commit 提交git branch -a 查看所有的分支git branch -r 查看远程所有分支git commit -am “init” 提交并且加注释git remote add origin git@192.168.1.119:ndshowgit push origin ma">
+<meta property="og:description" content="第2讲-Exception和Error有什么区别？杨晓峰 2018-05-05 极客时间版权所有: https://time.geekbang.org/column/article/6845 请对比Exception和Error，另外，运行时异常与一般异常有什么区别？ 典型回答 Exception和Error都是继承了Throwable类，在java中只有Throwable类型的实例才可以被抛出（">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="qq://txfile/MyCollectionImagePath:4BE4A462-13A8-43B2-ABA9-4D288FFDECD0">
-<meta property="og:updated_time" content="2019-04-24T10:06:45.530Z">
+<meta property="og:image" content="https://static001.geekbang.org/resource/image/ac/00/accba531a365e6ae39614ebfa3273900.png">
+<meta property="og:updated_time" content="2019-04-25T07:07:13.154Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GIT常用命令速查">
-<meta name="twitter:description" content="一、 Git 常用命令速查 git branch 查看本地所有分支git status 查看当前状态git commit 提交git branch -a 查看所有的分支git branch -r 查看远程所有分支git commit -am “init” 提交并且加注释git remote add origin git@192.168.1.119:ndshowgit push origin ma">
-<meta name="twitter:image" content="qq://txfile/MyCollectionImagePath:4BE4A462-13A8-43B2-ABA9-4D288FFDECD0">
+<meta name="twitter:title" content="第2讲-Exception和Error有什么区别？">
+<meta name="twitter:description" content="第2讲-Exception和Error有什么区别？杨晓峰 2018-05-05 极客时间版权所有: https://time.geekbang.org/column/article/6845 请对比Exception和Error，另外，运行时异常与一般异常有什么区别？ 典型回答 Exception和Error都是继承了Throwable类，在java中只有Throwable类型的实例才可以被抛出（">
+<meta name="twitter:image" content="https://static001.geekbang.org/resource/image/ac/00/accba531a365e6ae39614ebfa3273900.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -156,20 +156,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-test" class="article article-type-post " itemscope="" itemprop="blogPost">
+            <article id="post-第2讲-Exception和Error有什么区别？" class="article article-type-post " itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      GIT常用命令速查
+      第2讲-Exception和Error有什么区别？
     </h1>
   
 
         
-        <a href="/2018/10/26/test/" class="archive-article-date">
-  	<time datetime="2018-10-26T09:35:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-26</time>
+        <a href="/2019/04/25/第2讲-Exception和Error有什么区别？/" class="archive-article-date">
+  	<time datetime="2019-04-25T06:15:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-25</time>
 </a>
         
       </header>
@@ -177,744 +177,74 @@
     <div class="article-entry" itemprop="articleBody">
       
 	
-        <!--toc:true-->
-<p><strong>一、 Git 常用命令速查</strong></p>
-<p>git branch 查看本地所有分支<br>git status 查看当前状态<br>git commit 提交<br>git branch -a 查看所有的分支<br>git branch -r 查看远程所有分支<br>git commit -am “init” 提交并且加注释<br>git remote add origin <a href="mailto:git@192.168.1.119" target="_blank" rel="noopener">git@192.168.1.119</a>:ndshow<br>git push origin master 将文件给推到服务器上<br>git remote show origin 显示远程库origin里的资源<br>git push origin master:develop<br>git push origin master:hb-dev 将本地库与服务器上的库进行关联<br>git checkout –track origin/dev 切换到远程dev分支<br>git branch -D master develop 删除本地库develop<br>git checkout -b dev 建立一个新的本地分支dev<br>git merge origin/dev 将分支dev与当前分支进行合并<br>git checkout dev 切换到本地dev分支<br>git remote show 查看远程库</p>
+        <h1 id="第2讲-Exception和Error有什么区别？"><a href="#第2讲-Exception和Error有什么区别？" class="headerlink" title="第2讲-Exception和Error有什么区别？"></a>第2讲-Exception和Error有什么区别？</h1><p>杨晓峰 2018-05-05</p>
+<p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/6845" target="_blank" rel="noopener">https://time.geekbang.org/column/article/6845</a></p>
+<p><strong>请对比Exception和Error，另外，运行时异常与一般异常有什么区别？</strong></p>
+<p><strong>典型回答</strong></p>
+<p>Exception和Error都是继承了Throwable类，在java中只有Throwable类型的实例才可以被抛出（throw）或者捕获（catch），它是异常处理机制的基本组成类型。</p>
+<p>Exception和Error体现了java平台设计者对不同异常情况的分类。Exception是程序正常运行中，可以预料的意外情况，可能并且应该被捕获，进行相应处理。</p>
+<p>Error是指在正常情况下，不大可能出现的情况，绝大部分的Error都会导致程序（比如JVM自身）处于非正常的、不可恢复状态。既然是非正常情况，所以不便于也不需要捕获。常见的比如OutOfMemoryError之类，都是Error的子类。</p>
+<p>Exception又分为<strong>可检查</strong>（checked）异常和<strong>不检查</strong>（unchecked）异常，可检查异常在源代码里必须显式地进行捕获处理，这是编译期检查的一部分。前面介绍的不检查的Error，是Throwable不是Exception。</p>
+<p>不检查异常就是所谓的运行时异常，类似NullPointerException、ArrayIndexOutOfBoundsException之类，通常是可以编码避免的逻辑错误，具体跟进需要来判断是否需要捕获，并不会在编译期强制要求。</p>
 <a id="more"></a>
-<p>git add .<br>git rm 文件名(包括路径) 从git中删除指定文件<br>git clone git://github.com/schacon/grit.git 从服务器上将代码给拉下来<br>git config –list 看所有用户<br>git ls-files 看已经被提交的<br>git rm [file name] 删除一个文件<br>git commit -a 提交当前repos的所有的改变<br>git add [file name] 添加一个文件到git index<br>git commit -v 当你用－v参数的时候可以看commit的差异<br>git commit -m “This is the message describing the commit” 添加commit信息<br>git commit -a -a是代表add，把所有的change加到git index里然后再commit<br>git commit -a -v 一般提交命令<br>git log 看你commit的日志<br>git diff 查看尚未暂存的更新<br>git rm a.a 移除文件(从暂存区和工作区中删除)<br>git rm –cached a.a 移除文件(只从暂存区中删除)<br>git commit -m “remove” 移除文件(从Git中删除)<br>git rm -f a.a 强行移除修改后文件(从暂存区和工作区中删除)<br>git diff –cached 或 $ git diff –staged 查看尚未提交的更新<br>git stash push 将文件给push到一个临时空间中<br>git stash pop 将文件从临时空间pop下来<br>-——————————————————–<br>git remote add origin <a href="mailto:git@github.com" target="_blank" rel="noopener">git@github.com</a>:username/Hello-World.git<br>git push origin master 将本地项目给提交到服务器中<br>-———————————————————-<br>git pull 本地与服务器端同步<br>-—————————————————————-<br>git push (远程仓库名) (分支名) 将本地分支推送到服务器上去。<br>git push origin serverfix:awesomebranch<br>-—————————————————————–<br>git fetch 相当于是从远程获取最新版本到本地，不会自动merge<br>git commit -a -m “log_message” (-a是提交所有改动，-m是加入log信息) 本地修改同步至服务器端 ：<br>git branch branch_0.1 master 从主分支master创建branch_0.1分支<br>git branch -m branch_0.1 branch_1.0 将branch_0.1重命名为branch_1.0<br>git checkout branch_1.0/master 切换到branch_1.0/master分支<br>du -hs</p>
-<p>git branch 删除远程branch<br>git push origin :branch_remote_name<br>git branch -r -d branch_remote_name<br>-———————————————————-</p>
-<p>初始化版本库，并提交到远程服务器端<br>mkdir WebApp<br>cd WebApp<br>git init 本地初始化<br>touch README<br>git add README 添加文件<br>git commit -m ‘first commit’<br>git remote add origin <a href="mailto:git@github.com" target="_blank" rel="noopener">git@github.com</a>:daixu/WebApp.git</p>
-<p>增加一个远程服务器端</p>
-<p>上面的命令会增加URL地址为<a href="mailto:&#39;git@github.com" target="_blank" rel="noopener">&#39;git@github.com</a>:daixu/WebApp.git’，名称为origin的远程服务器库，以后提交代码的时候只需要使用 origin别名即可</p>
-<p><strong>二、 Git 命令速查表</strong></p>
-<p>1、常用的Git命令</p>
-<table>
-<thead>
-<tr>
-<th><strong>命令</strong></th>
-<th><strong>简要说明</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>git add</td>
-<td>添加至暂存区</td>
-</tr>
-<tr>
-<td>git add–interactive</td>
-<td>交互式添加</td>
-</tr>
-<tr>
-<td>git apply</td>
-<td>应用补丁</td>
-</tr>
-<tr>
-<td>git am</td>
-<td>应用邮件格式补丁</td>
-</tr>
-<tr>
-<td>git annotate</td>
-<td>同义词，等同于 git blame</td>
-</tr>
-<tr>
-<td>git archive</td>
-<td>文件归档打包</td>
-</tr>
-<tr>
-<td>git bisect</td>
-<td>二分查找</td>
-</tr>
-<tr>
-<td>git blame</td>
-<td>文件逐行追溯</td>
-</tr>
-<tr>
-<td>git branch</td>
-<td>分支管理</td>
-</tr>
-<tr>
-<td>git cat-file</td>
-<td>版本库对象研究工具</td>
-</tr>
-<tr>
-<td>git checkout</td>
-<td>检出到工作区、切换或创建分支</td>
-</tr>
-<tr>
-<td>git cherry-pick</td>
-<td>提交拣选</td>
-</tr>
-<tr>
-<td>git citool</td>
-<td>图形化提交，相当于 git gui 命令</td>
-</tr>
-<tr>
-<td>git clean</td>
-<td>清除工作区未跟踪文件</td>
-</tr>
-<tr>
-<td>git clone</td>
-<td>克隆版本库</td>
-</tr>
-<tr>
-<td>git commit</td>
-<td>提交</td>
-</tr>
-<tr>
-<td>git config</td>
-<td>查询和修改配置</td>
-</tr>
-<tr>
-<td>git describe</td>
-<td>通过里程碑直观地显示提交ID</td>
-</tr>
-<tr>
-<td>git diff</td>
-<td>差异比较</td>
-</tr>
-<tr>
-<td>git difftool</td>
-<td>调用图形化差异比较工具</td>
-</tr>
-<tr>
-<td>git fetch</td>
-<td>获取远程版本库的提交</td>
-</tr>
-<tr>
-<td>git format-patch</td>
-<td>创建邮件格式的补丁文件。参见 git am 命令</td>
-</tr>
-<tr>
-<td>git grep</td>
-<td>文件内容搜索定位工具</td>
-</tr>
-<tr>
-<td>git gui</td>
-<td>基于Tcl/Tk的图形化工具，侧重提交等操作</td>
-</tr>
-<tr>
-<td>git help</td>
-<td>帮助</td>
-</tr>
-<tr>
-<td>git init</td>
-<td>版本库初始化</td>
-</tr>
-<tr>
-<td>git init-db*</td>
-<td>同义词，等同于 git init</td>
-</tr>
-<tr>
-<td>git log</td>
-<td>显示提交日志</td>
-</tr>
-<tr>
-<td>git merge</td>
-<td>分支合并</td>
-</tr>
-<tr>
-<td>git mergetool</td>
-<td>图形化冲突解决</td>
-</tr>
-<tr>
-<td>git mv</td>
-<td>重命名</td>
-</tr>
-<tr>
-<td>git pull</td>
-<td>拉回远程版本库的提交</td>
-</tr>
-<tr>
-<td>git push</td>
-<td>推送至远程版本库</td>
-</tr>
-<tr>
-<td>git rebase</td>
-<td>分支变基</td>
-</tr>
-<tr>
-<td>git rebase–interactive</td>
-<td>交互式分支变基</td>
-</tr>
-<tr>
-<td>git reflog</td>
-<td>分支等引用变更记录管理</td>
-</tr>
-<tr>
-<td>git remote</td>
-<td>远程版本库管理</td>
-</tr>
-<tr>
-<td>git repo-config*</td>
-<td>同义词，等同于 git config</td>
-</tr>
-<tr>
-<td>git reset</td>
-<td>重置改变分支“游标”指向</td>
-</tr>
-<tr>
-<td>git rev-parse</td>
-<td>将各种引用表示法转换为哈希值等</td>
-</tr>
-<tr>
-<td>git revert</td>
-<td>反转提交</td>
-</tr>
-<tr>
-<td>git rm</td>
-<td>删除文件</td>
-</tr>
-<tr>
-<td>git show</td>
-<td>显示各种类型的对象</td>
-</tr>
-<tr>
-<td>git stage*</td>
-<td>同义词，等同于 git add</td>
-</tr>
-<tr>
-<td>git stash</td>
-<td>保存和恢复进度</td>
-</tr>
-<tr>
-<td>git status</td>
-<td>显示工作区文件状态</td>
-</tr>
-<tr>
-<td>git tag</td>
-<td>里程碑管理</td>
-</tr>
-</tbody>
-</table>
-<p>2、对象库操作相关命令</p>
-<table>
-<thead>
-<tr>
-<th><strong>命令</strong></th>
-<th><strong>简要说明</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>git commit-tree</td>
-<td>从树对象创建提交</td>
-</tr>
-<tr>
-<td>git hash-object</td>
-<td>从标准输入或文件计算哈希值或创建对象</td>
-</tr>
-<tr>
-<td>git ls-files</td>
-<td>显示工作区和暂存区文件</td>
-</tr>
-<tr>
-<td>git ls-tree</td>
-<td>显示树对象包含的文件</td>
-</tr>
-<tr>
-<td>git mktag</td>
-<td>读取标准输入创建一个里程碑对象</td>
-</tr>
-<tr>
-<td>git mktree</td>
-<td>读取标准输入创建一个树对象</td>
-</tr>
-<tr>
-<td>git read-tree</td>
-<td>读取树对象到暂存区</td>
-</tr>
-<tr>
-<td>git update-index</td>
-<td>工作区内容注册到暂存区及暂存区管理</td>
-</tr>
-<tr>
-<td>git unpack-file</td>
-<td>创建临时文件包含指定 blob 的内容</td>
-</tr>
-<tr>
-<td>git write-tree</td>
-<td>从暂存区创建一个树对象</td>
-</tr>
-</tbody>
-</table>
-<p>3、引用操作相关命令</p>
-<table>
-<thead>
-<tr>
-<th><strong>命令</strong></th>
-<th><strong>简要说明</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>git check-ref-format</td>
-<td>检查引用名称是否符合规范</td>
-</tr>
-<tr>
-<td>git for-each-ref</td>
-<td>引用迭代器，用于shell编程</td>
-</tr>
-<tr>
-<td>git ls-remote</td>
-<td>显示远程版本库的引用</td>
-</tr>
-<tr>
-<td>git name-rev</td>
-<td>将提交ID显示为友好名称</td>
-</tr>
-<tr>
-<td>git peek-remote*</td>
-<td>过时命令，请使用 git ls-remote</td>
-</tr>
-<tr>
-<td>git rev-list</td>
-<td>显示版本范围</td>
-</tr>
-<tr>
-<td>git show-branch</td>
-<td>显示分支列表及拓扑关系</td>
-</tr>
-<tr>
-<td>git show-ref</td>
-<td>显示本地引用</td>
-</tr>
-<tr>
-<td>git symbolic-ref</td>
-<td>显示或者设置符号引用</td>
-</tr>
-<tr>
-<td>git update-ref</td>
-<td>更新引用的指向</td>
-</tr>
-<tr>
-<td>git verify-tag</td>
-<td>校验 GPG 签名的Tag</td>
-</tr>
-</tbody>
-</table>
-<p>4、版本库管理相关命令</p>
-<table>
-<thead>
-<tr>
-<th><strong>命令</strong></th>
-<th><strong>简要说明</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>git count-objects</td>
-<td>显示松散对象的数量和磁盘占用</td>
-</tr>
-<tr>
-<td>git filter-branch</td>
-<td>版本库重构</td>
-</tr>
-<tr>
-<td>git fsck</td>
-<td>对象库完整性检查</td>
-</tr>
-<tr>
-<td>git fsck-objects*</td>
-<td>同义词，等同于 git fsck</td>
-</tr>
-<tr>
-<td>git gc</td>
-<td>版本库存储优化</td>
-</tr>
-<tr>
-<td>git index-pack</td>
-<td>从打包文件创建对应的索引文件</td>
-</tr>
-<tr>
-<td>git lost-found*</td>
-<td>过时，请使用 git fsck –lost-found 命令</td>
-</tr>
-<tr>
-<td>git pack-objects</td>
-<td>从标准输入读入对象ID，打包到文件</td>
-</tr>
-<tr>
-<td>git pack-redundant</td>
-<td>查找多余的 pack 文件</td>
-</tr>
-<tr>
-<td>git pack-refs</td>
-<td>将引用打包到 .git/packed-refs 文件中</td>
-</tr>
-<tr>
-<td>git prune</td>
-<td>从对象库删除过期对象</td>
-</tr>
-<tr>
-<td>git prune-packed</td>
-<td>将已经打包的松散对象删除</td>
-</tr>
-<tr>
-<td>git relink</td>
-<td>为本地版本库中相同的对象建立硬连接</td>
-</tr>
-<tr>
-<td>git repack</td>
-<td>将版本库未打包的松散对象打包</td>
-</tr>
-<tr>
-<td>git show-index</td>
-<td>读取包的索引文件，显示打包文件中的内容</td>
-</tr>
-<tr>
-<td>git unpack-objects</td>
-<td>从打包文件释放文件</td>
-</tr>
-<tr>
-<td>git verify-pack</td>
-<td>校验对象库打包文件</td>
-</tr>
-</tbody>
-</table>
-<p>5、数据传输相关命令</p>
-<table>
-<thead>
-<tr>
-<th><strong>命令</strong></th>
-<th><strong>简要说明</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>git fetch-pack</td>
-<td>执行 git fetch 或 git pull 命令时在本地执行此命令，用于从其他版本库获取缺失的对象</td>
-</tr>
-<tr>
-<td>git receive-pack</td>
-<td>执行 git push 命令时在远程执行的命令，用于接受推送的数据</td>
-</tr>
-<tr>
-<td>git send-pack</td>
-<td>执行 git push 命令时在本地执行的命令，用于向其他版本库推送数据</td>
-</tr>
-<tr>
-<td>git upload-archive</td>
-<td>执行 git archive –remote 命令基于远程版本库创建归档时，远程版本库执行此命令传送归档</td>
-</tr>
-<tr>
-<td>git upload-pack</td>
-<td>执行 git fetch 或 git pull 命令时在远程执行此命令，将对象打包、上传</td>
-</tr>
-</tbody>
-</table>
-<p>6、邮件相关命令</p>
-<table>
-<thead>
-<tr>
-<th><strong>命令</strong></th>
-<th><strong>简要说明</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>git imap-send</td>
-<td>将补丁通过 IMAP 发送</td>
-</tr>
-<tr>
-<td>git mailinfo</td>
-<td>从邮件导出提交说明和补丁</td>
-</tr>
-<tr>
-<td>git mailsplit</td>
-<td>将 mbox 或 Maildir 格式邮箱中邮件逐一提取为文件</td>
-</tr>
-<tr>
-<td>git request-pull</td>
-<td>创建包含提交间差异和执行PULL操作地址的信息</td>
-</tr>
-<tr>
-<td>git send-email</td>
-<td>发送邮件</td>
-</tr>
-</tbody>
-</table>
-<p>7、协议相关命令</p>
-<table>
-<thead>
-<tr>
-<th><strong>命令</strong></th>
-<th><strong>简要说明</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>git daemon</td>
-<td>实现Git协议</td>
-</tr>
-<tr>
-<td>git http-backend</td>
-<td>实现HTTP协议的CGI程序，支持智能HTTP协议</td>
-</tr>
-<tr>
-<td>git instaweb</td>
-<td>即时启动浏览器通过 gitweb 浏览当前版本库</td>
-</tr>
-<tr>
-<td>git shell</td>
-<td>受限制的shell，提供仅执行Git命令的SSH访问</td>
-</tr>
-<tr>
-<td>git update-server-info</td>
-<td>更新哑协议需要的辅助文件</td>
-</tr>
-<tr>
-<td>git http-fetch</td>
-<td>通过HTTP协议获取版本库</td>
-</tr>
-<tr>
-<td>git http-push</td>
-<td>通过HTTP/DAV协议推送</td>
-</tr>
-<tr>
-<td>git remote-ext</td>
-<td>由Git命令调用，通过外部命令提供扩展协议支持</td>
-</tr>
-<tr>
-<td>git remote-fd</td>
-<td>由Git命令调用，使用文件描述符作为协议接口</td>
-</tr>
-<tr>
-<td>git remote-ftp</td>
-<td>由Git命令调用，提供对FTP协议的支持</td>
-</tr>
-<tr>
-<td>git remote-ftps</td>
-<td>由Git命令调用，提供对FTPS协议的支持</td>
-</tr>
-<tr>
-<td>git remote-http</td>
-<td>由Git命令调用，提供对HTTP协议的支持</td>
-</tr>
-<tr>
-<td>git remote-https</td>
-<td>由Git命令调用，提供对HTTPS协议的支持</td>
-</tr>
-<tr>
-<td>git remote-testgit</td>
-<td>协议扩展示例脚本</td>
-</tr>
-</tbody>
-</table>
-<p>8、版本库转换和交互相关命令</p>
-<table>
-<thead>
-<tr>
-<th><strong>命令</strong></th>
-<th><strong>简要说明</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>git archimport</td>
-<td>导入Arch版本库到Git</td>
-</tr>
-<tr>
-<td>git bundle</td>
-<td>提交打包和解包，以便在不同版本库间传递</td>
-</tr>
-<tr>
-<td>git cvsexportcommit</td>
-<td>将Git的一个提交作为一个CVS检出</td>
-</tr>
-<tr>
-<td>git cvsimport</td>
-<td>导入CVS版本库到Git。或者使用 cvs2git</td>
-</tr>
-<tr>
-<td>git cvsserver</td>
-<td>Git的CVS协议模拟器，可供CVS命令访问Git版本库</td>
-</tr>
-<tr>
-<td>git fast-export</td>
-<td>将提交导出为 git-fast-import 格式</td>
-</tr>
-<tr>
-<td>git fast-import</td>
-<td>其他版本库迁移至Git的通用工具</td>
-</tr>
-<tr>
-<td>git svn</td>
-<td>Git 作为前端操作 Subversion</td>
-</tr>
-</tbody>
-</table>
-<p>9、合并相关的辅助命令</p>
-<table>
-<thead>
-<tr>
-<th><strong>命令</strong></th>
-<th><strong>简要说明</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>git merge-base</td>
-<td>供其他脚本调用，找到两个或多个提交最近的共同祖先</td>
-</tr>
-<tr>
-<td>git merge-file</td>
-<td>针对文件的两个不同版本执行三向文件合并</td>
-</tr>
-<tr>
-<td>git merge-index</td>
-<td>对index中的冲突文件调用指定的冲突解决工具</td>
-</tr>
-<tr>
-<td>git merge-octopus</td>
-<td>合并两个以上分支。参见 git merge 的octopus合并策略</td>
-</tr>
-<tr>
-<td>git merge-one-file</td>
-<td>由 git merge-index 调用的标准辅助程序</td>
-</tr>
-<tr>
-<td>git merge-ours</td>
-<td>合并使用本地版本，抛弃他人版本。参见 git merge 的ours合并策略</td>
-</tr>
-<tr>
-<td>git merge-recursive</td>
-<td>针对两个分支的三向合并。参见 git merge 的recursive合并策略</td>
-</tr>
-<tr>
-<td>git merge-resolve</td>
-<td>针对两个分支的三向合并。参见 git merge 的resolve合并策略</td>
-</tr>
-<tr>
-<td>git merge-subtree</td>
-<td>子树合并。参见 git merge 的 subtree 合并策略</td>
-</tr>
-<tr>
-<td>git merge-tree</td>
-<td>显式三向合并结果，不改变暂存区</td>
-</tr>
-<tr>
-<td>git fmt-merge-msg</td>
-<td>供执行合并操作的脚本调用，用于创建一个合并提交说明</td>
-</tr>
-<tr>
-<td>git rerere</td>
-<td>重用所记录的冲突解决方案</td>
-</tr>
-</tbody>
-</table>
-<p>10、 杂项</p>
-<table>
-<thead>
-<tr>
-<th><strong>命令</strong></th>
-<th><strong>简要说明</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>git bisect–helper</td>
-<td>由 git bisect 命令调用，确认二分查找进度</td>
-</tr>
-<tr>
-<td>git check-attr</td>
-<td>显示某个文件是否设置了某个属性</td>
-</tr>
-<tr>
-<td>git checkout-index</td>
-<td>从暂存区拷贝文件至工作区</td>
-</tr>
-<tr>
-<td>git cherry</td>
-<td>查找没有合并到上游的提交</td>
-</tr>
-<tr>
-<td>git diff-files</td>
-<td>比较暂存区和工作区，相当于 git diff –raw</td>
-</tr>
-<tr>
-<td>git diff-index</td>
-<td>比较暂存区和版本库，相当于 git diff –cached –raw</td>
-</tr>
-<tr>
-<td>git diff-tree</td>
-<td>比较两个树对象，相当于 git diff –raw A B</td>
-</tr>
-<tr>
-<td>git difftool–helper</td>
-<td>由 git difftool 命令调用，默认要使用的差异比较工具</td>
-</tr>
-<tr>
-<td>git get-tar-commit-id</td>
-<td>从 git archive 创建的 tar 包中提取提交ID</td>
-</tr>
-<tr>
-<td>git gui–askpass</td>
-<td>命令 git gui 的获取用户口令输入界面</td>
-</tr>
-<tr>
-<td>git notes</td>
-<td>提交评论管理</td>
-</tr>
-<tr>
-<td>git patch-id</td>
-<td>补丁过滤行号和空白字符后生成补丁唯一ID</td>
-</tr>
-<tr>
-<td>git quiltimport</td>
-<td>将Quilt补丁列表应用到当前分支</td>
-</tr>
-<tr>
-<td>git replace</td>
-<td>提交替换</td>
-</tr>
-<tr>
-<td>git shortlog</td>
-<td>对 git log 的汇总输出，适合于产品发布说明</td>
-</tr>
-<tr>
-<td>git stripspace</td>
-<td>删除空行，供其他脚本调用</td>
-</tr>
-<tr>
-<td>git submodule</td>
-<td>子模组管理</td>
-</tr>
-<tr>
-<td>git tar-tree</td>
-<td>过时命令，请使用 git archive</td>
-</tr>
-<tr>
-<td>git var</td>
-<td>显示 Git 环境变量</td>
-</tr>
-<tr>
-<td>git web–browse</td>
-<td>启动浏览器以查看目录或文件</td>
-</tr>
-<tr>
-<td>git whatchanged</td>
-<td>显示提交历史及每次提交的改动</td>
-</tr>
-<tr>
-<td>git-mergetool–lib</td>
-<td>包含于其他脚本中，提供合并/差异比较工具的选择和执行</td>
-</tr>
-<tr>
-<td>git-parse-remote</td>
-<td>包含于其他脚本中，提供操作远程版本库的函数</td>
-</tr>
-<tr>
-<td>git-sh-setup</td>
-<td>包含于其他脚本中，提供 shell 编程的函数库</td>
-</tr>
-</tbody>
-</table>
-<p>下面脚本之家小编特为大家分享一个图片版的</p>
-<p>Git 常用命令速查表。点击查看大图。</p>
-<p><a href="http://files.jb51.net/file_images/article/201409/git_big_jb51.jpg" target="_blank" rel="noopener"><img src="qq://txfile/MyCollectionImagePath:4BE4A462-13A8-43B2-ABA9-4D288FFDECD0" alt="img"></a></p>
-<p>Git命令参考手册(文本版)</p>
-<p>git init                                                  # 初始化本地git仓库（创建新仓库）<br>git config –global user.name “xxx”                       # 配置用户名<br>git config –global user.email “<a href="mailto:xxx@xxx.com" target="_blank" rel="noopener">xxx@xxx.com</a>“              # 配置邮件<br>git config –global color.ui true                         # git status等命令自动着色<br>git config –global color.status auto<br>git config –global color.diff auto<br>git config –global color.branch auto<br>git config –global color.interactive auto<br>git clone git+ssh:<a href="mailto://git@192.168.53.168" target="_blank" rel="noopener">//git@192.168.53.168</a>/VT.git             # clone远程仓库<br>git status                                                # 查看当前版本状态（是否修改）<br>git add xyz                                               # 添加xyz文件至index<br>git add .                                                 # 增加当前子目录下所有更改过的文件至index<br>git commit -m ‘xxx’                                       # 提交<br>git commit –amend -m ‘xxx’                               # 合并上一次提交（用于反复修改）<br>git commit -am ‘xxx’                                      # 将add和commit合为一步<br>git rm xxx                                                # 删除index中的文件<br>git rm -r *                                               # 递归删除<br>git log                                                   # 显示提交日志<br>git log -1                                                # 显示1行日志 -n为n行<br>git log -5<br>git log –stat                                            # 显示提交日志及相关变动文件<br>git log -p -m<br>git show dfb02e6e4f2f7b573337763e5c0013802e392818         # 显示某个提交的详细内容<br>git show dfb02                                            # 可只用commitid的前几位<br>git show HEAD                                             # 显示HEAD提交日志<br>git show HEAD^                                            # 显示HEAD的父（上一个版本）的提交日志 ^^为上两个版本 ^5为上5个版本<br>git tag                                                   # 显示已存在的tag<br>git tag -a v2.0 -m ‘xxx’                                  # 增加v2.0的tag<br>git show v2.0                                             # 显示v2.0的日志及详细内容<br>git log v2.0                                              # 显示v2.0的日志<br>git diff                                                  # 显示所有未添加至index的变更<br>git diff –cached                                         # 显示所有已添加index但还未commit的变更<br>git diff HEAD^                                            # 比较与上一个版本的差异<br>git diff HEAD – ./lib                                    # 比较与HEAD版本lib目录的差异<br>git diff origin/master..master                            # 比较远程分支master上有本地分支master上没有的<br>git diff origin/master..master –stat                     # 只显示差异的文件，不显示具体内容<br>git remote add origin git+ssh:<a href="mailto://git@192.168.53.168" target="_blank" rel="noopener">//git@192.168.53.168</a>/VT.git # 增加远程定义（用于push/pull/fetch）<br>git branch                                                # 显示本地分支<br>git branch –contains 50089                               # 显示包含提交50089的分支<br>git branch -a                                             # 显示所有分支<br>git branch -r                                             # 显示所有原创分支<br>git branch –merged                                       # 显示所有已合并到当前分支的分支<br>git branch –no-merged                                    # 显示所有未合并到当前分支的分支<br>git branch -m master master_copy                          # 本地分支改名<br>git checkout -b master_copy                               # 从当前分支创建新分支master_copy并检出<br>git checkout -b master master_copy                        # 上面的完整版<br>git checkout features/performance                         # 检出已存在的features/performance分支<br>git checkout –track hotfixes/BJVEP933                    # 检出远程分支hotfixes/BJVEP933并创建本地跟踪分支<br>git checkout v2.0                                         # 检出版本v2.0<br>git checkout -b devel origin/develop                      # 从远程分支develop创建新本地分支devel并检出<br>git checkout – README                                    # 检出head版本的README文件（可用于修改错误回退）<br>git merge origin/master                                   # 合并远程master分支至当前分支<br>git cherry-pick ff44785404a8e                             # 合并提交ff44785404a8e的修改<br>git push origin master                                    # 将当前分支push到远程master分支<br>git push origin :hotfixes/BJVEP933                        # 删除远程仓库的hotfixes/BJVEP933分支<br>git push –tags                                           # 把所有tag推送到远程仓库<br>git fetch                                                 # 获取所有远程分支（不更新本地分支，另需merge）<br>git fetch –prune                                         # 获取所有原创分支并清除服务器上已删掉的分支<br>git pull origin master                                    # 获取远程分支master并merge到当前分支<br>git mv README README2                                     # 重命名文件README为README2<br>git reset –hard HEAD                                     # 将当前版本重置为HEAD（通常用于merge失败回退）<br>git rebase<br>git branch -d hotfixes/BJVEP933                           # 删除分支hotfixes/BJVEP933（本分支修改已合并到其他分支）<br>git branch -D hotfixes/BJVEP933                           # 强制删除分支hotfixes/BJVEP933<br>git ls-files                                              # 列出git index包含的文件<br>git show-branch                                           # 图示当前分支历史<br>git show-branch –all                                     # 图示所有分支历史<br>git whatchanged                                           # 显示提交历史对应的文件修改<br>git revert dfb02e6e4f2f7b573337763e5c0013802e392818       # 撤销提交dfb02e6e4f2f7b573337763e5c0013802e392818<br>git ls-tree HEAD                                          # 内部命令：显示某个git对象<br>git rev-parse v2.0                                        # 内部命令：显示某个ref对于的SHA1 HASH<br>git reflog                                                # 显示所有提交，包括孤立节点<br>git show HEAD@{5}<br>git show master@{yesterday}                               # 显示master分支昨天的状态<br>git log –pretty=format:’%h %s’ –graph                   # 图示提交日志<br>git show HEAD~3<br>git show -s –pretty=raw 2be7fcb476<br>git stash                                                 # 暂存当前修改，将所有至为HEAD状态<br>git stash list                                            # 查看所有暂存<br>git stash show -p stash@{0}                               # 参考第一次暂存<br>git stash apply stash@{0}                                 # 应用第一次暂存<br>git grep “delete from”                                    # 文件中搜索文本“delete from”<br>git grep -e ‘#define’ –and -e SORT_DIRENT<br>git gc<br>git fsck</p>
-
+<p><strong>考点分析</strong></p>
+<p>分析Exception和Error的区别，是从概念角度考察了java处理机制。需要掌握两个方面。</p>
+<p>第一，<strong>理解Throwable、Exception、Error的设计和分类</strong>。比如，掌握那些应用最为广泛的子类，以及如何自定义异常等。</p>
+<p>很多面试官会进一步追问一些细节，比如，你了解哪些Error、Exception或者RuntimeException？我画了一个简单的类图，并列出典型例子。</p>
+<p><img src="https://static001.geekbang.org/resource/image/ac/00/accba531a365e6ae39614ebfa3273900.png" alt="img"></p>
+<p>其中有些子类型，最好重点理解一下，比如NoClassDefFoundError和ClassNotFoundException有什么区别，这也是个经典的入门题目。</p>
+<p>第二，理解java语言中操作Throwable的元素和实践。掌握最基本的语法是必须的，如try-catch-finally块，throw、throws关键字等。与此同时，也要懂得如何处理典型场景。</p>
+<p>异常处理代码比较繁琐，比如我们需要写很多千篇一律的捕获代码，或者在finally里面做一些资源回收工作。随着java语言的发展，引入了一些更加便利的特性，比如try-with-resources和multiple catch，具体可以参考下面的代码段。在编译时期，会自动生成相应的处理逻辑，比如，自动按照约定俗成close那些扩展了AutoCloseable或者Closeable的对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">try (BufferedReader br = new BufferedReader(…);</span><br><span class="line">     BufferedWriter writer = new BufferedWriter(…)) &#123;// Try-with-resources</span><br><span class="line">// do something</span><br><span class="line">catch ( IOException | XEception e) &#123;// Multiple catch</span><br><span class="line">   // Handle it</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>知识扩展</strong></p>
+<p>下面的代码反映了异常处理中哪些不当之处？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">try &#123;</span><br><span class="line">  // 业务代码</span><br><span class="line">  // …</span><br><span class="line">  Thread.sleep(1000L);</span><br><span class="line">&#125; catch (Exception e) &#123;</span><br><span class="line">  // Ignore it</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段代码虽然很短，但是已经违反了异常处理的两个基本原则。</p>
+<p>第一，<strong>尽量不要捕获类似Exception这样的通用异常，而是应该捕获特定异常，</strong> 在这里是Thread.sleep()抛出的InterruptedException。</p>
+<p>这是因为在日常的开发和合作中，我们读代码的机会往往超过写代码，软件工程是门协作的艺术，所以我们有义务让自己的代码能够直观地体现出尽量多的信息，而泛泛的 Exception 之类，恰恰隐藏了我们的目的。另外，我们也要保证程序不会捕获到我们不希望捕获的异常。比如，你可能更希望 RuntimeException 被扩散出来，而不是被捕获。</p>
+<p>进一步讲，除非深思熟虑了，否则不要捕获 Throwable 或者 Error，这样很难保证我们能够正确程序处理 OutOfMemoryError。</p>
+<p>第二，<strong>不要生吞（swallow）异常</strong>。这是异常处理中要特别注意的事情，因为很可能会导致非常难以诊断的诡异情况。</p>
+<p>生吞异常，往往是基于假设这段代码可能不会发生，或者感觉忽略异常是无所谓的，但是千万不要在产品代码做这种假设！</p>
+<p>如果我们不把异常抛出来，或者也没有输出到日志（Logger）之类，程序可能在后续代码以不可控的方式结束。没人能够轻易判断究竟是哪里抛出了异常，以及是什么原因产生了异常。</p>
+<p>第二段代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">try &#123;</span><br><span class="line">   // 业务代码</span><br><span class="line">   // …</span><br><span class="line">&#125; catch (IOException e) &#123;</span><br><span class="line">    e.printStackTrace();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段代码作为一段实验代码，它是没有任何问题的，但是在产品代码中，通常都不允许这样处理。你先思考一下这是为什么呢？</p>
+<p>我们先来看看<a href="https://docs.oracle.com/javase/9/docs/api/java/lang/Throwable.html#printStackTrace--" target="_blank" rel="noopener">printStackTrace()</a>的文档，开头就是“Prints this throwable and its backtrace to the <strong>standard error stream</strong>”。问题就在这里，在稍微复杂一点的生产系统中，标准出错（STERR）不是个合适的输出选项，因为你很难判断出到底输出到哪里去了。</p>
+<p>尤其是对于分布式系统，如果发生异常，但是无法找到堆栈轨迹（stacktrace），这纯属是为诊断设置障碍。所以，最好使用产品日志，详细地输出到日志系统里。</p>
+<p>我们接下来看下面的代码段，体会一下<strong>Throw early, catch late</strong> 原则。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public void readPreferences(String fileName)&#123;</span><br><span class="line">	 //...perform operations... </span><br><span class="line">	InputStream in = new FileInputStream(fileName);</span><br><span class="line">	 //...read the preferences file...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果 fileName 是 null，那么程序就会抛出 NullPointerException，但是由于没有第一时间暴露出问题，堆栈信息可能非常令人费解，往往需要相对复杂的定位。这个 NPE 只是作为例子，实际产品代码中，可能是各种情况，比如获取配置失败之类的。在发现问题的时候，第一时间抛出，能够更加清晰地反映问题。</p>
+<p>我们可以修改一下，让问题“throw early”，对应的异常信息就非常直观了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public void readPreferences(String filename) &#123;</span><br><span class="line">	Objects. requireNonNull(filename);</span><br><span class="line">	//...perform other operations... </span><br><span class="line">	InputStream in = new FileInputStream(filename);</span><br><span class="line">	 //...read the preferences file...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>至于“catch late”，其实是我们经常苦恼的问题，捕获异常后，需要怎么处理呢？最差的处理方式，就是我前面提到的“生吞异常”，本质上其实是掩盖问题。如果实在不知道如何处理，可以选择保留原有异常的cause信息，直接再抛出去。在更高层面，因为有了清晰的（业务）逻辑，往往会更清楚合适的处理方式是什么。</p>
+<p>有的时候，我们会根据需要自定义异常，这个时候除了保证提供足够的信息，还有两点需要考虑：</p>
+<p>1.是否需要定义成 Checked Exception，因为这种类型设计的初衷更是为了从异常情况恢复，作为异常设计者，我们往往有充足信息进行分类。</p>
+<p>2.在保证诊断信息足够的同时，也要考虑避免包含敏感信息，因为那样可能导致潜在的安全问题。如果我们看 Java 的标准类库，你可能注意到类似 java.net.ConnectException，出错信息是类似“ Connection refused (Connection refused)”，而不包含具体的机器名、IP、端口等，一个重要考量就是信息安全。类似的情况在日志中也有，比如，用户数据一般是不可以输出到日志里面的。</p>
+<p>业界有一种争论（甚至可以算是某种程度的共识），Java 语言的 Checked Exception 也许是个设计错误，反对者列举了几点：</p>
+<p>1.Checked Exception 的假设是我们捕获了异常，然后恢复程序。但是，其实我们大多数情况下，根本就不可能恢复。Checked Exception 的使用，已经大大偏离了最初的设计目的。</p>
+<p>2.Checked Exception 不兼容 functional 编程，如果你写过 Lambda/Stream 代码，相信深有体会。</p>
+<p>很多开源项目，已经采纳了这种实践，比如 Spring、Hibernate 等，甚至反映在新的编程语言设计中，比如 Scala 等。 如果有兴趣，你可以参考：</p>
+<p><a href="http://literatejava.com/exceptions/checked-exceptions-javas-biggest-mistake/" target="_blank" rel="noopener">http://literatejava.com/exceptions/checked-exceptions-javas-biggest-mistake/</a></p>
+<p>当然，很多人也觉得没有必要矫枉过正，因为确实有一些异常，比如和环境相关的 IO、网络等，其实是存在可恢复性的，而且 Java 已经通过业界的海量实践，证明了其构建高质量软件的能力。我就不再进一步解读了，感兴趣的同学可以点击<a href="http://v.qq.com/x/page/d0635rf5x0o.html，观看" target="_blank" rel="noopener">http://v.qq.com/x/page/d0635rf5x0o.html，观看</a> Bruce Eckel 在 2018 年全球软件开发大会 QCon 的分享 Failing at Failing: How and Why We’ve Been Nonchalantly Moving Away From Exception Handling。</p>
+<p>我们从性能角度来审视一下 Java 的异常处理机制，这里有两个可能会相对昂贵的地方：</p>
+<p>1.try-catch 代码段会产生额外的性能开销，或者换个角度说，它往往会影响 JVM 对代码进行优化，所以建议仅捕获有必要的代码段，尽量不要一个大的 try 包住整段的代码；与此同时，利用异常控制代码流程，也不是一个好主意，远比我们通常意义上的条件语句（if/else、switch）要低效。</p>
+<p>2.Java 每实例化一个 Exception，都会对当时的栈进行快照，这是一个相对比较重的操作。如果发生的非常频繁，这个开销可就不能被忽略了。</p>
+<p>所以，对于部分追求极致性能的底层类库，有种方式是尝试创建不进行栈快照的 Exception。这本身也存在争议，因为这样做的假设在于，我创建异常时知道未来是否需要堆栈。问题是，实际上可能吗？小范围或许可能，但是在大规模项目中，这么做可能不是个理智的选择。如果需要堆栈，但又没有收集这些信息，在复杂情况下，尤其是类似微服务这种分布式系统，这会大大增加诊断的难度。</p>
+<p>当我们的服务出现反应变慢、吞吐量下降的时候，检查发生最频繁的 Exception 也是一种思路。关于诊断后台变慢的问题，我会在后面的 Java 性能基础模块中系统探讨。</p>
+<p>今天，我从一个常见的异常处理概念问题，简单总结了 Java 异常处理的机制。并结合代码，分析了一些普遍认可的最佳实践，以及业界最新的一些异常使用共识。最后，我分析了异常性能开销，希望对你有所帮助。</p>
+<p>扩展面试题：</p>
+<h4 id="常见的异常类有哪些？"><a href="#常见的异常类有哪些？" class="headerlink" title="常见的异常类有哪些？"></a>常见的异常类有哪些？</h4><ul>
+<li>NullPointerException 空指针异常</li>
+<li>ClassNotFoundException 指定类不存在</li>
+<li>NumberFormatException 字符串转换为数字异常</li>
+<li>IndexOutOfBoundsException 数组下标越界异常</li>
+<li>ClassCastException 数据类型转换异常</li>
+<li>FileNotFoundException 文件未找到异常</li>
+<li>NoSuchMethodException 方法不存在异常</li>
+<li>IOException IO 异常</li>
+<li>SocketException Socket 异常</li>
+</ul>
+<p>Checked Exception 的假设是我们捕获了异常，然后恢复程序。但是，其实我们大多数情况下，根本就不可能恢复。Checked Exception 的使用，已经大大偏离了最初的设计目的。</p>
       
 
       
@@ -993,7 +323,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/10/26/test/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/04/25/第2讲-Exception和Error有什么区别？/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -1007,18 +337,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/02/27/JAVA8-让代码更优雅之List排序/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/04/25/第3讲-谈谈final、finally、 finalize有什么不同？/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          JAVA8-让代码更优雅之List排序
+          第3讲-谈谈final、finally、 finalize有什么不同？
         
       </div>
     </a>
   
   
-    <a href="/2018/10/26/测试/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">测试</div>
+    <a href="/2019/04/24/第1讲-谈谈你对Java平台的理解？/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">第1讲 | 谈谈你对Java平台的理解？</div>
       <i class="icon-circle-right"></i>
     </a>
   

@@ -6,21 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>GIT常用命令速查 | Hexo</title>
+  <title>第3讲-谈谈final、finally、 finalize有什么不同？ | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="一、 Git 常用命令速查 git branch 查看本地所有分支git status 查看当前状态git commit 提交git branch -a 查看所有的分支git branch -r 查看远程所有分支git commit -am “init” 提交并且加注释git remote add origin git@192.168.1.119:ndshowgit push origin ma">
+  <meta name="description" content="第3讲-谈谈final、finally、 finalize有什么不同？杨晓峰 2018-05-05 极客时间版权所有: https://time.geekbang.org/column/article/6845 谈谈 final、finally、 finalize 有什么不同？ 典型回答 final可以用来修饰类、方法、变量，分别有不同的意义，final修饰的class代表不可以继承扩展，fina">
 <meta property="og:type" content="article">
-<meta property="og:title" content="GIT常用命令速查">
-<meta property="og:url" content="http://yoursite.com/2018/10/26/test/index.html">
+<meta property="og:title" content="第3讲-谈谈final、finally、 finalize有什么不同？">
+<meta property="og:url" content="http://yoursite.com/2019/04/25/第3讲-谈谈final、finally、 finalize有什么不同？/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="一、 Git 常用命令速查 git branch 查看本地所有分支git status 查看当前状态git commit 提交git branch -a 查看所有的分支git branch -r 查看远程所有分支git commit -am “init” 提交并且加注释git remote add origin git@192.168.1.119:ndshowgit push origin ma">
+<meta property="og:description" content="第3讲-谈谈final、finally、 finalize有什么不同？杨晓峰 2018-05-05 极客时间版权所有: https://time.geekbang.org/column/article/6845 谈谈 final、finally、 finalize 有什么不同？ 典型回答 final可以用来修饰类、方法、变量，分别有不同的意义，final修饰的class代表不可以继承扩展，fina">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="qq://txfile/MyCollectionImagePath:4BE4A462-13A8-43B2-ABA9-4D288FFDECD0">
-<meta property="og:updated_time" content="2019-04-24T10:06:45.530Z">
+<meta property="og:updated_time" content="2019-04-25T09:01:59.145Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GIT常用命令速查">
-<meta name="twitter:description" content="一、 Git 常用命令速查 git branch 查看本地所有分支git status 查看当前状态git commit 提交git branch -a 查看所有的分支git branch -r 查看远程所有分支git commit -am “init” 提交并且加注释git remote add origin git@192.168.1.119:ndshowgit push origin ma">
-<meta name="twitter:image" content="qq://txfile/MyCollectionImagePath:4BE4A462-13A8-43B2-ABA9-4D288FFDECD0">
+<meta name="twitter:title" content="第3讲-谈谈final、finally、 finalize有什么不同？">
+<meta name="twitter:description" content="第3讲-谈谈final、finally、 finalize有什么不同？杨晓峰 2018-05-05 极客时间版权所有: https://time.geekbang.org/column/article/6845 谈谈 final、finally、 finalize 有什么不同？ 典型回答 final可以用来修饰类、方法、变量，分别有不同的意义，final修饰的class代表不可以继承扩展，fina">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -156,20 +154,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-test" class="article article-type-post " itemscope="" itemprop="blogPost">
+            <article id="post-第3讲-谈谈final、finally、 finalize有什么不同？" class="article article-type-post " itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      GIT常用命令速查
+      第3讲-谈谈final、finally、 finalize有什么不同？
     </h1>
   
 
         
-        <a href="/2018/10/26/test/" class="archive-article-date">
-  	<time datetime="2018-10-26T09:35:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-26</time>
+        <a href="/2019/04/25/第3讲-谈谈final、finally、 finalize有什么不同？/" class="archive-article-date">
+  	<time datetime="2019-04-25T07:06:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-25</time>
 </a>
         
       </header>
@@ -177,743 +175,58 @@
     <div class="article-entry" itemprop="articleBody">
       
 	
-        <!--toc:true-->
-<p><strong>一、 Git 常用命令速查</strong></p>
-<p>git branch 查看本地所有分支<br>git status 查看当前状态<br>git commit 提交<br>git branch -a 查看所有的分支<br>git branch -r 查看远程所有分支<br>git commit -am “init” 提交并且加注释<br>git remote add origin <a href="mailto:git@192.168.1.119" target="_blank" rel="noopener">git@192.168.1.119</a>:ndshow<br>git push origin master 将文件给推到服务器上<br>git remote show origin 显示远程库origin里的资源<br>git push origin master:develop<br>git push origin master:hb-dev 将本地库与服务器上的库进行关联<br>git checkout –track origin/dev 切换到远程dev分支<br>git branch -D master develop 删除本地库develop<br>git checkout -b dev 建立一个新的本地分支dev<br>git merge origin/dev 将分支dev与当前分支进行合并<br>git checkout dev 切换到本地dev分支<br>git remote show 查看远程库</p>
+        <h1 id="第3讲-谈谈final、finally、-finalize有什么不同？"><a href="#第3讲-谈谈final、finally、-finalize有什么不同？" class="headerlink" title="第3讲-谈谈final、finally、 finalize有什么不同？"></a>第3讲-谈谈final、finally、 finalize有什么不同？</h1><p>杨晓峰 2018-05-05</p>
+<p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/6845" target="_blank" rel="noopener">https://time.geekbang.org/column/article/6845</a></p>
+<p><strong>谈谈 final、finally、 finalize 有什么不同？</strong></p>
+<p><strong>典型回答</strong></p>
+<p>final可以用来修饰类、方法、变量，分别有不同的意义，final修饰的class代表不可以继承扩展，final的变量是不可以修改的，而final的方法是不可以重写的（override）。</p>
+<p>finally则是java保证重点代码一定要被执行的一种机制。我们可以使用try-finally或者try-catch-finally来进行类似关闭JDBC连接、保证unlock锁动作。</p>
+<p>finalize 是基础类 java.lang.Object 的一个方法，它的设计目的是保证对象在被垃圾收集前完成特定资源的回收。finalize 机制现在已经不推荐使用，并且在 JDK 9 开始被标记为 deprecated。</p>
 <a id="more"></a>
-<p>git add .<br>git rm 文件名(包括路径) 从git中删除指定文件<br>git clone git://github.com/schacon/grit.git 从服务器上将代码给拉下来<br>git config –list 看所有用户<br>git ls-files 看已经被提交的<br>git rm [file name] 删除一个文件<br>git commit -a 提交当前repos的所有的改变<br>git add [file name] 添加一个文件到git index<br>git commit -v 当你用－v参数的时候可以看commit的差异<br>git commit -m “This is the message describing the commit” 添加commit信息<br>git commit -a -a是代表add，把所有的change加到git index里然后再commit<br>git commit -a -v 一般提交命令<br>git log 看你commit的日志<br>git diff 查看尚未暂存的更新<br>git rm a.a 移除文件(从暂存区和工作区中删除)<br>git rm –cached a.a 移除文件(只从暂存区中删除)<br>git commit -m “remove” 移除文件(从Git中删除)<br>git rm -f a.a 强行移除修改后文件(从暂存区和工作区中删除)<br>git diff –cached 或 $ git diff –staged 查看尚未提交的更新<br>git stash push 将文件给push到一个临时空间中<br>git stash pop 将文件从临时空间pop下来<br>-——————————————————–<br>git remote add origin <a href="mailto:git@github.com" target="_blank" rel="noopener">git@github.com</a>:username/Hello-World.git<br>git push origin master 将本地项目给提交到服务器中<br>-———————————————————-<br>git pull 本地与服务器端同步<br>-—————————————————————-<br>git push (远程仓库名) (分支名) 将本地分支推送到服务器上去。<br>git push origin serverfix:awesomebranch<br>-—————————————————————–<br>git fetch 相当于是从远程获取最新版本到本地，不会自动merge<br>git commit -a -m “log_message” (-a是提交所有改动，-m是加入log信息) 本地修改同步至服务器端 ：<br>git branch branch_0.1 master 从主分支master创建branch_0.1分支<br>git branch -m branch_0.1 branch_1.0 将branch_0.1重命名为branch_1.0<br>git checkout branch_1.0/master 切换到branch_1.0/master分支<br>du -hs</p>
-<p>git branch 删除远程branch<br>git push origin :branch_remote_name<br>git branch -r -d branch_remote_name<br>-———————————————————-</p>
-<p>初始化版本库，并提交到远程服务器端<br>mkdir WebApp<br>cd WebApp<br>git init 本地初始化<br>touch README<br>git add README 添加文件<br>git commit -m ‘first commit’<br>git remote add origin <a href="mailto:git@github.com" target="_blank" rel="noopener">git@github.com</a>:daixu/WebApp.git</p>
-<p>增加一个远程服务器端</p>
-<p>上面的命令会增加URL地址为<a href="mailto:&#39;git@github.com" target="_blank" rel="noopener">&#39;git@github.com</a>:daixu/WebApp.git’，名称为origin的远程服务器库，以后提交代码的时候只需要使用 origin别名即可</p>
-<p><strong>二、 Git 命令速查表</strong></p>
-<p>1、常用的Git命令</p>
-<table>
-<thead>
-<tr>
-<th><strong>命令</strong></th>
-<th><strong>简要说明</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>git add</td>
-<td>添加至暂存区</td>
-</tr>
-<tr>
-<td>git add–interactive</td>
-<td>交互式添加</td>
-</tr>
-<tr>
-<td>git apply</td>
-<td>应用补丁</td>
-</tr>
-<tr>
-<td>git am</td>
-<td>应用邮件格式补丁</td>
-</tr>
-<tr>
-<td>git annotate</td>
-<td>同义词，等同于 git blame</td>
-</tr>
-<tr>
-<td>git archive</td>
-<td>文件归档打包</td>
-</tr>
-<tr>
-<td>git bisect</td>
-<td>二分查找</td>
-</tr>
-<tr>
-<td>git blame</td>
-<td>文件逐行追溯</td>
-</tr>
-<tr>
-<td>git branch</td>
-<td>分支管理</td>
-</tr>
-<tr>
-<td>git cat-file</td>
-<td>版本库对象研究工具</td>
-</tr>
-<tr>
-<td>git checkout</td>
-<td>检出到工作区、切换或创建分支</td>
-</tr>
-<tr>
-<td>git cherry-pick</td>
-<td>提交拣选</td>
-</tr>
-<tr>
-<td>git citool</td>
-<td>图形化提交，相当于 git gui 命令</td>
-</tr>
-<tr>
-<td>git clean</td>
-<td>清除工作区未跟踪文件</td>
-</tr>
-<tr>
-<td>git clone</td>
-<td>克隆版本库</td>
-</tr>
-<tr>
-<td>git commit</td>
-<td>提交</td>
-</tr>
-<tr>
-<td>git config</td>
-<td>查询和修改配置</td>
-</tr>
-<tr>
-<td>git describe</td>
-<td>通过里程碑直观地显示提交ID</td>
-</tr>
-<tr>
-<td>git diff</td>
-<td>差异比较</td>
-</tr>
-<tr>
-<td>git difftool</td>
-<td>调用图形化差异比较工具</td>
-</tr>
-<tr>
-<td>git fetch</td>
-<td>获取远程版本库的提交</td>
-</tr>
-<tr>
-<td>git format-patch</td>
-<td>创建邮件格式的补丁文件。参见 git am 命令</td>
-</tr>
-<tr>
-<td>git grep</td>
-<td>文件内容搜索定位工具</td>
-</tr>
-<tr>
-<td>git gui</td>
-<td>基于Tcl/Tk的图形化工具，侧重提交等操作</td>
-</tr>
-<tr>
-<td>git help</td>
-<td>帮助</td>
-</tr>
-<tr>
-<td>git init</td>
-<td>版本库初始化</td>
-</tr>
-<tr>
-<td>git init-db*</td>
-<td>同义词，等同于 git init</td>
-</tr>
-<tr>
-<td>git log</td>
-<td>显示提交日志</td>
-</tr>
-<tr>
-<td>git merge</td>
-<td>分支合并</td>
-</tr>
-<tr>
-<td>git mergetool</td>
-<td>图形化冲突解决</td>
-</tr>
-<tr>
-<td>git mv</td>
-<td>重命名</td>
-</tr>
-<tr>
-<td>git pull</td>
-<td>拉回远程版本库的提交</td>
-</tr>
-<tr>
-<td>git push</td>
-<td>推送至远程版本库</td>
-</tr>
-<tr>
-<td>git rebase</td>
-<td>分支变基</td>
-</tr>
-<tr>
-<td>git rebase–interactive</td>
-<td>交互式分支变基</td>
-</tr>
-<tr>
-<td>git reflog</td>
-<td>分支等引用变更记录管理</td>
-</tr>
-<tr>
-<td>git remote</td>
-<td>远程版本库管理</td>
-</tr>
-<tr>
-<td>git repo-config*</td>
-<td>同义词，等同于 git config</td>
-</tr>
-<tr>
-<td>git reset</td>
-<td>重置改变分支“游标”指向</td>
-</tr>
-<tr>
-<td>git rev-parse</td>
-<td>将各种引用表示法转换为哈希值等</td>
-</tr>
-<tr>
-<td>git revert</td>
-<td>反转提交</td>
-</tr>
-<tr>
-<td>git rm</td>
-<td>删除文件</td>
-</tr>
-<tr>
-<td>git show</td>
-<td>显示各种类型的对象</td>
-</tr>
-<tr>
-<td>git stage*</td>
-<td>同义词，等同于 git add</td>
-</tr>
-<tr>
-<td>git stash</td>
-<td>保存和恢复进度</td>
-</tr>
-<tr>
-<td>git status</td>
-<td>显示工作区文件状态</td>
-</tr>
-<tr>
-<td>git tag</td>
-<td>里程碑管理</td>
-</tr>
-</tbody>
-</table>
-<p>2、对象库操作相关命令</p>
-<table>
-<thead>
-<tr>
-<th><strong>命令</strong></th>
-<th><strong>简要说明</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>git commit-tree</td>
-<td>从树对象创建提交</td>
-</tr>
-<tr>
-<td>git hash-object</td>
-<td>从标准输入或文件计算哈希值或创建对象</td>
-</tr>
-<tr>
-<td>git ls-files</td>
-<td>显示工作区和暂存区文件</td>
-</tr>
-<tr>
-<td>git ls-tree</td>
-<td>显示树对象包含的文件</td>
-</tr>
-<tr>
-<td>git mktag</td>
-<td>读取标准输入创建一个里程碑对象</td>
-</tr>
-<tr>
-<td>git mktree</td>
-<td>读取标准输入创建一个树对象</td>
-</tr>
-<tr>
-<td>git read-tree</td>
-<td>读取树对象到暂存区</td>
-</tr>
-<tr>
-<td>git update-index</td>
-<td>工作区内容注册到暂存区及暂存区管理</td>
-</tr>
-<tr>
-<td>git unpack-file</td>
-<td>创建临时文件包含指定 blob 的内容</td>
-</tr>
-<tr>
-<td>git write-tree</td>
-<td>从暂存区创建一个树对象</td>
-</tr>
-</tbody>
-</table>
-<p>3、引用操作相关命令</p>
-<table>
-<thead>
-<tr>
-<th><strong>命令</strong></th>
-<th><strong>简要说明</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>git check-ref-format</td>
-<td>检查引用名称是否符合规范</td>
-</tr>
-<tr>
-<td>git for-each-ref</td>
-<td>引用迭代器，用于shell编程</td>
-</tr>
-<tr>
-<td>git ls-remote</td>
-<td>显示远程版本库的引用</td>
-</tr>
-<tr>
-<td>git name-rev</td>
-<td>将提交ID显示为友好名称</td>
-</tr>
-<tr>
-<td>git peek-remote*</td>
-<td>过时命令，请使用 git ls-remote</td>
-</tr>
-<tr>
-<td>git rev-list</td>
-<td>显示版本范围</td>
-</tr>
-<tr>
-<td>git show-branch</td>
-<td>显示分支列表及拓扑关系</td>
-</tr>
-<tr>
-<td>git show-ref</td>
-<td>显示本地引用</td>
-</tr>
-<tr>
-<td>git symbolic-ref</td>
-<td>显示或者设置符号引用</td>
-</tr>
-<tr>
-<td>git update-ref</td>
-<td>更新引用的指向</td>
-</tr>
-<tr>
-<td>git verify-tag</td>
-<td>校验 GPG 签名的Tag</td>
-</tr>
-</tbody>
-</table>
-<p>4、版本库管理相关命令</p>
-<table>
-<thead>
-<tr>
-<th><strong>命令</strong></th>
-<th><strong>简要说明</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>git count-objects</td>
-<td>显示松散对象的数量和磁盘占用</td>
-</tr>
-<tr>
-<td>git filter-branch</td>
-<td>版本库重构</td>
-</tr>
-<tr>
-<td>git fsck</td>
-<td>对象库完整性检查</td>
-</tr>
-<tr>
-<td>git fsck-objects*</td>
-<td>同义词，等同于 git fsck</td>
-</tr>
-<tr>
-<td>git gc</td>
-<td>版本库存储优化</td>
-</tr>
-<tr>
-<td>git index-pack</td>
-<td>从打包文件创建对应的索引文件</td>
-</tr>
-<tr>
-<td>git lost-found*</td>
-<td>过时，请使用 git fsck –lost-found 命令</td>
-</tr>
-<tr>
-<td>git pack-objects</td>
-<td>从标准输入读入对象ID，打包到文件</td>
-</tr>
-<tr>
-<td>git pack-redundant</td>
-<td>查找多余的 pack 文件</td>
-</tr>
-<tr>
-<td>git pack-refs</td>
-<td>将引用打包到 .git/packed-refs 文件中</td>
-</tr>
-<tr>
-<td>git prune</td>
-<td>从对象库删除过期对象</td>
-</tr>
-<tr>
-<td>git prune-packed</td>
-<td>将已经打包的松散对象删除</td>
-</tr>
-<tr>
-<td>git relink</td>
-<td>为本地版本库中相同的对象建立硬连接</td>
-</tr>
-<tr>
-<td>git repack</td>
-<td>将版本库未打包的松散对象打包</td>
-</tr>
-<tr>
-<td>git show-index</td>
-<td>读取包的索引文件，显示打包文件中的内容</td>
-</tr>
-<tr>
-<td>git unpack-objects</td>
-<td>从打包文件释放文件</td>
-</tr>
-<tr>
-<td>git verify-pack</td>
-<td>校验对象库打包文件</td>
-</tr>
-</tbody>
-</table>
-<p>5、数据传输相关命令</p>
-<table>
-<thead>
-<tr>
-<th><strong>命令</strong></th>
-<th><strong>简要说明</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>git fetch-pack</td>
-<td>执行 git fetch 或 git pull 命令时在本地执行此命令，用于从其他版本库获取缺失的对象</td>
-</tr>
-<tr>
-<td>git receive-pack</td>
-<td>执行 git push 命令时在远程执行的命令，用于接受推送的数据</td>
-</tr>
-<tr>
-<td>git send-pack</td>
-<td>执行 git push 命令时在本地执行的命令，用于向其他版本库推送数据</td>
-</tr>
-<tr>
-<td>git upload-archive</td>
-<td>执行 git archive –remote 命令基于远程版本库创建归档时，远程版本库执行此命令传送归档</td>
-</tr>
-<tr>
-<td>git upload-pack</td>
-<td>执行 git fetch 或 git pull 命令时在远程执行此命令，将对象打包、上传</td>
-</tr>
-</tbody>
-</table>
-<p>6、邮件相关命令</p>
-<table>
-<thead>
-<tr>
-<th><strong>命令</strong></th>
-<th><strong>简要说明</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>git imap-send</td>
-<td>将补丁通过 IMAP 发送</td>
-</tr>
-<tr>
-<td>git mailinfo</td>
-<td>从邮件导出提交说明和补丁</td>
-</tr>
-<tr>
-<td>git mailsplit</td>
-<td>将 mbox 或 Maildir 格式邮箱中邮件逐一提取为文件</td>
-</tr>
-<tr>
-<td>git request-pull</td>
-<td>创建包含提交间差异和执行PULL操作地址的信息</td>
-</tr>
-<tr>
-<td>git send-email</td>
-<td>发送邮件</td>
-</tr>
-</tbody>
-</table>
-<p>7、协议相关命令</p>
-<table>
-<thead>
-<tr>
-<th><strong>命令</strong></th>
-<th><strong>简要说明</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>git daemon</td>
-<td>实现Git协议</td>
-</tr>
-<tr>
-<td>git http-backend</td>
-<td>实现HTTP协议的CGI程序，支持智能HTTP协议</td>
-</tr>
-<tr>
-<td>git instaweb</td>
-<td>即时启动浏览器通过 gitweb 浏览当前版本库</td>
-</tr>
-<tr>
-<td>git shell</td>
-<td>受限制的shell，提供仅执行Git命令的SSH访问</td>
-</tr>
-<tr>
-<td>git update-server-info</td>
-<td>更新哑协议需要的辅助文件</td>
-</tr>
-<tr>
-<td>git http-fetch</td>
-<td>通过HTTP协议获取版本库</td>
-</tr>
-<tr>
-<td>git http-push</td>
-<td>通过HTTP/DAV协议推送</td>
-</tr>
-<tr>
-<td>git remote-ext</td>
-<td>由Git命令调用，通过外部命令提供扩展协议支持</td>
-</tr>
-<tr>
-<td>git remote-fd</td>
-<td>由Git命令调用，使用文件描述符作为协议接口</td>
-</tr>
-<tr>
-<td>git remote-ftp</td>
-<td>由Git命令调用，提供对FTP协议的支持</td>
-</tr>
-<tr>
-<td>git remote-ftps</td>
-<td>由Git命令调用，提供对FTPS协议的支持</td>
-</tr>
-<tr>
-<td>git remote-http</td>
-<td>由Git命令调用，提供对HTTP协议的支持</td>
-</tr>
-<tr>
-<td>git remote-https</td>
-<td>由Git命令调用，提供对HTTPS协议的支持</td>
-</tr>
-<tr>
-<td>git remote-testgit</td>
-<td>协议扩展示例脚本</td>
-</tr>
-</tbody>
-</table>
-<p>8、版本库转换和交互相关命令</p>
-<table>
-<thead>
-<tr>
-<th><strong>命令</strong></th>
-<th><strong>简要说明</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>git archimport</td>
-<td>导入Arch版本库到Git</td>
-</tr>
-<tr>
-<td>git bundle</td>
-<td>提交打包和解包，以便在不同版本库间传递</td>
-</tr>
-<tr>
-<td>git cvsexportcommit</td>
-<td>将Git的一个提交作为一个CVS检出</td>
-</tr>
-<tr>
-<td>git cvsimport</td>
-<td>导入CVS版本库到Git。或者使用 cvs2git</td>
-</tr>
-<tr>
-<td>git cvsserver</td>
-<td>Git的CVS协议模拟器，可供CVS命令访问Git版本库</td>
-</tr>
-<tr>
-<td>git fast-export</td>
-<td>将提交导出为 git-fast-import 格式</td>
-</tr>
-<tr>
-<td>git fast-import</td>
-<td>其他版本库迁移至Git的通用工具</td>
-</tr>
-<tr>
-<td>git svn</td>
-<td>Git 作为前端操作 Subversion</td>
-</tr>
-</tbody>
-</table>
-<p>9、合并相关的辅助命令</p>
-<table>
-<thead>
-<tr>
-<th><strong>命令</strong></th>
-<th><strong>简要说明</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>git merge-base</td>
-<td>供其他脚本调用，找到两个或多个提交最近的共同祖先</td>
-</tr>
-<tr>
-<td>git merge-file</td>
-<td>针对文件的两个不同版本执行三向文件合并</td>
-</tr>
-<tr>
-<td>git merge-index</td>
-<td>对index中的冲突文件调用指定的冲突解决工具</td>
-</tr>
-<tr>
-<td>git merge-octopus</td>
-<td>合并两个以上分支。参见 git merge 的octopus合并策略</td>
-</tr>
-<tr>
-<td>git merge-one-file</td>
-<td>由 git merge-index 调用的标准辅助程序</td>
-</tr>
-<tr>
-<td>git merge-ours</td>
-<td>合并使用本地版本，抛弃他人版本。参见 git merge 的ours合并策略</td>
-</tr>
-<tr>
-<td>git merge-recursive</td>
-<td>针对两个分支的三向合并。参见 git merge 的recursive合并策略</td>
-</tr>
-<tr>
-<td>git merge-resolve</td>
-<td>针对两个分支的三向合并。参见 git merge 的resolve合并策略</td>
-</tr>
-<tr>
-<td>git merge-subtree</td>
-<td>子树合并。参见 git merge 的 subtree 合并策略</td>
-</tr>
-<tr>
-<td>git merge-tree</td>
-<td>显式三向合并结果，不改变暂存区</td>
-</tr>
-<tr>
-<td>git fmt-merge-msg</td>
-<td>供执行合并操作的脚本调用，用于创建一个合并提交说明</td>
-</tr>
-<tr>
-<td>git rerere</td>
-<td>重用所记录的冲突解决方案</td>
-</tr>
-</tbody>
-</table>
-<p>10、 杂项</p>
-<table>
-<thead>
-<tr>
-<th><strong>命令</strong></th>
-<th><strong>简要说明</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>git bisect–helper</td>
-<td>由 git bisect 命令调用，确认二分查找进度</td>
-</tr>
-<tr>
-<td>git check-attr</td>
-<td>显示某个文件是否设置了某个属性</td>
-</tr>
-<tr>
-<td>git checkout-index</td>
-<td>从暂存区拷贝文件至工作区</td>
-</tr>
-<tr>
-<td>git cherry</td>
-<td>查找没有合并到上游的提交</td>
-</tr>
-<tr>
-<td>git diff-files</td>
-<td>比较暂存区和工作区，相当于 git diff –raw</td>
-</tr>
-<tr>
-<td>git diff-index</td>
-<td>比较暂存区和版本库，相当于 git diff –cached –raw</td>
-</tr>
-<tr>
-<td>git diff-tree</td>
-<td>比较两个树对象，相当于 git diff –raw A B</td>
-</tr>
-<tr>
-<td>git difftool–helper</td>
-<td>由 git difftool 命令调用，默认要使用的差异比较工具</td>
-</tr>
-<tr>
-<td>git get-tar-commit-id</td>
-<td>从 git archive 创建的 tar 包中提取提交ID</td>
-</tr>
-<tr>
-<td>git gui–askpass</td>
-<td>命令 git gui 的获取用户口令输入界面</td>
-</tr>
-<tr>
-<td>git notes</td>
-<td>提交评论管理</td>
-</tr>
-<tr>
-<td>git patch-id</td>
-<td>补丁过滤行号和空白字符后生成补丁唯一ID</td>
-</tr>
-<tr>
-<td>git quiltimport</td>
-<td>将Quilt补丁列表应用到当前分支</td>
-</tr>
-<tr>
-<td>git replace</td>
-<td>提交替换</td>
-</tr>
-<tr>
-<td>git shortlog</td>
-<td>对 git log 的汇总输出，适合于产品发布说明</td>
-</tr>
-<tr>
-<td>git stripspace</td>
-<td>删除空行，供其他脚本调用</td>
-</tr>
-<tr>
-<td>git submodule</td>
-<td>子模组管理</td>
-</tr>
-<tr>
-<td>git tar-tree</td>
-<td>过时命令，请使用 git archive</td>
-</tr>
-<tr>
-<td>git var</td>
-<td>显示 Git 环境变量</td>
-</tr>
-<tr>
-<td>git web–browse</td>
-<td>启动浏览器以查看目录或文件</td>
-</tr>
-<tr>
-<td>git whatchanged</td>
-<td>显示提交历史及每次提交的改动</td>
-</tr>
-<tr>
-<td>git-mergetool–lib</td>
-<td>包含于其他脚本中，提供合并/差异比较工具的选择和执行</td>
-</tr>
-<tr>
-<td>git-parse-remote</td>
-<td>包含于其他脚本中，提供操作远程版本库的函数</td>
-</tr>
-<tr>
-<td>git-sh-setup</td>
-<td>包含于其他脚本中，提供 shell 编程的函数库</td>
-</tr>
-</tbody>
-</table>
-<p>下面脚本之家小编特为大家分享一个图片版的</p>
-<p>Git 常用命令速查表。点击查看大图。</p>
-<p><a href="http://files.jb51.net/file_images/article/201409/git_big_jb51.jpg" target="_blank" rel="noopener"><img src="qq://txfile/MyCollectionImagePath:4BE4A462-13A8-43B2-ABA9-4D288FFDECD0" alt="img"></a></p>
-<p>Git命令参考手册(文本版)</p>
-<p>git init                                                  # 初始化本地git仓库（创建新仓库）<br>git config –global user.name “xxx”                       # 配置用户名<br>git config –global user.email “<a href="mailto:xxx@xxx.com" target="_blank" rel="noopener">xxx@xxx.com</a>“              # 配置邮件<br>git config –global color.ui true                         # git status等命令自动着色<br>git config –global color.status auto<br>git config –global color.diff auto<br>git config –global color.branch auto<br>git config –global color.interactive auto<br>git clone git+ssh:<a href="mailto://git@192.168.53.168" target="_blank" rel="noopener">//git@192.168.53.168</a>/VT.git             # clone远程仓库<br>git status                                                # 查看当前版本状态（是否修改）<br>git add xyz                                               # 添加xyz文件至index<br>git add .                                                 # 增加当前子目录下所有更改过的文件至index<br>git commit -m ‘xxx’                                       # 提交<br>git commit –amend -m ‘xxx’                               # 合并上一次提交（用于反复修改）<br>git commit -am ‘xxx’                                      # 将add和commit合为一步<br>git rm xxx                                                # 删除index中的文件<br>git rm -r *                                               # 递归删除<br>git log                                                   # 显示提交日志<br>git log -1                                                # 显示1行日志 -n为n行<br>git log -5<br>git log –stat                                            # 显示提交日志及相关变动文件<br>git log -p -m<br>git show dfb02e6e4f2f7b573337763e5c0013802e392818         # 显示某个提交的详细内容<br>git show dfb02                                            # 可只用commitid的前几位<br>git show HEAD                                             # 显示HEAD提交日志<br>git show HEAD^                                            # 显示HEAD的父（上一个版本）的提交日志 ^^为上两个版本 ^5为上5个版本<br>git tag                                                   # 显示已存在的tag<br>git tag -a v2.0 -m ‘xxx’                                  # 增加v2.0的tag<br>git show v2.0                                             # 显示v2.0的日志及详细内容<br>git log v2.0                                              # 显示v2.0的日志<br>git diff                                                  # 显示所有未添加至index的变更<br>git diff –cached                                         # 显示所有已添加index但还未commit的变更<br>git diff HEAD^                                            # 比较与上一个版本的差异<br>git diff HEAD – ./lib                                    # 比较与HEAD版本lib目录的差异<br>git diff origin/master..master                            # 比较远程分支master上有本地分支master上没有的<br>git diff origin/master..master –stat                     # 只显示差异的文件，不显示具体内容<br>git remote add origin git+ssh:<a href="mailto://git@192.168.53.168" target="_blank" rel="noopener">//git@192.168.53.168</a>/VT.git # 增加远程定义（用于push/pull/fetch）<br>git branch                                                # 显示本地分支<br>git branch –contains 50089                               # 显示包含提交50089的分支<br>git branch -a                                             # 显示所有分支<br>git branch -r                                             # 显示所有原创分支<br>git branch –merged                                       # 显示所有已合并到当前分支的分支<br>git branch –no-merged                                    # 显示所有未合并到当前分支的分支<br>git branch -m master master_copy                          # 本地分支改名<br>git checkout -b master_copy                               # 从当前分支创建新分支master_copy并检出<br>git checkout -b master master_copy                        # 上面的完整版<br>git checkout features/performance                         # 检出已存在的features/performance分支<br>git checkout –track hotfixes/BJVEP933                    # 检出远程分支hotfixes/BJVEP933并创建本地跟踪分支<br>git checkout v2.0                                         # 检出版本v2.0<br>git checkout -b devel origin/develop                      # 从远程分支develop创建新本地分支devel并检出<br>git checkout – README                                    # 检出head版本的README文件（可用于修改错误回退）<br>git merge origin/master                                   # 合并远程master分支至当前分支<br>git cherry-pick ff44785404a8e                             # 合并提交ff44785404a8e的修改<br>git push origin master                                    # 将当前分支push到远程master分支<br>git push origin :hotfixes/BJVEP933                        # 删除远程仓库的hotfixes/BJVEP933分支<br>git push –tags                                           # 把所有tag推送到远程仓库<br>git fetch                                                 # 获取所有远程分支（不更新本地分支，另需merge）<br>git fetch –prune                                         # 获取所有原创分支并清除服务器上已删掉的分支<br>git pull origin master                                    # 获取远程分支master并merge到当前分支<br>git mv README README2                                     # 重命名文件README为README2<br>git reset –hard HEAD                                     # 将当前版本重置为HEAD（通常用于merge失败回退）<br>git rebase<br>git branch -d hotfixes/BJVEP933                           # 删除分支hotfixes/BJVEP933（本分支修改已合并到其他分支）<br>git branch -D hotfixes/BJVEP933                           # 强制删除分支hotfixes/BJVEP933<br>git ls-files                                              # 列出git index包含的文件<br>git show-branch                                           # 图示当前分支历史<br>git show-branch –all                                     # 图示所有分支历史<br>git whatchanged                                           # 显示提交历史对应的文件修改<br>git revert dfb02e6e4f2f7b573337763e5c0013802e392818       # 撤销提交dfb02e6e4f2f7b573337763e5c0013802e392818<br>git ls-tree HEAD                                          # 内部命令：显示某个git对象<br>git rev-parse v2.0                                        # 内部命令：显示某个ref对于的SHA1 HASH<br>git reflog                                                # 显示所有提交，包括孤立节点<br>git show HEAD@{5}<br>git show master@{yesterday}                               # 显示master分支昨天的状态<br>git log –pretty=format:’%h %s’ –graph                   # 图示提交日志<br>git show HEAD~3<br>git show -s –pretty=raw 2be7fcb476<br>git stash                                                 # 暂存当前修改，将所有至为HEAD状态<br>git stash list                                            # 查看所有暂存<br>git stash show -p stash@{0}                               # 参考第一次暂存<br>git stash apply stash@{0}                                 # 应用第一次暂存<br>git grep “delete from”                                    # 文件中搜索文本“delete from”<br>git grep -e ‘#define’ –and -e SORT_DIRENT<br>git gc<br>git fsck</p>
+<p><strong>考点分析</strong></p>
+<p>这是一个非常经典的 Java 基础问题，我上面的回答主要是从语法和使用实践角度出发的，其实还有很多方面可以深入探讨，面试官还可以考察你对性能、并发、对象生命周期或垃圾收集基本过程等方面的理解。</p>
+<p>推荐使用 final 关键字来明确表示我们代码的语义、逻辑意图，这已经被证明在很多场景下是非常好的实践，比如：</p>
+<p>1.我们可以将方法或者类声明为 final，这样就可以明确告知别人，这些行为是不许修改的。</p>
+<p>如果你关注过 Java 核心类库的定义或源码， 有没有发现 java.lang 包下面的很多类，相当一部分都被声明成为 final class？在第三方类库的一些基础类中同样如此，这可以有效避免 API 使用者更改基础功能，某种程度上，这是保证平台安全的必要手段。</p>
+<p>2.使用 final 修饰参数或者变量，也可以清楚地避免意外赋值导致的编程错误，甚至，有人明确推荐将所有方法参数、本地变量、成员变量声明成 final。</p>
+<p>3.final 变量产生了某种程度的不可变（immutable）的效果，所以，可以用于保护只读数据，尤其是在并发编程中，因为明确地不能再赋值 final 变量，有利于减少额外的同步开销，也可以省去一些防御性拷贝的必要。</p>
+<p>final 也许会有性能的好处，很多文章或者书籍中都介绍了可在特定场景提高性能，比如，利用 final 可能有助于 JVM 将方法进行内联，可以改善编译器进行条件编译的能力等等。坦白说，很多类似的结论都是基于假设得出的，比如现代高性能 JVM（如 HotSpot）判断内联未必依赖 final 的提示，要相信 JVM 还是非常智能的。类似的，final 字段对性能的影响，大部分情况下，并没有考虑的必要。</p>
+<p>从开发实践的角度，我不想过度强调这一点，这是和 JVM 的实现很相关的，未经验证比较难以把握。我的建议是，在日常开发中，除非有特别考虑，不然最好不要指望这种小技巧带来的所谓性能好处，程序最好是体现它的语义目的。如果你确实对这方面有兴趣，可以查阅相关资料，我就不再赘述了，不过千万别忘了验证一下。</p>
+<p>对于 finally，明确知道怎么使用就足够了。需要关闭的连接等资源，更推荐使用 Java 7 中添加的 try-with-resources 语句，因为通常 Java 平台能够更好地处理异常情况，编码量也要少很多，何乐而不为呢。</p>
+<p>另外，我注意到有一些常被考到的 finally 问题（也比较偏门），至少需要了解一下。比如，下面代码会输出什么？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">try &#123;</span><br><span class="line">  // do something</span><br><span class="line">  System.exit(1);</span><br><span class="line">&#125; finally&#123;</span><br><span class="line">  System.out.println(“Print from finally”);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面 finally 里面的代码可不会被执行的哦，这是一个特例。</p>
+<p>对于 finalize，我们要明确它是不推荐使用的，业界实践一再证明它不是个好的办法，在 Java 9 中，甚至明确将 Object.finalize() 标记为 deprecated！如果没有特别的原因，不要实现 finalize 方法，也不要指望利用它来进行资源回收。</p>
+<p>为什么呢？简单说，你无法保证 finalize 什么时候执行，执行的是否符合预期。使用不当会影响性能，导致程序死锁、挂起等。</p>
+<p>通常来说，利用上面的提到的 try-with-resources 或者 try-finally 机制，是非常好的回收资源的办法。如果确实需要额外处理，可以考虑 Java 提供的 Cleaner 机制或者其他替代方法。接下来，我来介绍更多设计考虑和实践细节。</p>
+<p><strong>知识扩展</strong></p>
+<ol>
+<li>注意，final 不是 immutable！</li>
+</ol>
+<p>我在前面介绍了 final 在实践中的益处，需要注意的是，<strong>final 并不等同于 immutable</strong>，比如下面这段代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">final List&lt;String&gt; strList = new ArrayList&lt;&gt;();</span><br><span class="line">strList.add(&quot;Hello&quot;);</span><br><span class="line">strList.add(&quot;world&quot;);  </span><br><span class="line">List&lt;String&gt; unmodifiableStrList = List.of(&quot;hello&quot;, &quot;world&quot;);</span><br><span class="line">unmodifiableStrList.add(&quot;again&quot;);</span><br></pre></td></tr></table></figure>
+<p>final 只能约束 strList 这个引用不可以被赋值，但是 strList 对象行为不被 final 影响，添加元素等操作是完全正常的。如果我们真的希望对象本身是不可变的，那么需要相应的类支持不可变的行为。在上面这个例子中，<a href="http://openjdk.java.net/jeps/269" target="_blank" rel="noopener">List.of 方法</a>创建的本身就是不可变 List，最后那句 add 是会在运行时抛出异常的。</p>
+<p>Immutable 在很多场景是非常棒的选择，某种意义上说，Java 语言目前并没有原生的不可变支持，如果要实现 immutable 的类，我们需要做到：</p>
+<p>1.将 class 自身声明为 final，这样别人就不能扩展来绕过限制了。<br>2.将所有成员变量定义为 private 和 final，并且不要实现 setter 方法。<br>3.通常构造对象时，成员变量使用深度拷贝来初始化，而不是直接赋值，这是一种防御措施，因为你无法确定输入对象不被其他人修改。<br>4.如果确实需要实现 getter 方法，或者其他可能会返回内部状态的方法，使用 copy-on-write 原则，创建私有的 copy。</p>
+<p>这些原则是不是在并发编程实践中经常被提到？的确如此。</p>
+<p>关于 setter/getter 方法，很多人喜欢直接用 IDE 一次全部生成，建议最好是你确定有需要时再实现。</p>
+<p>2.finalize 真的那么不堪？</p>
+<p>finalize 的执行是和垃圾收集关联在一起的，一旦实现了非空的 finalize 方法，就会导致相应对象回收呈现数量级上的变慢，有人专门做过 benchmark，大概是 40~50 倍的下降。</p>
+<p>因为，finalize 被设计成在对象<strong>被垃圾收集前</strong>调用，这就意味着实现了 finalize 方法的对象是个“特殊公民”，JVM 要对它进行额外处理。finalize 本质上成为了快速回收的阻碍者，可能导致你的对象经过多个垃圾收集周期才能被回收。</p>
+<p>有人也许会问，我用 System.runFinalization() 告诉 JVM 积极一点，是不是就可以了？也许有点用，但是问题在于，这还是不可预测、不能保证的，所以本质上还是不能指望。实践中，因为 finalize 拖慢垃圾收集，导致大量对象堆积，也是一种典型的导致 OOM 的原因。</p>
+<p>从另一个角度，我们要确保回收资源就是因为资源都是有限的，垃圾收集时间的不可预测，可能会极大加剧资源占用。这意味着对于消耗非常高频的资源，千万不要指望 finalize 去承担资源释放的主要职责，最多让 finalize 作为最后的“守门员”，况且它已经暴露了如此多的问题。这也是为什么我推荐，<strong>资源用完即显式释放，或者利用资源池来尽量重用</strong>。</p>
+<p>finalize 还会掩盖资源回收时的出错信息，我们看下面一段 JDK 的源代码，截取自 java.lang.ref.Finalizer</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">private void runFinalizer(JavaLangAccess jla) &#123;</span><br><span class="line">//  ... 省略部分代码</span><br><span class="line">try &#123;</span><br><span class="line">   Object finalizee = this.get(); </span><br><span class="line">   if (finalizee != null &amp;&amp; !(finalizee instanceof java.lang.Enum)) &#123;</span><br><span class="line">      jla.invokeFinalize(finalizee);</span><br><span class="line">      // Clear stack slot containing this variable, to decrease</span><br><span class="line">      // the chances of false retention with a conservative GC</span><br><span class="line">      finalizee = null;</span><br><span class="line">   &#125;</span><br><span class="line"> &#125; catch (Throwable x) &#123; &#125;</span><br><span class="line">   super.clear(); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结合我上期专栏介绍的异常处理实践，你认为这段代码会导致什么问题？</p>
+<p>是的，你没有看错，这里的<strong>Throwable 是被生吞了的！</strong>也就意味着一旦出现异常或者出错，你得不到任何有效信息。况且，Java 在 finalize 阶段也没有好的方式处理任何信息，不然更加不可预测。</p>
+<p>3.有什么机制可以替换 finalize 吗？</p>
+<p>Java 平台目前在逐步使用 java.lang.ref.Cleaner 来替换掉原有的 finalize 实现。Cleaner 的实现利用了幻象引用（PhantomReference），这是一种常见的所谓 post-mortem 清理机制。我会在后面的专栏系统介绍 Java 的各种引用，利用幻象引用和引用队列，我们可以保证对象被彻底销毁前做一些类似资源回收的工作，比如关闭文件描述符（操作系统有限的资源），它比 finalize 更加轻量、更加可靠。</p>
+<p>吸取了 finalize 里的教训，每个 Cleaner 的操作都是独立的，它有自己的运行线程，所以可以避免意外死锁等问题。</p>
+<p>实践中，我们可以为自己的模块构建一个 Cleaner，然后实现相应的清理逻辑。下面是 JDK 自身提供的样例程序：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">public class CleaningExample implements AutoCloseable &#123;</span><br><span class="line">        // A cleaner, preferably one shared within a library</span><br><span class="line">        private static final Cleaner cleaner = &lt;cleaner&gt;;</span><br><span class="line">        static class State implements Runnable &#123; </span><br><span class="line">            State(...) &#123;</span><br><span class="line">                // initialize State needed for cleaning action</span><br><span class="line">            &#125;</span><br><span class="line">            public void run() &#123;</span><br><span class="line">                // cleanup action accessing State, executed at most once</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        private final State;</span><br><span class="line">        private final Cleaner.Cleanable cleanable</span><br><span class="line">        public CleaningExample() &#123;</span><br><span class="line">            this.state = new State(...);</span><br><span class="line">            this.cleanable = cleaner.register(this, state);</span><br><span class="line">        &#125;</span><br><span class="line">        public void close() &#123;</span><br><span class="line">            cleanable.clean();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>注意，从可预测性的角度来判断，Cleaner 或者幻象引用改善的程度仍然是有限的，如果由于种种原因导致幻象引用堆积，同样会出现问题。所以，Cleaner 适合作为一种最后的保证手段，而不是完全依赖 Cleaner 进行资源回收，不然我们就要再做一遍 finalize 的噩梦了。</p>
+<p>我也注意到很多第三方库自己直接利用幻象引用定制资源收集，比如广泛使用的 MySQL JDBC driver 之一的 mysql-connector-j，就利用了幻象引用机制。幻象引用也可以进行类似链条式依赖关系的动作，比如，进行总量控制的场景，保证只有连接被关闭，相应资源被回收，连接池才能创建新的连接。</p>
+<p>另外，这种代码如果稍有不慎添加了对资源的强引用关系，就会导致循环引用关系，前面提到的 MySQL JDBC 就在特定模式下有这种问题，导致内存泄漏。上面的示例代码中，将 State 定义为 static，就是为了避免普通的内部类隐含着对外部对象的强引用，因为那样会使外部对象无法进入幻象可达的状态。</p>
 
       
 
@@ -993,7 +306,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2018/10/26/test/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/04/25/第3讲-谈谈final、finally、 finalize有什么不同？/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -1007,18 +320,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/02/27/JAVA8-让代码更优雅之List排序/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          JAVA8-让代码更优雅之List排序
-        
-      </div>
-    </a>
   
-  
-    <a href="/2018/10/26/测试/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">测试</div>
+    <a href="/2019/04/25/第2讲-Exception和Error有什么区别？/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">第2讲-Exception和Error有什么区别？</div>
       <i class="icon-circle-right"></i>
     </a>
   

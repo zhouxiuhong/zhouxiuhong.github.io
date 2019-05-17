@@ -46,7 +46,7 @@
 			<img src="" class="js-avatar">
 		</a>
 		<hgroup>
-		  <h1 class="header-author"><a href="/">John Doe</a></h1>
+		  <h1 class="header-author"><a href="/">ZHOU</a></h1>
 		</hgroup>
 		
 
@@ -104,7 +104,7 @@
 				<img src="" class="js-avatar">
 			</div>
 			<hgroup>
-			  <h1 class="header-author js-header-author">John Doe</h1>
+			  <h1 class="header-author js-header-author">ZHOU</h1>
 			</hgroup>
 			
 			
@@ -152,6 +152,285 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-第3讲-谈谈final、finally、 finalize有什么不同？" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/25/第3讲-谈谈final、finally、 finalize有什么不同？/">第3讲-谈谈final、finally、 finalize有什么不同？</a>
+    </h1>
+  
+
+        
+        <a href="/2019/04/25/第3讲-谈谈final、finally、 finalize有什么不同？/" class="archive-article-date">
+  	<time datetime="2019-04-25T07:06:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-25</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="第3讲-谈谈final、finally、-finalize有什么不同？"><a href="#第3讲-谈谈final、finally、-finalize有什么不同？" class="headerlink" title="第3讲-谈谈final、finally、 finalize有什么不同？"></a>第3讲-谈谈final、finally、 finalize有什么不同？</h1><p>杨晓峰 2018-05-05</p>
+<p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/6845" target="_blank" rel="noopener">https://time.geekbang.org/column/article/6845</a></p>
+<p><strong>谈谈 final、finally、 finalize 有什么不同？</strong></p>
+<p><strong>典型回答</strong></p>
+<p>final可以用来修饰类、方法、变量，分别有不同的意义，final修饰的class代表不可以继承扩展，final的变量是不可以修改的，而final的方法是不可以重写的（override）。</p>
+<p>finally则是java保证重点代码一定要被执行的一种机制。我们可以使用try-finally或者try-catch-finally来进行类似关闭JDBC连接、保证unlock锁动作。</p>
+<p>finalize 是基础类 java.lang.Object 的一个方法，它的设计目的是保证对象在被垃圾收集前完成特定资源的回收。finalize 机制现在已经不推荐使用，并且在 JDK 9 开始被标记为 deprecated。</p>
+        
+          <a class="article-more-a" href="/2019/04/25/第3讲-谈谈final、finally、 finalize有什么不同？/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/04/25/第3讲-谈谈final、finally、 finalize有什么不同？/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-第2讲-Exception和Error有什么区别？" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/25/第2讲-Exception和Error有什么区别？/">第2讲-Exception和Error有什么区别？</a>
+    </h1>
+  
+
+        
+        <a href="/2019/04/25/第2讲-Exception和Error有什么区别？/" class="archive-article-date">
+  	<time datetime="2019-04-25T06:15:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-25</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="第2讲-Exception和Error有什么区别？"><a href="#第2讲-Exception和Error有什么区别？" class="headerlink" title="第2讲-Exception和Error有什么区别？"></a>第2讲-Exception和Error有什么区别？</h1><p>杨晓峰 2018-05-05</p>
+<p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/6845" target="_blank" rel="noopener">https://time.geekbang.org/column/article/6845</a></p>
+<p><strong>请对比Exception和Error，另外，运行时异常与一般异常有什么区别？</strong></p>
+<p><strong>典型回答</strong></p>
+<p>Exception和Error都是继承了Throwable类，在java中只有Throwable类型的实例才可以被抛出（throw）或者捕获（catch），它是异常处理机制的基本组成类型。</p>
+<p>Exception和Error体现了java平台设计者对不同异常情况的分类。Exception是程序正常运行中，可以预料的意外情况，可能并且应该被捕获，进行相应处理。</p>
+<p>Error是指在正常情况下，不大可能出现的情况，绝大部分的Error都会导致程序（比如JVM自身）处于非正常的、不可恢复状态。既然是非正常情况，所以不便于也不需要捕获。常见的比如OutOfMemoryError之类，都是Error的子类。</p>
+<p>Exception又分为<strong>可检查</strong>（checked）异常和<strong>不检查</strong>（unchecked）异常，可检查异常在源代码里必须显式地进行捕获处理，这是编译期检查的一部分。前面介绍的不检查的Error，是Throwable不是Exception。</p>
+<p>不检查异常就是所谓的运行时异常，类似NullPointerException、ArrayIndexOutOfBoundsException之类，通常是可以编码避免的逻辑错误，具体跟进需要来判断是否需要捕获，并不会在编译期强制要求。</p>
+        
+          <a class="article-more-a" href="/2019/04/25/第2讲-Exception和Error有什么区别？/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/04/25/第2讲-Exception和Error有什么区别？/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-第1讲-谈谈你对Java平台的理解？" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/24/第1讲-谈谈你对Java平台的理解？/">第1讲 | 谈谈你对Java平台的理解？</a>
+    </h1>
+  
+
+        
+        <a href="/2019/04/24/第1讲-谈谈你对Java平台的理解？/" class="archive-article-date">
+  	<time datetime="2019-04-24T06:15:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="第1讲-谈谈你对Java平台的理解？"><a href="#第1讲-谈谈你对Java平台的理解？" class="headerlink" title="第1讲 | 谈谈你对Java平台的理解？"></a>第1讲 | 谈谈你对Java平台的理解？</h1><p>杨晓峰 2018-05-05</p>
+<p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/6845" target="_blank" rel="noopener">https://time.geekbang.org/column/article/6845</a></p>
+<p><strong>谈谈你对java平台的理解？ “java是解释执行”，这句话正确吗？</strong></p>
+<p><strong>典型回答</strong></p>
+<p>java本身是一种面向对象的语言，最显著的特性有两个方面，一是所谓的“<strong>书写一次，到处运行</strong>”（write once， run anywhere），能够非常容易地获得跨平台能力；另外就是<strong>垃圾收集</strong>（GC， Garbage Collection），java通过垃圾收集器回收分配内存，大部分情况下，程序员不需要自己操心内存的分配和回收。</p>
+<p>我们日常会接触到JRE（Java Runtime Environment）或者JDK（Java Development Kit）。JRE也就是java运行环境，包含了JVM和Java类库，以及一些模块等。而JDK可以看作是JRE的一个超集，提供了更多工具，比如编译器、各种诊断工具等。</p>
+<p>对于“Java是解释执行”这句话，这个说法不太准确。我们开发的java的源代码，首先通过javac编译成为字节码（bytecode），然后，在运行时，通过Java虚拟机（JVM）内嵌的解释器将字节码转换成为最终的机器码。但是常见的JVM，比如我们大多数情况使用的Oracle JDK提供的Hotspot JVM，都提供了JIT（Just In Time）编译器，也就是通常所说的动态编译器，JIT能够在运行时将热点代码编译成机器码，这种情况下部分热点代码也就属于<strong>编译执行</strong>,而不是解释执行了。</p>
+        
+          <a class="article-more-a" href="/2019/04/24/第1讲-谈谈你对Java平台的理解？/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/04/24/第1讲-谈谈你对Java平台的理解？/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-JAVA8-让代码更优雅之List排序" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/02/27/JAVA8-让代码更优雅之List排序/">JAVA8-让代码更优雅之List排序</a>
+    </h1>
+  
+
+        
+        <a href="/2019/02/27/JAVA8-让代码更优雅之List排序/" class="archive-article-date">
+  	<time datetime="2019-02-27T06:31:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-02-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">Collections.sort(list, Comparator.comparing(object :: getId));</span><br><span class="line"></span><br><span class="line">先定义一个实体类</span><br><span class="line">@Data</span><br><span class="line">@AllArgsConstructor</span><br><span class="line">@NoArgsConstructor</span><br><span class="line">public class Human &#123;</span><br><span class="line"></span><br><span class="line">private String name;</span><br><span class="line">private int age;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">下面的操作都基于这个类来进行操作。这里面使用了Lombok类库，它用注解的方式实现了基本的get和set等方法，让代码看起来更加的优雅。</span><br><span class="line">JAVA8之前的List排序操作</span><br><span class="line">在Java8之前，对集合排序只能创建一个匿名内部类</span><br><span class="line">new Comparator&lt;Human&gt;() &#123;</span><br><span class="line">@Override</span><br><span class="line">public int compare(Human h1, Human h2) &#123;</span><br><span class="line">return h1.getName().compareTo(h2.getName());</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">下面是简单的对Humans进行排序（按名称正序）</span><br><span class="line">@Test</span><br><span class="line">public void testSortByName_with_plain_java() throws Exception &#123;</span><br><span class="line"></span><br><span class="line">ArrayList&lt;Human&gt; humans = Lists.newArrayList(</span><br><span class="line">new Human(&quot;tomy&quot;, 22),</span><br><span class="line">new Human(&quot;li&quot;, 25)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">Collections.sort(humans, new Comparator&lt;Human&gt;() &#123;</span><br><span class="line"></span><br><span class="line">public int compare(Human h1, Human h2) &#123;</span><br><span class="line">return h1.getName().compareTo(h2.getName());</span><br><span class="line">&#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Assert.assertThat(humans.get(0), equalTo(new Human(&quot;li&quot;, 25)));</span><br><span class="line">&#125;</span><br><span class="line">使用Lambda的List排序</span><br><span class="line">使用JAVA8函数式方式的比较器</span><br><span class="line">(Human h1, Human h2) -&gt; h1.getName().compareTo(h2.getName())</span><br><span class="line">下面是使用JAVA8函数式的比较的例子</span><br><span class="line">@Test</span><br><span class="line">public void testSortByName_with_lambda() throws Exception &#123;</span><br><span class="line"></span><br><span class="line">ArrayList&lt;Human&gt; humans = Lists.newArrayList(</span><br><span class="line">new Human(&quot;tomy&quot;, 22),</span><br><span class="line">new Human(&quot;li&quot;, 25)</span><br><span class="line">);</span><br><span class="line">humans.sort((Human h1, Human h2) -&gt; h1.getName().compareTo(h2.getName()));</span><br><span class="line"></span><br><span class="line">Assert.assertThat(&quot;tomy&quot;, equalTo(humans.get(1).getName()));</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">没有类型定义的排序</span><br><span class="line">对于上面的表达式还可以进行简化，JAVA编译器可以根据上下文推测出排序的类型：</span><br><span class="line">(h1, h2) -&gt; h1.getName().compareTo(h2.getName())</span><br><span class="line">简化后的比较器是这样的:</span><br><span class="line">@Test</span><br><span class="line">public void testSortByNameSimplify_with_lambda() throws Exception &#123;</span><br><span class="line"></span><br><span class="line">ArrayList&lt;Human&gt; humans = Lists.newArrayList(</span><br><span class="line">new Human(&quot;tomy&quot;, 22),</span><br><span class="line">new Human(&quot;li&quot;, 25)</span><br><span class="line">);</span><br><span class="line">humans.sort((h1, h2) -&gt; h1.getName().compareTo(h2.getName()));</span><br><span class="line"></span><br><span class="line">Assert.assertThat(&quot;tomy&quot;, equalTo(humans.get(1).getName()));</span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">使用静态方法引用</span><br><span class="line">JAVA8还可以提供使用Lambda表达式的静态类型引用，我们在Human类增加一个静态比较方法，如下：</span><br><span class="line">public static int compareByNameThenAge(Human h1, Human h2) &#123;</span><br><span class="line"></span><br><span class="line">if (h1.getName().equals(h2.getName())) &#123;</span><br><span class="line">return Integer.compare(h1.ge</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/02/27/JAVA8-让代码更优雅之List排序/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-test" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
@@ -159,7 +438,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/10/26/test/">test</a>
+      <a class="article-title" href="/2018/10/26/test/">GIT常用命令速查</a>
     </h1>
   
 
@@ -172,6 +451,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
+        <!--toc:true-->
+<p><strong>一、 Git 常用命令速查</strong></p>
+<p>git branch 查看本地所有分支<br>git status 查看当前状态<br>git commit 提交<br>git branch -a 查看所有的分支<br>git branch -r 查看远程所有分支<br>git commit -am “init” 提交并且加注释<br>git remote add origin <a href="mailto:git@192.168.1.119" target="_blank" rel="noopener">git@192.168.1.119</a>:ndshow<br>git push origin master 将文件给推到服务器上<br>git remote show origin 显示远程库origin里的资源<br>git push origin master:develop<br>git push origin master:hb-dev 将本地库与服务器上的库进行关联<br>git checkout –track origin/dev 切换到远程dev分支<br>git branch -D master develop 删除本地库develop<br>git checkout -b dev 建立一个新的本地分支dev<br>git merge origin/dev 将分支dev与当前分支进行合并<br>git checkout dev 切换到本地dev分支<br>git remote show 查看远程库</p>
+        
+          <a class="article-more-a" href="/2018/10/26/test/#more">more >></a>
         
       
 
@@ -234,6 +518,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
+	
         <p>测试测试测试1111111111111111111111111111</p>
 
       
@@ -297,6 +582,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
+	
         <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
 <h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
@@ -358,7 +644,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2018 John Doe
+    		&copy; 2019 ZHOU
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
