@@ -9,6 +9,7 @@
   <title>第2讲-Exception和Error有什么区别？ | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="第2讲-Exception和Error有什么区别？杨晓峰 2018-05-05 极客时间版权所有: https://time.geekbang.org/column/article/6845 请对比Exception和Error，另外，运行时异常与一般异常有什么区别？ 典型回答 Exception和Error都是继承了Throwable类，在java中只有Throwable类型的实例才可以被抛出（">
+<meta name="keywords" content="JAVA、Java核心技术36讲">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第2讲-Exception和Error有什么区别？">
 <meta property="og:url" content="http://yoursite.com/2019/04/25/第2讲-Exception和Error有什么区别？/index.html">
@@ -16,7 +17,7 @@
 <meta property="og:description" content="第2讲-Exception和Error有什么区别？杨晓峰 2018-05-05 极客时间版权所有: https://time.geekbang.org/column/article/6845 请对比Exception和Error，另外，运行时异常与一般异常有什么区别？ 典型回答 Exception和Error都是继承了Throwable类，在java中只有Throwable类型的实例才可以被抛出（">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://static001.geekbang.org/resource/image/ac/00/accba531a365e6ae39614ebfa3273900.png">
-<meta property="og:updated_time" content="2019-04-25T07:07:13.154Z">
+<meta property="og:updated_time" content="2019-07-03T05:55:13.760Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="第2讲-Exception和Error有什么区别？">
 <meta name="twitter:description" content="第2讲-Exception和Error有什么区别？杨晓峰 2018-05-05 极客时间版权所有: https://time.geekbang.org/column/article/6845 请对比Exception和Error，另外，运行时异常与一般异常有什么区别？ 典型回答 Exception和Error都是继承了Throwable类，在java中只有Throwable类型的实例才可以被抛出（">
@@ -49,7 +50,7 @@
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
-			<img src="" class="js-avatar">
+			<img src="/img/zzz.jpg" class="js-avatar">
 		</a>
 		<hgroup>
 		  <h1 class="header-author"><a href="/">ZHOU</a></h1>
@@ -107,7 +108,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img src="" class="js-avatar">
+				<img src="/img/zzz.jpg" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author js-header-author">ZHOU</h1>
@@ -177,7 +178,7 @@
     <div class="article-entry" itemprop="articleBody">
       
 	
-        <h1 id="第2讲-Exception和Error有什么区别？"><a href="#第2讲-Exception和Error有什么区别？" class="headerlink" title="第2讲-Exception和Error有什么区别？"></a>第2讲-Exception和Error有什么区别？</h1><p>杨晓峰 2018-05-05</p>
+        <h1><span id="第2讲-exception和error有什么区别">第2讲-Exception和Error有什么区别？</span></h1><p>杨晓峰 2018-05-05</p>
 <p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/6845" target="_blank" rel="noopener">https://time.geekbang.org/column/article/6845</a></p>
 <p><strong>请对比Exception和Error，另外，运行时异常与一般异常有什么区别？</strong></p>
 <p><strong>典型回答</strong></p>
@@ -233,7 +234,7 @@
 <p>当我们的服务出现反应变慢、吞吐量下降的时候，检查发生最频繁的 Exception 也是一种思路。关于诊断后台变慢的问题，我会在后面的 Java 性能基础模块中系统探讨。</p>
 <p>今天，我从一个常见的异常处理概念问题，简单总结了 Java 异常处理的机制。并结合代码，分析了一些普遍认可的最佳实践，以及业界最新的一些异常使用共识。最后，我分析了异常性能开销，希望对你有所帮助。</p>
 <p>扩展面试题：</p>
-<h4 id="常见的异常类有哪些？"><a href="#常见的异常类有哪些？" class="headerlink" title="常见的异常类有哪些？"></a>常见的异常类有哪些？</h4><ul>
+<h4><span id="常见的异常类有哪些">常见的异常类有哪些？</span></h4><ul>
 <li>NullPointerException 空指针异常</li>
 <li>ClassNotFoundException 指定类不存在</li>
 <li>NumberFormatException 字符串转换为数字异常</li>
@@ -245,6 +246,16 @@
 <li>SocketException Socket 异常</li>
 </ul>
 <p>Checked Exception 的假设是我们捕获了异常，然后恢复程序。但是，其实我们大多数情况下，根本就不可能恢复。Checked Exception 的使用，已经大大偏离了最初的设计目的。</p>
+
+
+
+<p><strong>NoClassDefFoundError与ClassNotFoundException的区别？</strong></p>
+<p>NoClassDefFoundError是一个错误（Error），而ClassNotFoundException是一个异常，在java中对于错误和异常的处理是不同的，我们可以从异常中恢复程序但却不应该尝试从错误中恢复程序。</p>
+<p>ClassNotFoundException的产生原因：</p>
+<p>java支持使用Class.forName方法来动态地加载类，任意一个类的类名如果被作为参数传递给这个方法都将导致该类被加载到JVM内存中，如果这个类在类路径中没有被找到，那么此时就会在运行时抛出ClassNotFoundException异常。</p>
+<p>ClassNotFoundException的产生原因主要是：<br>Java支持使用反射方式在运行时动态加载类，例如使用Class.forName方法来动态地加载类时，可以将类名作为参数传递给上述方法从而将指定类加载到JVM内存中，如果这个类在类路径中没有被找到，那么此时就会在运行时抛出ClassNotFoundException异常。<br>解决该问题需要确保所需的类连同它依赖的包存在于类路径中，常见问题在于类名书写错误。<br>另外还有一个导致ClassNotFoundException的原因就是：当一个类已经某个类加载器加载到内存中了，此时另一个类加载器又尝试着动态地从同一个包中加载这个类。通过控制动态类加载过程，可以避免上述情况发生。</p>
+<p>NoClassDefFoundError产生的原因在于：<br>如果JVM或者ClassLoader实例尝试加载（可以通过正常的方法调用，也可能是使用new来创建新的对象）类的时候却找不到类的定义。要查找的类在编译的时候是存在的，运行的时候却找不到了。这个时候就会导致NoClassDefFoundError.<br>造成该问题的原因可能是打包过程漏掉了部分类，或者jar包出现损坏或者篡改。解决这个问题的办法是查找那些在开发期间存在于类路径下但在运行期间却不在类路径下的类</p>
+
       
 
       
@@ -273,6 +284,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">JAVA、Java核心技术36讲</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -348,7 +370,7 @@
   
   
     <a href="/2019/04/24/第1讲-谈谈你对Java平台的理解？/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">第1讲 | 谈谈你对Java平台的理解？</div>
+      <div class="article-nav-title"></div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -475,7 +497,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">JAVA面试</a>
+                <a href="javascript:void(0)" class="js-tag color5">JAVA</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">JAVA、Java核心技术36讲</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">JAVA、Java面试</a>
               </li>
             
             <div class="clearfix"></div>
