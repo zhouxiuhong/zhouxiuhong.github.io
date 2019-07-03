@@ -1185,9 +1185,32 @@
     <article id="post-第1讲-谈谈你对Java平台的理解？" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/04/24/第1讲-谈谈你对Java平台的理解？/">第1讲 | 谈谈你对Java平台的理解？</a>
+    </h1>
+  
+
+        
+        <a href="/2019/04/24/第1讲-谈谈你对Java平台的理解？/" class="archive-article-date">
+  	<time datetime="2019-04-24T06:15:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-24</time>
+</a>
+        
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-	
+        <h1 id="第1讲-谈谈你对Java平台的理解？"><a href="#第1讲-谈谈你对Java平台的理解？" class="headerlink" title="第1讲 | 谈谈你对Java平台的理解？"></a>第1讲 | 谈谈你对Java平台的理解？</h1><p>杨晓峰 2018-05-05</p>
+<p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/6845" target="_blank" rel="noopener">https://time.geekbang.org/column/article/6845</a></p>
+<p><strong>谈谈你对java平台的理解？ “java是解释执行”，这句话正确吗？</strong></p>
+<p><strong>典型回答</strong></p>
+<p>java本身是一种面向对象的语言，最显著的特性有两个方面，一是所谓的“<strong>书写一次，到处运行</strong>”（write once， run anywhere），能够非常容易地获得跨平台能力；另外就是<strong>垃圾收集</strong>（GC， Garbage Collection），java通过垃圾收集器回收分配内存，大部分情况下，程序员不需要自己操心内存的分配和回收。</p>
+<p>我们日常会接触到JRE（Java Runtime Environment）或者JDK（Java Development Kit）。JRE也就是java运行环境，包含了JVM和Java类库，以及一些模块等。而JDK可以看作是JRE的一个超集，提供了更多工具，比如编译器、各种诊断工具等。</p>
+<p>对于“Java是解释执行”这句话，这个说法不太准确。我们开发的java的源代码，首先通过javac编译成为字节码（bytecode），然后，在运行时，通过Java虚拟机（JVM）内嵌的解释器将字节码转换成为最终的机器码。但是常见的JVM，比如我们大多数情况使用的Oracle JDK提供的Hotspot JVM，都提供了JIT（Just In Time）编译器，也就是通常所说的动态编译器，JIT能够在运行时将热点代码编译成机器码，这种情况下部分热点代码也就属于<strong>编译执行</strong>,而不是解释执行了。</p>
+        
+          <a class="article-more-a" href="/2019/04/24/第1讲-谈谈你对Java平台的理解？/#more">more >></a>
         
       
 
@@ -1196,6 +1219,17 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">JAVA、Java核心技术36讲</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -1402,11 +1436,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">JAVA</a>
+                <a href="javascript:void(0)" class="js-tag color2">JAVA、Java核心技术36讲</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">JAVA、Java核心技术36讲</a>
+                <a href="javascript:void(0)" class="js-tag color5">JAVA</a>
               </li>
              
               <li class="article-tag-list-item">
