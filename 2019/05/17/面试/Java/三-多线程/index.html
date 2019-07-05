@@ -8,19 +8,19 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>三.多线程 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="35. 并行和并发有什么区别？ 并行：多个处理器或多核处理器同时处理多个任务。 并发：多个任务在同一个 CPU 核上，按细分的时间片轮流(交替)执行，从逻辑上来看那些任务是同时执行。  如下图：  并发 = 两个队列和一台咖啡机。 并行 = 两个队列和两台咖啡机。 36. 线程和进程的区别？一个程序下至少有一个进程，一个进程下至少有一个线程，一个进程下也可以有多个线程来增加程序的执行速度。 37">
-<meta name="keywords" content="JAVA、Java面试">
+  <meta name="description" content="35. 并行和并发有什么区别？ 并行：多个处理器或多核处理器同时处理多个任务。 并发：多个任务在同一个 CPU 核上，按细分的时间片轮流(交替)执行，从逻辑上来看那些任务是同时执行。  如下图：  并发 = 两个队列和一台咖啡机。 并行 = 两个队列和两台咖啡机。 36. 线程和进程的区别？一个程序下至少有一个进程，一个进程下至少有一个线程，一个进程下也可以有多个线程来增加程序的执行速度。 37.">
+<meta name="keywords" content="JAVA,java面试">
 <meta property="og:type" content="article">
 <meta property="og:title" content="三.多线程">
 <meta property="og:url" content="http://yoursite.com/2019/05/17/面试/Java/三-多线程/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="35. 并行和并发有什么区别？ 并行：多个处理器或多核处理器同时处理多个任务。 并发：多个任务在同一个 CPU 核上，按细分的时间片轮流(交替)执行，从逻辑上来看那些任务是同时执行。  如下图：  并发 = 两个队列和一台咖啡机。 并行 = 两个队列和两台咖啡机。 36. 线程和进程的区别？一个程序下至少有一个进程，一个进程下至少有一个线程，一个进程下也可以有多个线程来增加程序的执行速度。 37">
+<meta property="og:description" content="35. 并行和并发有什么区别？ 并行：多个处理器或多核处理器同时处理多个任务。 并发：多个任务在同一个 CPU 核上，按细分的时间片轮流(交替)执行，从逻辑上来看那些任务是同时执行。  如下图：  并发 = 两个队列和一台咖啡机。 并行 = 两个队列和两台咖啡机。 36. 线程和进程的区别？一个程序下至少有一个进程，一个进程下至少有一个线程，一个进程下也可以有多个线程来增加程序的执行速度。 37.">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/img/content/java35-1.png">
-<meta property="og:updated_time" content="2019-07-03T05:56:21.860Z">
+<meta property="og:updated_time" content="2019-07-05T07:07:02.693Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="三.多线程">
-<meta name="twitter:description" content="35. 并行和并发有什么区别？ 并行：多个处理器或多核处理器同时处理多个任务。 并发：多个任务在同一个 CPU 核上，按细分的时间片轮流(交替)执行，从逻辑上来看那些任务是同时执行。  如下图：  并发 = 两个队列和一台咖啡机。 并行 = 两个队列和两台咖啡机。 36. 线程和进程的区别？一个程序下至少有一个进程，一个进程下至少有一个线程，一个进程下也可以有多个线程来增加程序的执行速度。 37">
+<meta name="twitter:description" content="35. 并行和并发有什么区别？ 并行：多个处理器或多核处理器同时处理多个任务。 并发：多个任务在同一个 CPU 核上，按细分的时间片轮流(交替)执行，从逻辑上来看那些任务是同时执行。  如下图：  并发 = 两个队列和一台咖啡机。 并行 = 两个队列和两台咖啡机。 36. 线程和进程的区别？一个程序下至少有一个进程，一个进程下至少有一个线程，一个进程下也可以有多个线程来增加程序的执行速度。 37.">
 <meta name="twitter:image" content="http://yoursite.com/img/content/java35-1.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -178,8 +178,7 @@
     <div class="article-entry" itemprop="articleBody">
       
 	
-        <!--  toc:true  -->
-<h4><span id="35-并行和并发有什么区别">35. 并行和并发有什么区别？</span></h4><ul>
+        <h4><span id="35-并行和并发有什么区别">35. 并行和并发有什么区别？</span></h4><ul>
 <li>并行：多个处理器或多核处理器同时处理多个任务。</li>
 <li>并发：多个任务在同一个 CPU 核上，按细分的时间片轮流(交替)执行，从逻辑上来看那些任务是同时执行。</li>
 </ul>
@@ -306,7 +305,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">JAVA、Java面试</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
         		</li>
       		
 		</ul>
@@ -418,6 +421,19 @@
         </div>
         
         
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">35. 并行和并发有什么区别？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">36. 线程和进程的区别？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">37. 守护线程是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">38. 创建线程有哪几种方式？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">39. 说一下 runnable 和 callable 有什么区别？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">40. 线程有哪些状态？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">7.</span> <span class="toc-text">41. sleep() 和 wait() 有什么区别？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">8.</span> <span class="toc-text">42. notify()和 notifyAll()有什么区别？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">9.</span> <span class="toc-text">43. 线程的 run() 和 start() 有什么区别？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">10.</span> <span class="toc-text">44. 创建线程池有哪几种方式？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">11.</span> <span class="toc-text">45. 线程池都有哪些状态？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">12.</span> <span class="toc-text">46. 线程池中 submit() 和 execute() 方法有什么区别？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">13.</span> <span class="toc-text">47. 在 Java 程序中怎么保证多线程的运行安全？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">14.</span> <span class="toc-text">48. 多线程中 synchronized 锁升 级的原理是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">15.</span> <span class="toc-text">49. 什么是死锁？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">16.</span> <span class="toc-text">50. 怎么防止死锁？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">17.</span> <span class="toc-text">51. ThreadLocal 是什么？有哪些使用场景？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">18.</span> <span class="toc-text">52. 说一下 synchronized 底层实现原理？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">19.</span> <span class="toc-text">53. synchronized 和 volatile 的区别是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">20.</span> <span class="toc-text">54. synchronized 和 Lock 有什么区别？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">21.</span> <span class="toc-text">55. synchronized 和 ReentrantLock 区别是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">22.</span> <span class="toc-text">56. 说一下 atomic 的原理？</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
     </div>
 </aside>
 
@@ -432,6 +448,7 @@
   
 
   
+
 
 
 
@@ -525,15 +542,35 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">JAVA、Java核心技术36讲</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">JAVA</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">JAVA、Java核心技术36讲</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">JAVA、Java面试</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">前端</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">安全</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">java面试</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Java核心技术36讲</a>
               </li>
             
             <div class="clearfix"></div>

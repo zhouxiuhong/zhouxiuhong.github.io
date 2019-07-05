@@ -152,6 +152,82 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-JAVA8-让代码更优雅之List排序" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/02/27/JAVA8-让代码更优雅之List排序/">JAVA8-让代码更优雅之List排序</a>
+    </h1>
+  
+
+        
+        <a href="/2019/02/27/JAVA8-让代码更优雅之List排序/" class="archive-article-date">
+  	<time datetime="2019-02-27T06:31:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-02-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">Collections.sort(list, Comparator.comparing(object :: getId));</span><br><span class="line"></span><br><span class="line">先定义一个实体类</span><br><span class="line">@Data</span><br><span class="line">@AllArgsConstructor</span><br><span class="line">@NoArgsConstructor</span><br><span class="line">public class Human &#123;</span><br><span class="line"></span><br><span class="line">private String name;</span><br><span class="line">private int age;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">下面的操作都基于这个类来进行操作。这里面使用了Lombok类库，它用注解的方式实现了基本的get和set等方法，让代码看起来更加的优雅。</span><br><span class="line">JAVA8之前的List排序操作</span><br><span class="line">在Java8之前，对集合排序只能创建一个匿名内部类</span><br><span class="line">new Comparator&lt;Human&gt;() &#123;</span><br><span class="line">@Override</span><br><span class="line">public int compare(Human h1, Human h2) &#123;</span><br><span class="line">return h1.getName().compareTo(h2.getName());</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">下面是简单的对Humans进行排序（按名称正序）</span><br><span class="line">@Test</span><br><span class="line">public void testSortByName_with_plain_java() throws Exception &#123;</span><br><span class="line"></span><br><span class="line">ArrayList&lt;Human&gt; humans = Lists.newArrayList(</span><br><span class="line">new Human(&quot;tomy&quot;, 22),</span><br><span class="line">new Human(&quot;li&quot;, 25)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">Collections.sort(humans, new Comparator&lt;Human&gt;() &#123;</span><br><span class="line"></span><br><span class="line">public int compare(Human h1, Human h2) &#123;</span><br><span class="line">return h1.getName().compareTo(h2.getName());</span><br><span class="line">&#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Assert.assertThat(humans.get(0), equalTo(new Human(&quot;li&quot;, 25)));</span><br><span class="line">&#125;</span><br><span class="line">使用Lambda的List排序</span><br><span class="line">使用JAVA8函数式方式的比较器</span><br><span class="line">(Human h1, Human h2) -&gt; h1.getName().compareTo(h2.getName())</span><br><span class="line">下面是使用JAVA8函数式的比较的例子</span><br><span class="line">@Test</span><br><span class="line">public void testSortByName_with_lambda() throws Exception &#123;</span><br><span class="line"></span><br><span class="line">ArrayList&lt;Human&gt; humans = Lists.newArrayList(</span><br><span class="line">new Human(&quot;tomy&quot;, 22),</span><br><span class="line">new Human(&quot;li&quot;, 25)</span><br><span class="line">);</span><br><span class="line">humans.sort((Human h1, Human h2) -&gt; h1.getName().compareTo(h2.getName()));</span><br><span class="line"></span><br><span class="line">Assert.assertThat(&quot;tomy&quot;, equalTo(humans.get(1).getName()));</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">没有类型定义的排序</span><br><span class="line">对于上面的表达式还可以进行简化，JAVA编译器可以根据上下文推测出排序的类型：</span><br><span class="line">(h1, h2) -&gt; h1.getName().compareTo(h2.getName())</span><br><span class="line">简化后的比较器是这样的:</span><br><span class="line">@Test</span><br><span class="line">public void testSortByNameSimplify_with_lambda() throws Exception &#123;</span><br><span class="line"></span><br><span class="line">ArrayList&lt;Human&gt; humans = Lists.newArrayList(</span><br><span class="line">new Human(&quot;tomy&quot;, 22),</span><br><span class="line">new Human(&quot;li&quot;, 25)</span><br><span class="line">);</span><br><span class="line">humans.sort((h1, h2) -&gt; h1.getName().compareTo(h2.getName()));</span><br><span class="line"></span><br><span class="line">Assert.assertThat(&quot;tomy&quot;, equalTo(humans.get(1).getName()));</span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">使用静态方法引用</span><br><span class="line">JAVA8还可以提供使用Lambda表达式的静态类型引用，我们在Human类增加一个静态比较方法，如下：</span><br><span class="line">public static int compareByNameThenAge(Human h1, Human h2) &#123;</span><br><span class="line"></span><br><span class="line">if (h1.getName().equals(h2.getName())) &#123;</span><br><span class="line">return Integer.compare(h1.ge</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/02/27/JAVA8-让代码更优雅之List排序/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-test" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
@@ -218,6 +294,7 @@
 
 
 
+
   
     <article id="post-测试" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
@@ -278,6 +355,7 @@
         
     </div>
 </aside>
+
 
 
 
@@ -350,6 +428,95 @@
         
     </div>
 </aside>
+
+
+
+
+
+  
+    <article id="post-面试/Java/prevent-spiders" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/09/面试/Java/prevent-spiders/">反击爬虫，前端工程师的脑洞可以有多大？</a>
+    </h1>
+  
+
+        
+        <a href="/2017/07/09/面试/Java/prevent-spiders/" class="archive-article-date">
+  	<time datetime="2017-07-09T02:36:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><img src="http://7tszky.com1.z0.glb.clouddn.com/FmIvXiOiFFET4oPGkVU6rdDCl87S" width="400"></p>
+
+<p><em>—— 同时发表于<a href="http://imweb.io/topic/595b7161d6ca6b4f0ac71f05" target="_blank" rel="noopener">imweb.io</a></em></p>
+<h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h3><p>#### </p>
+<ul>
+<li>​</li>
+</ul>
+<p>对于一张网页，我们往往希望它是结构良好，内容清晰的，这样搜索引擎才能准确地认知它。<br>而反过来，又有一些情景，我们不希望内容能被轻易获取，比方说电商网站的交易额，教育网站的题目等。因为这些内容，往往是一个产品的生命线，必须做到有效地保护。这就是<strong>爬虫与反爬虫</strong>这一话题的由来。</p>
+        
+          <a class="article-more-a" href="/2017/07/09/面试/Java/prevent-spiders/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">安全</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/07/09/面试/Java/prevent-spiders/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
 
 
 
@@ -452,15 +619,35 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">JAVA、Java核心技术36讲</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">JAVA</a>
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">JAVA、Java核心技术36讲</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">JAVA、Java面试</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">前端</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">安全</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">java面试</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Java核心技术36讲</a>
               </li>
             
             <div class="clearfix"></div>
