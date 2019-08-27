@@ -8,18 +8,18 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>二.容器 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="18. Java 容器都有哪些？Java 容器分为 Collection 和 Map 两大类，其下又有很多子类，如下所示：  Collection List ArrayList LinkedList Vector Stack   Set HashSet LinkedHashSet TreeSet   Map HashMap LinkedHashMap   TreeMap ConcurrentHas">
+  <meta name="description" content="二.容器1. Java 容器都有哪些？Java 容器分为 Collection 和 Map 两大类，其下又有很多子类，如下所示：  Collection List ArrayList LinkedList Vector Stack   Set HashSet LinkedHashSet TreeSet   Map HashMap LinkedHashMap   TreeMap Concurrent">
 <meta name="keywords" content="JAVA,Java面试">
 <meta property="og:type" content="article">
 <meta property="og:title" content="二.容器">
 <meta property="og:url" content="http://yoursite.com/2019/05/17/面试/Java/二.容器/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="18. Java 容器都有哪些？Java 容器分为 Collection 和 Map 两大类，其下又有很多子类，如下所示：  Collection List ArrayList LinkedList Vector Stack   Set HashSet LinkedHashSet TreeSet   Map HashMap LinkedHashMap   TreeMap ConcurrentHas">
+<meta property="og:description" content="二.容器1. Java 容器都有哪些？Java 容器分为 Collection 和 Map 两大类，其下又有很多子类，如下所示：  Collection List ArrayList LinkedList Vector Stack   Set HashSet LinkedHashSet TreeSet   Map HashMap LinkedHashMap   TreeMap Concurrent">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-05T08:04:16.038Z">
+<meta property="og:updated_time" content="2019-07-18T07:14:21.537Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="二.容器">
-<meta name="twitter:description" content="18. Java 容器都有哪些？Java 容器分为 Collection 和 Map 两大类，其下又有很多子类，如下所示：  Collection List ArrayList LinkedList Vector Stack   Set HashSet LinkedHashSet TreeSet   Map HashMap LinkedHashMap   TreeMap ConcurrentHas">
+<meta name="twitter:description" content="二.容器1. Java 容器都有哪些？Java 容器分为 Collection 和 Map 两大类，其下又有很多子类，如下所示：  Collection List ArrayList LinkedList Vector Stack   Set HashSet LinkedHashSet TreeSet   Map HashMap LinkedHashMap   TreeMap Concurrent">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -48,7 +48,7 @@
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
-			<img src="/img/zz1.jpg" class="js-avatar">
+			<img src="/picture/head/zz1.jpg" class="js-avatar">
 		</a>
 		<hgroup>
 		  <h1 class="header-author"><a href="/">ZHOU</a></h1>
@@ -104,7 +104,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img src="/img/zz1.jpg" class="js-avatar">
+				<img src="/picture/head/zz1.jpg" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author js-header-author">ZHOU</h1>
@@ -170,7 +170,7 @@
     <div class="article-entry" itemprop="articleBody">
       
 	
-        <h4><span id="18-java-容器都有哪些">18. Java 容器都有哪些？</span></h4><p>Java 容器分为 Collection 和 Map 两大类，其下又有很多子类，如下所示：</p>
+        <h2><span id="二容器"><strong>二.容器</strong></span></h2><h4><span id="1-java-容器都有哪些">1. Java 容器都有哪些？</span></h4><p>Java 容器分为 Collection 和 Map 两大类，其下又有很多子类，如下所示：</p>
 <ul>
 <li>Collection</li>
 <li>List<ul>
@@ -195,11 +195,11 @@
 <li>ConcurrentHashMap</li>
 <li>Hashtable</li>
 </ul>
-<h4><span id="19-collection-和-collections-有什么区别">19. Collection 和 Collections 有什么区别？</span></h4><ul>
+<h4><span id="2-collection-和-collections-有什么区别">2. Collection 和 Collections 有什么区别？</span></h4><ul>
 <li>Collection 是一个集合接口，它提供了对集合对象进行基本操作的通用接口方法，所有集合都是它的子类，比如 List、Set 等。</li>
 <li>Collections 是一个包装类，包含了很多静态方法，不能被实例化，就像一个工具类，比如提供的排序方法： Collections. sort(list)。</li>
 </ul>
-<h4><span id="20-list-set-map-之间的区别是什么">20. List、Set、Map 之间的区别是什么？</span></h4><p>List、Set、Map 的区别主要体现在两个方面：元素是否有序、是否允许元素重复。</p>
+<h4><span id="3-list-set-map-之间的区别是什么">3. List、Set、Map 之间的区别是什么？</span></h4><p>List、Set、Map 的区别主要体现在两个方面：元素是否有序、是否允许元素重复。</p>
 <p>三者之间的区别，如下表：</p>
 <table>
 <thead>
@@ -255,53 +255,53 @@
 </tr>
 </tbody>
 </table>
-<h4><span id="21-hashmap-和-hashtable-有什么区别">21. HashMap 和 Hashtable 有什么区别？</span></h4><ul>
+<h4><span id="4-hashmap-和-hashtable-有什么区别">4. HashMap 和 Hashtable 有什么区别？</span></h4><ul>
 <li>存储：HashMap 运行 key 和 value 为 null，而 Hashtable 不允许。</li>
 <li>线程安全：Hashtable 是线程安全的，而 HashMap 是非线程安全的。</li>
 <li>推荐使用：在 Hashtable 的类注释可以看到，Hashtable 是保留类不建议使用，推荐在单线程环境下使用 HashMap 替代，如果需要多线程使用则用 ConcurrentHashMap 替代。</li>
 </ul>
-<h4><span id="22-如何决定使用-hashmap-还是-treemap">22. 如何决定使用 HashMap 还是 TreeMap？</span></h4><p>对于在 Map 中插入、删除、定位一个元素这类操作，HashMap 是最好的选择，因为相对而言 HashMap 的插入会更快，但如果你要对一个 key 集合进行有序的遍历，那 TreeMap 是更好的选择。</p>
-<h4><span id="23-说一下-hashmap-的实现原理">23. 说一下 HashMap 的实现原理？</span></h4><p>HashMap 基于 Hash 算法实现的，我们通过 put(key,value)存储，get(key)来获取。当传入 key 时，HashMap 会根据 key. hashCode() 计算出 hash 值，根据 hash 值将 value 保存在 bucket 里。当计算出的 hash 值相同时，我们称之为 hash 冲突，HashMap 的做法是用链表和红黑树存储相同 hash 值的 value。当 hash 冲突的个数比较少时，使用链表否则使用红黑树。</p>
-<h4><span id="24-说一下-hashset-的实现原理">24. 说一下 HashSet 的实现原理？</span></h4><p>HashSet 是基于 HashMap 实现的，HashSet 底层使用 HashMap 来保存所有元素，因此 HashSet 的实现比较简单，相关 HashSet 的操作，基本上都是直接调用底层 HashMap 的相关方法来完成，HashSet 不允许重复的值。</p>
-<h4><span id="25-arraylist-和-linkedlist-的区别是什么">25. ArrayList 和 LinkedList 的区别是什么？</span></h4><ul>
+<h4><span id="5-如何决定使用-hashmap-还是-treemap">5. 如何决定使用 HashMap 还是 TreeMap？</span></h4><p>对于在 Map 中插入、删除、定位一个元素这类操作，HashMap 是最好的选择，因为相对而言 HashMap 的插入会更快，但如果你要对一个 key 集合进行有序的遍历，那 TreeMap 是更好的选择。</p>
+<h4><span id="6-说一下-hashmap-的实现原理">6. 说一下 HashMap 的实现原理？</span></h4><p>HashMap 基于 Hash 算法实现的，我们通过 put(key,value)存储，get(key)来获取。当传入 key 时，HashMap 会根据 key. hashCode() 计算出 hash 值，根据 hash 值将 value 保存在 bucket 里。当计算出的 hash 值相同时，我们称之为 hash 冲突，HashMap 的做法是用链表和红黑树存储相同 hash 值的 value。当 hash 冲突的个数比较少时，使用链表否则使用红黑树。</p>
+<h4><span id="7-说一下-hashset-的实现原理">7. 说一下 HashSet 的实现原理？</span></h4><p>HashSet 是基于 HashMap 实现的，HashSet 底层使用 HashMap 来保存所有元素，因此 HashSet 的实现比较简单，相关 HashSet 的操作，基本上都是直接调用底层 HashMap 的相关方法来完成，HashSet 不允许重复的值。</p>
+<h4><span id="8-arraylist-和-linkedlist-的区别是什么">8. ArrayList 和 LinkedList 的区别是什么？</span></h4><ul>
 <li>数据结构实现：ArrayList 是动态数组的数据结构实现，而 LinkedList 是双向链表的数据结构实现。</li>
 <li>随机访问效率：ArrayList 比 LinkedList 在随机访问的时候效率要高，因为 LinkedList 是线性的数据存储方式，所以需要移动指针从前往后依次查找。</li>
 <li>增加和删除效率：在非首尾的增加和删除操作，LinkedList 要比 ArrayList 效率要高，因为 ArrayList 增删操作要影响数组内的其他数据的下标。</li>
 </ul>
 <p>综合来说，在需要频繁读取集合中的元素时，更推荐使用 ArrayList，而在插入和删除操作较多时，更推荐使用 LinkedList。</p>
-<h4><span id="26-如何实现数组和-list-之间的转换">26. 如何实现数组和 List 之间的转换？</span></h4><ul>
+<h4><span id="9-如何实现数组和-list-之间的转换">9. 如何实现数组和 List 之间的转换？</span></h4><ul>
 <li>数组转 List：使用 Arrays. asList(array) 进行转换。</li>
 <li>List 转数组：使用 List 自带的 toArray() 方法。</li>
 </ul>
 <p>代码示例：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// list to array</span><br><span class="line">List&lt;String&gt; list = new ArrayList&lt;String&gt;();</span><br><span class="line">list. add(&quot;王磊&quot;);</span><br><span class="line">list. add(&quot;的博客&quot;);</span><br><span class="line">list. toArray();</span><br><span class="line">// array to list</span><br><span class="line">String[] array = new String[]&#123;&quot;王磊&quot;,&quot;的博客&quot;&#125;;</span><br><span class="line">Arrays. asList(array);</span><br></pre></td></tr></table></figure>
-<h4><span id="27-arraylist-和-vector-的区别是什么">27. ArrayList 和 Vector 的区别是什么？</span></h4><ul>
+<h4><span id="10-arraylist-和-vector-的区别是什么">10. ArrayList 和 Vector 的区别是什么？</span></h4><ul>
 <li>线程安全：Vector 使用了 Synchronized 来实现线程同步，是线程安全的，而 ArrayList 是非线程安全的。</li>
 <li>性能：ArrayList 在性能方面要优于 Vector。</li>
 <li>扩容：ArrayList 和 Vector 都会根据实际的需要动态的调整容量，只不过在 Vector 扩容每次会增加 1 倍，而 ArrayList 只会增加 50%。</li>
 </ul>
-<h4><span id="28-array-和-arraylist-有何区别">28. Array 和 ArrayList 有何区别？</span></h4><ul>
+<h4><span id="11-array-和-arraylist-有何区别">11. Array 和 ArrayList 有何区别？</span></h4><ul>
 <li>Array 可以存储基本数据类型和对象，ArrayList 只能存储对象。</li>
 <li>Array 是指定固定大小的，而 ArrayList 大小是自动扩展的。</li>
 <li>Array 内置方法没有 ArrayList 多，比如 addAll、removeAll、iteration 等方法只有 ArrayList 有。</li>
 </ul>
-<h4><span id="29-在-queue-中-poll和-remove有什么区别">29. 在 Queue 中 poll()和 remove()有什么区别？</span></h4><ul>
+<h4><span id="12-在-queue-中-poll和-remove有什么区别">12. 在 Queue 中 poll()和 remove()有什么区别？</span></h4><ul>
 <li>相同点：都是返回第一个元素，并在队列中删除返回的对象。</li>
 <li>不同点：如果没有元素 poll()会返回 null，而 remove()会直接抛出 NoSuchElementException 异常。</li>
 </ul>
 <p>代码示例：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Queue&lt;String&gt; queue = new LinkedList&lt;String&gt;();</span><br><span class="line">queue. offer(&quot;string&quot;); // add</span><br><span class="line">System. out. println(queue. poll());</span><br><span class="line">System. out. println(queue. remove());</span><br><span class="line">System. out. println(queue. size());</span><br></pre></td></tr></table></figure>
-<h4><span id="30-哪些集合类是线程安全的">30. 哪些集合类是线程安全的？</span></h4><p>Vector、Hashtable、Stack 都是线程安全的，而像 HashMap 则是非线程安全的，不过在 JDK 1.5 之后随着 Java. util. concurrent 并发包的出现，它们也有了自己对应的线程安全类，比如 HashMap 对应的线程安全类就是 ConcurrentHashMap。</p>
-<h4><span id="31-迭代器-iterator-是什么">31. 迭代器 Iterator 是什么？</span></h4><p>Iterator 接口提供遍历任何 Collection 的接口。我们可以从一个 Collection 中使用迭代器方法来获取迭代器实例。迭代器取代了 Java 集合框架中的 Enumeration，迭代器允许调用者在迭代过程中移除元素。</p>
-<h4><span id="32-iterator-怎么使用有什么特点">32. Iterator 怎么使用？有什么特点？</span></h4><p>Iterator 使用代码如下：</p>
+<h4><span id="13-哪些集合类是线程安全的">13. 哪些集合类是线程安全的？</span></h4><p>Vector、Hashtable、Stack 都是线程安全的，而像 HashMap 则是非线程安全的，不过在 JDK 1.5 之后随着 Java. util. concurrent 并发包的出现，它们也有了自己对应的线程安全类，比如 HashMap 对应的线程安全类就是 ConcurrentHashMap。</p>
+<h4><span id="14-迭代器-iterator-是什么">14. 迭代器 Iterator 是什么？</span></h4><p>Iterator 接口提供遍历任何 Collection 的接口。我们可以从一个 Collection 中使用迭代器方法来获取迭代器实例。迭代器取代了 Java 集合框架中的 Enumeration，迭代器允许调用者在迭代过程中移除元素。</p>
+<h4><span id="15-iterator-怎么使用有什么特点">15. Iterator 怎么使用？有什么特点？</span></h4><p>Iterator 使用代码如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; list = new ArrayList&lt;&gt;();</span><br><span class="line">Iterator&lt;String&gt; it = list. iterator();</span><br><span class="line">while(it. hasNext())&#123;</span><br><span class="line">  String obj = it. next();</span><br><span class="line">  System. out. println(obj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>Iterator 的特点是更加安全，因为它可以确保，在当前遍历的集合元素被更改的时候，就会抛出 ConcurrentModificationException 异常。</p>
-<h4><span id="33-iterator-和-listiterator-有什么区别">33. Iterator 和 ListIterator 有什么区别？</span></h4><ul>
+<h4><span id="16-iterator-和-listiterator-有什么区别">16. Iterator 和 ListIterator 有什么区别？</span></h4><ul>
 <li>Iterator 可以遍历 Set 和 List 集合，而 ListIterator 只能遍历 List。</li>
 <li>Iterator 只能单向遍历，而 ListIterator 可以双向遍历（向前/后遍历）。</li>
 <li>ListIterator 从 Iterator 接口继承，然后添加了一些额外的功能，比如添加一个元素、替换一个元素、获取前面或后面元素的索引位置。</li>
 </ul>
-<h4><span id="34-怎么确保一个集合不能被修改">34. 怎么确保一个集合不能被修改？</span></h4><p>可以使用 Collections. unmodifiableCollection(Collection c) 方法来创建一个只读集合，这样改变集合的任何操作都会抛出 Java. lang. UnsupportedOperationException 异常。</p>
+<h4><span id="17-怎么确保一个集合不能被修改">17. 怎么确保一个集合不能被修改？</span></h4><p>可以使用 Collections. unmodifiableCollection(Collection c) 方法来创建一个只读集合，这样改变集合的任何操作都会抛出 Java. lang. UnsupportedOperationException 异常。</p>
 <p>示例代码如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; list = new ArrayList&lt;&gt;();</span><br><span class="line">list. add(&quot;x&quot;);</span><br><span class="line">Collection&lt;String&gt; clist = Collections. unmodifiableCollection(list);</span><br><span class="line">clist. add(&quot;y&quot;); // 运行时此行报错</span><br><span class="line">System. out. println(list. size());</span><br></pre></td></tr></table></figure>
       
@@ -411,11 +411,11 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/05/17/面试/Java/四.反射/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/05/18/面试/Java/三.多线程/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          四.反射
+          三.多线程
         
       </div>
     </a>
@@ -449,7 +449,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">18. Java 容器都有哪些？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">19. Collection 和 Collections 有什么区别？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">20. List、Set、Map 之间的区别是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">21. HashMap 和 Hashtable 有什么区别？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">22. 如何决定使用 HashMap 还是 TreeMap？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">6.</span> <span class="toc-text">23. 说一下 HashMap 的实现原理？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">7.</span> <span class="toc-text">24. 说一下 HashSet 的实现原理？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">8.</span> <span class="toc-text">25. ArrayList 和 LinkedList 的区别是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">9.</span> <span class="toc-text">26. 如何实现数组和 List 之间的转换？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">10.</span> <span class="toc-text">27. ArrayList 和 Vector 的区别是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">11.</span> <span class="toc-text">28. Array 和 ArrayList 有何区别？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">12.</span> <span class="toc-text">29. 在 Queue 中 poll()和 remove()有什么区别？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">13.</span> <span class="toc-text">30. 哪些集合类是线程安全的？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">14.</span> <span class="toc-text">31. 迭代器 Iterator 是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">15.</span> <span class="toc-text">32. Iterator 怎么使用？有什么特点？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">16.</span> <span class="toc-text">33. Iterator 和 ListIterator 有什么区别？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">17.</span> <span class="toc-text">34. 怎么确保一个集合不能被修改？</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">二.容器</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.1.</span> <span class="toc-text">1. Java 容器都有哪些？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.2.</span> <span class="toc-text">2. Collection 和 Collections 有什么区别？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.3.</span> <span class="toc-text">3. List、Set、Map 之间的区别是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.4.</span> <span class="toc-text">4. HashMap 和 Hashtable 有什么区别？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.5.</span> <span class="toc-text">5. 如何决定使用 HashMap 还是 TreeMap？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.6.</span> <span class="toc-text">6. 说一下 HashMap 的实现原理？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.7.</span> <span class="toc-text">7. 说一下 HashSet 的实现原理？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.8.</span> <span class="toc-text">8. ArrayList 和 LinkedList 的区别是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.9.</span> <span class="toc-text">9. 如何实现数组和 List 之间的转换？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.10.</span> <span class="toc-text">10. ArrayList 和 Vector 的区别是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.11.</span> <span class="toc-text">11. Array 和 ArrayList 有何区别？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.12.</span> <span class="toc-text">12. 在 Queue 中 poll()和 remove()有什么区别？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.13.</span> <span class="toc-text">13. 哪些集合类是线程安全的？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.14.</span> <span class="toc-text">14. 迭代器 Iterator 是什么？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.15.</span> <span class="toc-text">15. Iterator 怎么使用？有什么特点？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.16.</span> <span class="toc-text">16. Iterator 和 ListIterator 有什么区别？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.17.</span> <span class="toc-text">17. 怎么确保一个集合不能被修改？</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -579,15 +579,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">java面试</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">JAVA、Java面试</a>
+                <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
               </li>
             
             <div class="clearfix"></div>

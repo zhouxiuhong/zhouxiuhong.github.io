@@ -43,7 +43,7 @@
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
-			<img src="/img/zz1.jpg" class="js-avatar">
+			<img src="/picture/head/zz1.jpg" class="js-avatar">
 		</a>
 		<hgroup>
 		  <h1 class="header-author"><a href="/">ZHOU</a></h1>
@@ -99,7 +99,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img src="/img/zz1.jpg" class="js-avatar">
+				<img src="/picture/head/zz1.jpg" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author js-header-author">ZHOU</h1>
@@ -146,20 +146,20 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-JAVA8-让代码更优雅之List排序" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+    <article id="post-面试/Java/十二.Hibernate" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2019/02/27/JAVA8-让代码更优雅之List排序/">JAVA8-让代码更优雅之List排序</a>
+      <a class="article-title" href="/2019/05/28/面试/Java/十二.Hibernate/">十二.Hibernate</a>
     </h1>
   
 
         
-        <a href="/2019/02/27/JAVA8-让代码更优雅之List排序/" class="archive-article-date">
-  	<time datetime="2019-02-27T06:31:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-02-27</time>
+        <a href="/2019/05/28/面试/Java/十二.Hibernate/" class="archive-article-date">
+  	<time datetime="2019-05-28T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-28</time>
 </a>
         
       </header>
@@ -167,7 +167,45 @@
     <div class="article-entry" itemprop="articleBody">
       
 	
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">Collections.sort(list, Comparator.comparing(object :: getId));</span><br><span class="line"></span><br><span class="line">先定义一个实体类</span><br><span class="line">@Data</span><br><span class="line">@AllArgsConstructor</span><br><span class="line">@NoArgsConstructor</span><br><span class="line">public class Human &#123;</span><br><span class="line"></span><br><span class="line">private String name;</span><br><span class="line">private int age;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">下面的操作都基于这个类来进行操作。这里面使用了Lombok类库，它用注解的方式实现了基本的get和set等方法，让代码看起来更加的优雅。</span><br><span class="line">JAVA8之前的List排序操作</span><br><span class="line">在Java8之前，对集合排序只能创建一个匿名内部类</span><br><span class="line">new Comparator&lt;Human&gt;() &#123;</span><br><span class="line">@Override</span><br><span class="line">public int compare(Human h1, Human h2) &#123;</span><br><span class="line">return h1.getName().compareTo(h2.getName());</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">下面是简单的对Humans进行排序（按名称正序）</span><br><span class="line">@Test</span><br><span class="line">public void testSortByName_with_plain_java() throws Exception &#123;</span><br><span class="line"></span><br><span class="line">ArrayList&lt;Human&gt; humans = Lists.newArrayList(</span><br><span class="line">new Human(&quot;tomy&quot;, 22),</span><br><span class="line">new Human(&quot;li&quot;, 25)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line">Collections.sort(humans, new Comparator&lt;Human&gt;() &#123;</span><br><span class="line"></span><br><span class="line">public int compare(Human h1, Human h2) &#123;</span><br><span class="line">return h1.getName().compareTo(h2.getName());</span><br><span class="line">&#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Assert.assertThat(humans.get(0), equalTo(new Human(&quot;li&quot;, 25)));</span><br><span class="line">&#125;</span><br><span class="line">使用Lambda的List排序</span><br><span class="line">使用JAVA8函数式方式的比较器</span><br><span class="line">(Human h1, Human h2) -&gt; h1.getName().compareTo(h2.getName())</span><br><span class="line">下面是使用JAVA8函数式的比较的例子</span><br><span class="line">@Test</span><br><span class="line">public void testSortByName_with_lambda() throws Exception &#123;</span><br><span class="line"></span><br><span class="line">ArrayList&lt;Human&gt; humans = Lists.newArrayList(</span><br><span class="line">new Human(&quot;tomy&quot;, 22),</span><br><span class="line">new Human(&quot;li&quot;, 25)</span><br><span class="line">);</span><br><span class="line">humans.sort((Human h1, Human h2) -&gt; h1.getName().compareTo(h2.getName()));</span><br><span class="line"></span><br><span class="line">Assert.assertThat(&quot;tomy&quot;, equalTo(humans.get(1).getName()));</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">没有类型定义的排序</span><br><span class="line">对于上面的表达式还可以进行简化，JAVA编译器可以根据上下文推测出排序的类型：</span><br><span class="line">(h1, h2) -&gt; h1.getName().compareTo(h2.getName())</span><br><span class="line">简化后的比较器是这样的:</span><br><span class="line">@Test</span><br><span class="line">public void testSortByNameSimplify_with_lambda() throws Exception &#123;</span><br><span class="line"></span><br><span class="line">ArrayList&lt;Human&gt; humans = Lists.newArrayList(</span><br><span class="line">new Human(&quot;tomy&quot;, 22),</span><br><span class="line">new Human(&quot;li&quot;, 25)</span><br><span class="line">);</span><br><span class="line">humans.sort((h1, h2) -&gt; h1.getName().compareTo(h2.getName()));</span><br><span class="line"></span><br><span class="line">Assert.assertThat(&quot;tomy&quot;, equalTo(humans.get(1).getName()));</span><br><span class="line"></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line">使用静态方法引用</span><br><span class="line">JAVA8还可以提供使用Lambda表达式的静态类型引用，我们在Human类增加一个静态比较方法，如下：</span><br><span class="line">public static int compareByNameThenAge(Human h1, Human h2) &#123;</span><br><span class="line"></span><br><span class="line">if (h1.getName().equals(h2.getName())) &#123;</span><br><span class="line">return Integer.compare(h1.ge</span><br></pre></td></tr></table></figure>
+        <h2><span id="十二hibernate">十二.Hibernate</span></h2><h4><span id="1-为什么要使用-hibernate">1. 为什么要使用 hibernate？</span></h4><ul>
+<li>hibernate 是对 jdbc 的封装，大大简化了数据访问层的繁琐的重复性代码。</li>
+<li>hibernate 是一个优秀的 ORM 实现，很多程度上简化了 DAO 层的编码功能。</li>
+<li>可以很方便的进行数据库的移植工作。</li>
+<li>提供了缓存机制，是程序执行更改的高效。</li>
+</ul>
+<h4><span id="2-什么是-orm-框架">2. 什么是 ORM 框架？</span></h4><p>ORM（Object Relation Mapping）对象关系映射，是把数据库中的关系数据映射成为程序中的对象。</p>
+<p>使用 ORM 的优点：提高了开发效率降低了开发成本、开发更简单更对象化、可移植更强。</p>
+<h4><span id="3-hibernate-中如何在控制台查看打印的-sql-语句">3. hibernate 中如何在控制台查看打印的 SQL 语句？</span></h4><p>在 Config 里面把 hibernate. show_SQL 设置为 true 就可以。但不建议开启，开启之后会降低程序的运行效率。</p>
+<h4><span id="4-hibernate-有几种查询方式">4. hibernate 有几种查询方式？</span></h4><p>三种：hql、原生 SQL、条件查询 Criteria。</p>
+<h4><span id="5-hibernate-实体类可以被定义为-final-吗">5. hibernate 实体类可以被定义为 final 吗？</span></h4><p>实体类可以定义为 final 类，但这样的话就不能使用 hibernate 代理模式下的延迟关联提供性能了，所以不建议定义实体类为 final。</p>
+<h4><span id="6-在-hibernate-中使用-integer-和-int-做映射有什么区别">6. 在 hibernate 中使用 Integer 和 int 做映射有什么区别？</span></h4><p>Integer 类型为对象，它的值允许为 null，而 int 属于基础数据类型，值不能为 null。</p>
+<h4><span id="7-hibernate-是如何工作的">7. hibernate 是如何工作的？</span></h4><ul>
+<li>读取并解析配置文件。</li>
+<li>读取并解析映射文件，创建 SessionFactory。</li>
+<li>打开 Session。</li>
+<li>创建事务。</li>
+<li>进行持久化操作。</li>
+<li>提交事务。</li>
+<li>关闭 Session。</li>
+<li>关闭 SessionFactory。</li>
+</ul>
+<h4><span id="8-get和-load的区别">8. get()和 load()的区别？</span></h4><ul>
+<li>数据查询时，没有 OID 指定的对象，get() 返回 null；load() 返回一个代理对象。</li>
+<li>load()支持延迟加载；get() 不支持延迟加载。</li>
+</ul>
+<h4><span id="9-说一下-hibernate-的缓存机制">9. 说一下 hibernate 的缓存机制？</span></h4><p>hibernate 常用的缓存有一级缓存和二级缓存：</p>
+<p>一级缓存：也叫 Session 缓存，只在 Session 作用范围内有效，不需要用户干涉，由 hibernate 自身维护，可以通过：evict(object)清除 object 的缓存；clear()清除一级缓存中的所有缓存；flush()刷出缓存；</p>
+<p>二级缓存：应用级别的缓存，在所有 Session 中都有效，支持配置第三方的缓存，如：EhCache。</p>
+<h4><span id="10-hibernate-对象有哪些状态">10. hibernate 对象有哪些状态？</span></h4><ul>
+<li>临时/瞬时状态：直接 new 出来的对象，该对象还没被持久化（没保存在数据库中），不受 Session 管理。</li>
+<li>持久化状态：当调用 Session 的 save/saveOrupdate/get/load/list 等方法的时候，对象就是持久化状态。</li>
+<li>游离状态：Session 关闭之后对象就是游离状态。</li>
+</ul>
+<h4><span id="11-在-hibernate-中-getcurrentsession-和-opensession-的区别是什么">11. 在 hibernate 中 getCurrentSession 和 openSession 的区别是什么？</span></h4><ul>
+<li>getCurrentSession 会绑定当前线程，而 openSession 则不会。</li>
+<li>getCurrentSession 事务是 Spring 控制的，并且不需要手动关闭，而 openSession 需要我们自己手动开启和提交事务。</li>
+</ul>
+<h4><span id="12-hibernate-实体类必须要有无参构造函数吗为什么">12. hibernate 实体类必须要有无参构造函数吗？为什么？</span></h4><p>hibernate 中每个实体类必须提供一个无参构造函数，因为 hibernate 框架要使用 reflection api，通过调用 ClassnewInstance() 来创建实体类的实例，如果没有无参的构造函数就会抛出异常。</p>
 
       
 
@@ -183,15 +221,30 @@
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
         		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
+        		</li>
       		
 		</ul>
 	</div>
 
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2019/02/27/JAVA8-让代码更优雅之List排序/">展开全文 >></a>
+          <a class="article-more-a" href="/2019/05/28/面试/Java/十二.Hibernate/">展开全文 >></a>
         </p>
       
 
@@ -222,88 +275,20 @@
 
 
   
-    <article id="post-test" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+    <article id="post-面试/Java/十一.Spring BootSpring Cloud" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2018/10/26/test/">GIT常用命令速查</a>
+      <a class="article-title" href="/2019/05/27/面试/Java/十一.Spring BootSpring Cloud/">十.Spring Boot/Spring Cloud</a>
     </h1>
   
 
         
-        <a href="/2018/10/26/test/" class="archive-article-date">
-  	<time datetime="2018-10-26T09:35:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-26</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <!--toc:true-->
-<p><strong>一、 Git 常用命令速查</strong></p>
-<p>git branch 查看本地所有分支<br>git status 查看当前状态<br>git commit 提交<br>git branch -a 查看所有的分支<br>git branch -r 查看远程所有分支<br>git commit -am “init” 提交并且加注释<br>git remote add origin <a href="mailto:git@192.168.1.119" target="_blank" rel="noopener">git@192.168.1.119</a>:ndshow<br>git push origin master 将文件给推到服务器上<br>git remote show origin 显示远程库origin里的资源<br>git push origin master:develop<br>git push origin master:hb-dev 将本地库与服务器上的库进行关联<br>git checkout –track origin/dev 切换到远程dev分支<br>git branch -D master develop 删除本地库develop<br>git checkout -b dev 建立一个新的本地分支dev<br>git merge origin/dev 将分支dev与当前分支进行合并<br>git checkout dev 切换到本地dev分支<br>git remote show 查看远程库</p>
-        
-          <a class="article-more-a" href="/2018/10/26/test/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/10/26/test/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-测试" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/10/26/测试/">测试</a>
-    </h1>
-  
-
-        
-        <a href="/2018/10/26/测试/" class="archive-article-date">
-  	<time datetime="2018-10-26T09:21:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-26</time>
+        <a href="/2019/05/27/面试/Java/十一.Spring BootSpring Cloud/" class="archive-article-date">
+  	<time datetime="2019-05-27T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-27</time>
 </a>
         
       </header>
@@ -311,154 +296,42 @@
     <div class="article-entry" itemprop="articleBody">
       
 	
-        <p>测试测试测试1111111111111111111111111111</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/10/26/测试/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/10/26/hello-world/">Hello World</a>
-    </h1>
-  
-
-        
-        <a href="/2018/10/26/hello-world/" class="archive-article-date">
-  	<time datetime="2018-10-26T08:43:23.611Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-26</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-	
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2><span id="quick-start">Quick Start</span></h2><h3><span id="create-a-new-post">Create a new post</span></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3><span id="run-server">Run server</span></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3><span id="generate-static-files">Generate static files</span></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3><span id="deploy-to-remote-sites">Deploy to remote sites</span></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2018/10/26/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-面试/Java/prevent-spiders" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/09/面试/Java/prevent-spiders/">反击爬虫，前端工程师的脑洞可以有多大？</a>
-    </h1>
-  
-
-        
-        <a href="/2017/07/09/面试/Java/prevent-spiders/" class="archive-article-date">
-  	<time datetime="2017-07-09T02:36:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><img src="http://7tszky.com1.z0.glb.clouddn.com/FmIvXiOiFFET4oPGkVU6rdDCl87S" width="400"></p>
-
-<p><em>—— 同时发表于<a href="http://imweb.io/topic/595b7161d6ca6b4f0ac71f05" target="_blank" rel="noopener">imweb.io</a></em></p>
-<h3 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h3><p>#### </p>
-<ul>
-<li>​</li>
+        <h2><span id="十spring-bootspring-cloud">十.Spring Boot/Spring Cloud</span></h2><h4><span id="1-什么是-spring-boot">1. 什么是 spring boot？</span></h4><p>spring boot 是为 spring 服务的，是用来简化新 spring 应用的初始搭建以及开发过程的。</p>
+<h4><span id="2-为什么要用-spring-boot">2. 为什么要用 spring boot？</span></h4><ul>
+<li>配置简单</li>
+<li>独立运行</li>
+<li>自动装配</li>
+<li>无代码生成和 xml 配置</li>
+<li>提供应用监控</li>
+<li>易上手</li>
+<li>提升开发效率</li>
 </ul>
-<p>对于一张网页，我们往往希望它是结构良好，内容清晰的，这样搜索引擎才能准确地认知它。<br>而反过来，又有一些情景，我们不希望内容能被轻易获取，比方说电商网站的交易额，教育网站的题目等。因为这些内容，往往是一个产品的生命线，必须做到有效地保护。这就是<strong>爬虫与反爬虫</strong>这一话题的由来。</p>
-        
-          <a class="article-more-a" href="/2017/07/09/面试/Java/prevent-spiders/#more">more >></a>
-        
+<h4><span id="3-spring-boot-核心配置文件是什么">3. spring boot 核心配置文件是什么？</span></h4><p>spring boot 核心的两个配置文件：</p>
+<ul>
+<li>bootstrap (. yml 或者 . properties)：boostrap 由父 ApplicationContext 加载的，比 applicaton 优先加载，且 boostrap 里面的属性不能被覆盖；</li>
+<li>application (. yml 或者 . properties)：用于 spring boot 项目的自动化配置。</li>
+</ul>
+<h4><span id="4-spring-boot-配置文件有哪几种类型它们有什么区别">4. spring boot 配置文件有哪几种类型？它们有什么区别？</span></h4><p>配置文件有 . properties 格式和 . yml 格式，它们主要的区别是书法风格不同。</p>
+<p>. properties 配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">spring. RabbitMQ. port=5672</span><br></pre></td></tr></table></figure>
+<p>. yml 配置如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">spring:</span><br><span class="line">    RabbitMQ:</span><br><span class="line">        port: 5672</span><br></pre></td></tr></table></figure>
+<p>. yml 格式不支持 @PropertySource 注解导入。</p>
+<h4><span id="5-spring-boot-有哪些方式可以实现热部署">5. spring boot 有哪些方式可以实现热部署？</span></h4><ul>
+<li>使用 devtools 启动热部署，添加 devtools 库，在配置文件中把 spring. devtools. restart. enabled 设置为 true；</li>
+<li>使用 Intellij Idea 编辑器，勾上自动编译或手动重新编译。</li>
+</ul>
+<h4><span id="6-jpa-和-hibernate-有什么区别">6. jpa 和 hibernate 有什么区别？</span></h4><p>jpa 全称 Java Persistence API，是 Java 持久化接口规范，hibernate 属于 jpa 的具体实现。</p>
+<h4><span id="7-什么是-spring-cloud">7. 什么是 spring cloud？</span></h4><p>spring cloud 是一系列框架的有序集合。它利用 spring boot 的开发便利性巧妙地简化了分布式系统基础设施的开发，如服务发现注册、配置中心、消息总线、负载均衡、断路器、数据监控等，都可以用 spring boot 的开发风格做到一键启动和部署。</p>
+<h4><span id="8-spring-cloud-断路器的作用是什么">8. spring cloud 断路器的作用是什么？</span></h4><p>在分布式架构中，断路器模式的作用也是类似的，当某个服务单元发生故障（类似用电器发生短路）之后，通过断路器的故障监控（类似熔断保险丝），向调用方返回一个错误响应，而不是长时间的等待。这样就不会使得线程因调用故障服务被长时间占用不释放，避免了故障在分布式系统中的蔓延。</p>
+<h4><span id="9-spring-cloud-的核心组件有哪些">9. spring cloud 的核心组件有哪些？</span></h4><ul>
+<li>Eureka：服务注册于发现。</li>
+<li>Feign：基于动态代理机制，根据注解和选择的机器，拼接请求 url 地址，发起请求。</li>
+<li>Ribbon：实现负载均衡，从一个服务的多台机器中选择一台。</li>
+<li>Hystrix：提供线程池，不同的服务走不同的线程池，实现了不同服务调用的隔离，避免了服务雪崩的问题。</li>
+<li>Zuul：网关管理，由 Zuul 网关转发请求给对应的服务。</li>
+</ul>
+
       
 
       
@@ -471,21 +344,1094 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">前端</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">安全</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
         		</li>
       		
 		</ul>
 	</div>
 
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/07/09/面试/Java/prevent-spiders/">展开全文 >></a>
+          <a class="article-more-a" href="/2019/05/27/面试/Java/十一.Spring BootSpring Cloud/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-面试/Java/十.SpringSpring MVC" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/26/面试/Java/十.SpringSpring MVC/">十.Spring/Spring MVC</a>
+    </h1>
+  
+
+        
+        <a href="/2019/05/26/面试/Java/十.SpringSpring MVC/" class="archive-article-date">
+  	<time datetime="2019-05-26T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <h2><span id="十springspring-mvc">十.Spring/Spring MVC</span></h2><h4><span id="1-为什么要使用-spring">1. 为什么要使用 spring？</span></h4><ul>
+<li>spring 提供 ioc 技术，容器会帮你管理依赖的对象，从而不需要自己创建和管理依赖对象了，更轻松的实现了程序的解耦。</li>
+<li>spring 提供了事务支持，使得事务操作变的更加方便。</li>
+<li>spring 提供了面向切片编程，这样可以更方便的处理某一类的问题。</li>
+<li>更方便的框架集成，spring 可以很方便的集成其他框架，比如 MyBatis、hibernate 等。</li>
+</ul>
+<h4><span id="2-解释一下什么是-aop">2. 解释一下什么是 aop？</span></h4><p>aop 是面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。</p>
+<p>简单来说就是统一处理某一“切面”（类）的问题的编程思想，比如统一处理日志、异常等。</p>
+<h4><span id="3-解释一下什么是-ioc">3. 解释一下什么是 ioc？</span></h4><p>ioc：Inversionof Control（中文：控制反转）是 spring 的核心，对于 spring 框架来说，就是由 spring 来负责控制对象的生命周期和对象间的关系。</p>
+<p>简单来说，控制指的是当前对象对内部成员的控制权；控制反转指的是，这种控制权不由当前对象管理了，由其他（类,第三方容器）来管理。</p>
+<h4><span id="4-spring-有哪些主要模块">4. spring 有哪些主要模块？</span></h4><ul>
+<li>spring core：框架的最基础部分，提供 ioc 和依赖注入特性。</li>
+<li>spring context：构建于 core 封装包基础上的 context 封装包，提供了一种框架式的对象访问方法。</li>
+<li>spring dao：Data Access Object 提供了JDBC的抽象层。</li>
+<li>spring aop：提供了面向切面的编程实现，让你可以自定义拦截器、切点等。</li>
+<li>spring Web：提供了针对 Web 开发的集成特性，例如文件上传，利用 servlet listeners 进行 ioc 容器初始化和针对 Web 的 ApplicationContext。</li>
+<li>spring Web mvc：spring 中的 mvc 封装包提供了 Web 应用的 Model-View-Controller（MVC）的实现。</li>
+</ul>
+<h4><span id="5-spring-常用的注入方式有哪些">5. spring 常用的注入方式有哪些？</span></h4><ul>
+<li>setter 属性注入</li>
+<li>构造方法注入</li>
+<li>注解方式注入</li>
+</ul>
+<h4><span id="6-spring-中的-bean-是线程安全的吗">6. spring 中的 bean 是线程安全的吗？</span></h4><p>spring 中的 bean 默认是单例模式，spring 框架并没有对单例 bean 进行多线程的封装处理。</p>
+<p>实际上大部分时候 spring bean 无状态的（比如 dao 类），所有某种程度上来说 bean 也是安全的，但如果 bean 有状态的话（比如 view model 对象），那就要开发者自己去保证线程安全了，最简单的就是改变 bean 的作用域，把“singleton”变更为“prototype”，这样请求 bean 相当于 new Bean()了，所以就可以保证线程安全了。</p>
+<ul>
+<li>有状态就是有数据存储功能。</li>
+<li>无状态就是不会保存数据。</li>
+</ul>
+<h4><span id="7-spring-支持几种-bean-的作用域">7. spring 支持几种 bean 的作用域？</span></h4><p>spring 支持 5 种作用域，如下：</p>
+<ul>
+<li>singleton：spring ioc 容器中只存在一个 bean 实例，bean 以单例模式存在，是系统默认值；</li>
+<li>prototype：每次从容器调用 bean 时都会创建一个新的示例，既每次 getBean()相当于执行 new Bean()操作；</li>
+<li>Web 环境下的作用域：</li>
+<li>request：每次 http 请求都会创建一个 bean；</li>
+<li>session：同一个 http session 共享一个 bean 实例；</li>
+<li>global-session：用于 portlet 容器，因为每个 portlet 有单独的 session，globalsession 提供一个全局性的 http session。</li>
+</ul>
+<p>注意： 使用 prototype 作用域需要慎重的思考，因为频繁创建和销毁 bean 会带来很大的性能开销。</p>
+<h4><span id="8-spring-自动装配-bean-有哪些方式">8. spring 自动装配 bean 有哪些方式？</span></h4><ul>
+<li>no：默认值，表示没有自动装配，应使用显式 bean 引用进行装配。</li>
+<li>byName：它根据 bean 的名称注入对象依赖项。</li>
+<li>byType：它根据类型注入对象依赖项。</li>
+<li>构造函数：通过构造函数来注入依赖项，需要设置大量的参数。</li>
+<li>autodetect：容器首先通过构造函数使用 autowire 装配，如果不能，则通过 byType 自动装配。</li>
+</ul>
+<h4><span id="9-spring-事务实现方式有哪些">9. spring 事务实现方式有哪些？</span></h4><ul>
+<li>声明式事务：声明式事务也有两种实现方式，基于 xml 配置文件的方式和注解方式（在类上添加 @Transaction 注解）。</li>
+<li>编码方式：提供编码的形式管理和维护事务。</li>
+</ul>
+<h4><span id="10-说一下-spring-的事务隔离">10. 说一下 spring 的事务隔离？</span></h4><p>spring 有五大隔离级别，默认值为 ISOLATION_DEFAULT（使用数据库的设置），其他四个隔离级别和数据库的隔离级别一致：</p>
+<p>ISOLATION_DEFAULT：用底层数据库的设置隔离级别，数据库设置的是什么我就用什么；</p>
+<p>ISOLATION<em>READ</em>UNCOMMITTED：未提交读，最低隔离级别、事务未提交前，就可被其他事务读取（会出现幻读、脏读、不可重复读）；</p>
+<p>ISOLATION<em>READ</em>COMMITTED：提交读，一个事务提交后才能被其他事务读取到（会造成幻读、不可重复读），SQL server 的默认级别；</p>
+<p>ISOLATION<em>REPEATABLE</em>READ：可重复读，保证多次读取同一个数据时，其值都和事务开始时候的内容是一致，禁止读取到别的事务未提交的数据（会造成幻读），MySQL 的默认级别；</p>
+<p>ISOLATION_SERIALIZABLE：序列化，代价最高最可靠的隔离级别，该隔离级别能防止脏读、不可重复读、幻读。</p>
+<p>脏读 ：表示一个事务能够读取另一个事务中还未提交的数据。比如，某个事务尝试插入记录 A，此时该事务还未提交，然后另一个事务尝试读取到了记录 A。</p>
+<p>不可重复读 ：是指在一个事务内，多次读同一数据。</p>
+<p>幻读 ：指同一个事务内多次查询返回的结果集不一样。比如同一个事务 A 第一次查询时候有 n 条记录，但是第二次同等条件下查询却有 n+1 条记录，这就好像产生了幻觉。发生幻读的原因也是另外一个事务新增或者删除或者修改了第一个事务结果集里面的数据，同一个记录的数据内容被修改了，所有数据行的记录就变多或者变少了。</p>
+<h4><span id="11-说一下-spring-mvc-运行流程">11. 说一下 spring mvc 运行流程？</span></h4><ul>
+<li>spring mvc 先将请求发送给 DispatcherServlet。</li>
+<li>DispatcherServlet 查询一个或多个 HandlerMapping，找到处理请求的 Controller。</li>
+<li>DispatcherServlet 再把请求提交到对应的 Controller。</li>
+<li>Controller 进行业务逻辑处理后，会返回一个ModelAndView。</li>
+<li>Dispathcher 查询一个或多个 ViewResolver 视图解析器，找到 ModelAndView 对象指定的视图对象。</li>
+<li>视图对象负责渲染返回给客户端。</li>
+</ul>
+<h4><span id="12-spring-mvc-有哪些组件">12. spring mvc 有哪些组件？</span></h4><ul>
+<li>前置控制器 DispatcherServlet。</li>
+<li>映射控制器 HandlerMapping。</li>
+<li>处理器 Controller。</li>
+<li>模型和视图 ModelAndView。</li>
+<li>视图解析器 ViewResolver。</li>
+</ul>
+<h4><span id="13-requestmapping-的作用是什么">13. @RequestMapping 的作用是什么？</span></h4><p>将 http 请求映射到相应的类/方法上。</p>
+<h4><span id="14-autowired-的作用是什么">14. @Autowired 的作用是什么？</span></h4><p>@Autowired 它可以对类成员变量、方法及构造函数进行标注，完成自动装配的工作，通过@Autowired 的使用来消除 set/get 方法。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/05/26/面试/Java/十.SpringSpring MVC/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-面试/Java/九.设计模式" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/25/面试/Java/九.设计模式/">九.设计模式</a>
+    </h1>
+  
+
+        
+        <a href="/2019/05/25/面试/Java/九.设计模式/" class="archive-article-date">
+  	<time datetime="2019-05-25T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-25</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <h2><span id="九设计模式">九.设计模式</span></h2><h4><span id="1-说一下你熟悉的设计模式">1. 说一下你熟悉的设计模式？</span></h4><ul>
+<li>单例模式：保证被创建一次，节省系统开销。</li>
+<li>工厂模式（简单工厂、抽象工厂）：解耦代码。</li>
+<li>观察者模式：定义了对象之间的一对多的依赖，这样一来，当一个对象改变时，它的所有的依赖者都会收到通知并自动更新。</li>
+<li>外观模式：提供一个统一的接口，用来访问子系统中的一群接口，外观定义了一个高层的接口，让子系统更容易使用。</li>
+<li>模版方法模式：定义了一个算法的骨架，而将一些步骤延迟到子类中，模版方法使得子类可以在不改变算法结构的情况下，重新定义算法的步骤。</li>
+<li>状态模式：允许对象在内部状态改变时改变它的行为，对象看起来好像修改了它的类。</li>
+</ul>
+<h4><span id="2-简单工厂和抽象工厂有什么区别">2. 简单工厂和抽象工厂有什么区别？</span></h4><ul>
+<li>简单工厂：用来生产同一等级结构中的任意产品，对于增加新的产品，无能为力。</li>
+<li>工厂方法：用来生产同一等级结构中的固定产品，支持增加任意产品。</li>
+<li>抽象工厂：用来生产不同产品族的全部产品，对于增加新的产品，无能为力；支持增加产品族。</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/05/25/面试/Java/九.设计模式/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-面试/Java/八.网络" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/23/面试/Java/八.网络/">八.网络</a>
+    </h1>
+  
+
+        
+        <a href="/2019/05/23/面试/Java/八.网络/" class="archive-article-date">
+  	<time datetime="2019-05-23T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <h2><span id="八网络">八.网络</span></h2><h4><span id="1-http-响应码-301-和-302-代表的是什么有什么区别">1. http 响应码 301 和 302 代表的是什么？有什么区别？</span></h4><p>301：永久重定向。</p>
+<p>302：暂时重定向。</p>
+<p>它们的区别是，301 对搜索引擎优化（SEO）更加有利；302 有被提示为网络拦截的风险。</p>
+<h4><span id="2-forward-和-redirect-的区别">2. forward 和 redirect 的区别？</span></h4><p>forward 是转发 和 redirect 是重定向：</p>
+<ul>
+<li>地址栏 url 显示：foward url 不会发生改变，redirect url 会发生改变；</li>
+<li>数据共享：forward 可以共享 request 里的数据，redirect 不能共享；</li>
+<li>效率：forward 比 redirect 效率高。</li>
+</ul>
+<h4><span id="3-简述-tcp-和-udp的区别">3. 简述 tcp 和 udp的区别？</span></h4><p>tcp 和 udp 是 OSI 模型中的运输层中的协议。tcp 提供可靠的通信传输，而 udp 则常被用于让广播和细节控制交给应用的通信传输。</p>
+<p>两者的区别大致如下：</p>
+<ul>
+<li>tcp 面向连接，udp 面向非连接即发送数据前不需要建立链接；</li>
+<li>tcp 提供可靠的服务（数据传输），udp 无法保证；</li>
+<li>tcp 面向字节流，udp 面向报文；</li>
+<li>tcp 数据传输慢，udp 数据传输快；</li>
+</ul>
+<h4><span id="4-tcp-为什么要三次握手两次不行吗为什么">4. tcp 为什么要三次握手，两次不行吗？为什么？</span></h4><p>如果采用两次握手，那么只要服务器发出确认数据包就会建立连接，但由于客户端此时并未响应服务器端的请求，那此时服务器端就会一直在等待客户端，这样服务器端就白白浪费了一定的资源。若采用三次握手，服务器端没有收到来自客户端的再此确认，则就会知道客户端并没有要求建立请求，就不会浪费服务器的资源。</p>
+<h4><span id="5-说一下-tcp-粘包是怎么产生的">5. 说一下 tcp 粘包是怎么产生的？</span></h4><p>tcp 粘包可能发生在发送端或者接收端，分别来看两端各种产生粘包的原因：</p>
+<ul>
+<li>发送端粘包：发送端需要等缓冲区满才发送出去，造成粘包；</li>
+<li>接收方粘包：接收方不及时接收缓冲区的包，造成多个包接收。</li>
+</ul>
+<h4><span id="6-osi-的七层模型都有哪些">6. OSI 的七层模型都有哪些？</span></h4><ul>
+<li>物理层：利用传输介质为数据链路层提供物理连接，实现比特流的透明传输。</li>
+<li>数据链路层：负责建立和管理节点间的链路。</li>
+<li>网络层：通过路由选择算法，为报文或分组通过通信子网选择最适当的路径。</li>
+<li>传输层：向用户提供可靠的端到端的差错和流量控制，保证报文的正确传输。</li>
+<li>会话层：向两个实体的表示层提供建立和使用连接的方法。</li>
+<li>表示层：处理用户信息的表示问题，如编码、数据格式转换和加密解密等。</li>
+<li>应用层：直接向用户提供服务，完成用户希望在网络上完成的各种工作。</li>
+</ul>
+<h4><span id="7-get-和-post-请求有哪些区别">7. get 和 post 请求有哪些区别？</span></h4><ul>
+<li>get 请求会被浏览器主动缓存，而 post 不会。</li>
+<li>get 传递参数有大小限制，而 post 没有。</li>
+<li>post 参数传输更安全，get 的参数会明文限制在 url 上，post 不会。</li>
+</ul>
+<h4><span id="8-如何实现跨域">8. 如何实现跨域？</span></h4><p>实现跨域有以下几种方案：</p>
+<ul>
+<li>服务器端运行跨域 设置 CORS 等于 *；</li>
+<li>在单个接口使用注解 @CrossOrigin 运行跨域；</li>
+<li>使用 jsonp 跨域；</li>
+</ul>
+<h4><span id="9-说一下-jsonp-实现原理">9. 说一下 JSONP 实现原理？</span></h4><p>jsonp：JSON with Padding，它是利用script标签的 src 连接可以访问不同源的特性，加载远程返回的“JS 函数”来执行的。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/05/23/面试/Java/八.网络/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-面试/Java/七.异常" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/22/面试/Java/七.异常/">七.异常</a>
+    </h1>
+  
+
+        
+        <a href="/2019/05/22/面试/Java/七.异常/" class="archive-article-date">
+  	<time datetime="2019-05-22T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <h2><span id="七异常">七.异常</span></h2><h4><span id="1-throw-和-throws-的区别">1. throw 和 throws 的区别？</span></h4><ul>
+<li>throw：是真实抛出一个异常。</li>
+<li>throws：是声明可能会抛出一个异常。</li>
+</ul>
+<h4><span id="2-final-finally-finalize-有什么区别">2. final、finally、finalize 有什么区别？</span></h4><ul>
+<li>final：是修饰符，如果修饰类，此类不能被继承；如果修饰方法和变量，则表示此方法和此变量不能在被改变，只能使用。</li>
+<li>finally：是 try{} catch{} finally{} 最后一部分，表示不论发生任何情况都会执行，finally 部分可以省略，但如果 finally 部分存在，则一定会执行 finally 里面的代码。</li>
+<li>finalize： 是 Object 类的一个方法，在垃圾收集器执行的时候会调用被回收对象的此方法。</li>
+</ul>
+<h4><span id="3-try-catch-finally-中哪个部分可以省略">3. try-catch-finally 中哪个部分可以省略？</span></h4><p>try-catch-finally 其中 catch 和 finally 都可以被省略，但是不能同时省略，也就是说有 try 的时候，必须后面跟一个 catch 或者 finally。</p>
+<h4><span id="4-try-catch-finally-中如果-catch-中-return-了finally-还会执行吗">4. try-catch-finally 中，如果 catch 中 return 了，finally 还会执行吗？</span></h4><p>finally 一定会执行，即使是 catch 中 return 了，catch 中的 return 会等 finally 中的代码执行完之后，才会执行。</p>
+<h4><span id="5-常见的异常类有哪些">5. 常见的异常类有哪些？</span></h4><ul>
+<li>NullPointerException 空指针异常</li>
+<li>ClassNotFoundException 指定类不存在</li>
+<li>NumberFormatException 字符串转换为数字异常</li>
+<li>IndexOutOfBoundsException 数组下标越界异常</li>
+<li>ClassCastException 数据类型转换异常</li>
+<li>FileNotFoundException 文件未找到异常</li>
+<li>NoSuchMethodException 方法不存在异常</li>
+<li>IOException IO 异常</li>
+<li>SocketException Socket 异常</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/05/22/面试/Java/七.异常/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-面试/Java/六.JavaWeb" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/21/面试/Java/六.JavaWeb/">六.Java Web</a>
+    </h1>
+  
+
+        
+        <a href="/2019/05/21/面试/Java/六.JavaWeb/" class="archive-article-date">
+  	<time datetime="2019-05-21T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <h2><span id="六java-web">六.Java Web</span></h2><h4><span id="1jsp和servlet有什么区别">1.JSP和servlet有什么区别？</span></h4><p>JSP是servlet技术的扩展，本质上就是servlet的简易方式。servlet和JSP最主要的不同点在于，servlet的应用逻辑是在Java文件中，并且完全从表示层中的html里分离开来，而JSP的情况是Java和html可以组合成一个扩展名为JSP的文件。JSP侧重于视图，servlet主要用于控制逻辑。</p>
+<h4><span id="2jsp有哪些内置对象作用分别是什么">2.JSP有哪些内置对象？作用分别是什么？</span></h4><p>JSP有9大内置对象：</p>
+<ul>
+<li><p>request：封装客户端的请求，其中包含来自get或post请求的参数；</p>
+</li>
+<li><p>response：封装服务器对客户端的响应；</p>
+</li>
+<li><p>pageContext：通过该对象可以获取其他对象；</p>
+</li>
+<li><p>session：封装用户会话的对象；</p>
+</li>
+<li><p>application：封装服务器运行环境的对象；</p>
+</li>
+<li><p>out：输出服务器响应的输出流对象；</p>
+</li>
+<li><p>config：Web应用的配置对象；</p>
+</li>
+<li><p>page：JSP页面对象（相当于java程序中的this）；</p>
+</li>
+<li><p>exception：封装页面抛出异常的对象。</p>
+<p>​</p>
+</li>
+</ul>
+<h4><span id="3说一下jsp的4种作用域">3.说一下JSP的4种作用域？</span></h4><ul>
+<li>page：代表与一个页面相关的对象和属性。</li>
+<li>request：代表与客户端发出的一个请求相关的对象和属性。一个请求可能跨越多个页面，涉及多个Web组件；需要在页面显示的临时数据可以置于此作用域。</li>
+<li>session：代表与某个用户与服务器建立的一次会话相关的对象和属性。跟某个用户相关的数据应该放在用户自己的session中。</li>
+<li>application：代表与整个Web应用程序相关的对象和属性，它实质上是跨越整个Web应用程序，包括多个页面、请求和会话的一个全局作用域。</li>
+</ul>
+<h4><span id="4session和cookie有什么区别">4.session和cookie有什么区别？</span></h4><ul>
+<li>存储位置不同：session存储在服务器端；cookie存储在浏览器端。</li>
+<li>安全性不同：cookie安全性一般，在浏览器存储，可以被伪造和修改。</li>
+<li>容量和个数限制：cookie有容量限制，每个站点下的cookie也有个数限制。</li>
+<li>存储的多样性：session可以存储在Redis中、数据库中、应用程序中；而cookie只能存储在浏览器中。</li>
+</ul>
+<h4><span id="5说一下session的工作原理">5.说一下session的工作原理？</span></h4><p>session的工作原理是客户端登录完成之后，服务器会创建对应的session，session创建完之后，会把session的id发送给客户端，客户端再存储到浏览器中。这样客户端每次访问服务器时，都会带着sessionid，服务器拿到sessionid之后，在内存找到与之对应的session这样就可以正常工作了。</p>
+<h4><span id="6如果客户端禁止cookie能实现session还能用吗">6.如果客户端禁止cookie能实现session还能用吗？</span></h4><p>可以用，session只是依赖cookie存储sessionid，如果cookie被禁用了，可以使用url中添加sessionid的方式保证session能正常使用。</p>
+<h4><span id="7spring-mvc和struts的区别是什么">7.spring mvc和struts的区别是什么？</span></h4><ul>
+<li><p>拦截级别：struts2是类级别的拦截；spring mvc是方法级别的拦截。</p>
+</li>
+<li><p>数据独立性：spring mvc的方法之间基本上独立的，独享request和response数据，请求数据通过参数获取，处理结果通过ModelMap交回给框架，方法之间不共享变量；而struts2虽然方法之间也是独立的，但其所有action变量是共享的，这不会影响程序运行，却给我们编码和读程序时带来了一定的麻烦。</p>
+</li>
+<li><p>拦截机制：struts2有以自己的interceptor机制，spring mvc用的是独立的aop方式，这样导致struts2的配置文件量比spring mvc大。</p>
+</li>
+<li><p>对ajax的支持：spring mvc集成了ajax，所有ajax使用很方便，只需要一个注解@ResponseBody就可以实现了；而struts2一般需要安装插件或者自己写代码才行。</p>
+<p>​</p>
+</li>
+</ul>
+<h4><span id="8如何避免sql注入">8.如何避免SQL注入</span></h4><ul>
+<li>使用预处理PreparedStatement。</li>
+<li>使用正则表达式过滤掉字符中的特殊字符。</li>
+</ul>
+<h4><span id="9什么是xss攻击如何避免">9.什么是XSS攻击，如何避免？</span></h4><p>XSS攻击：即跨站脚本攻击，它是Web程序中常见的漏洞。原理是攻击者往Web页面里插入恶意的脚本代码（css代码、JavaScript代码等），当用户浏览该页面时，嵌入其中的脚本代码会被执行，从而达到恶意攻击用户的目的，如盗取用户cookie、破坏页面结构、重定向到其他网站等。</p>
+<p>预防XSS的核心是必须对输入的数据做过滤处理。</p>
+<h4><span id="10什么是csrf攻击如何避免">10.什么是CSRF攻击，如何避免？</span></h4><p>CSRF：Cross-Site Request Forgery（中文：跨站请求伪造），可以理解为攻击者盗用了你的身份，以你的名义发送恶意请求，比如：以你名义发送邮件、发消息、购买商品、虚拟货币转账等。</p>
+<p>防御手段：</p>
+<ul>
+<li>验证请求来源地址；</li>
+<li>关键操作添加验证码；</li>
+<li>在请求地址添加token并验证。</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/05/21/面试/Java/六.JavaWeb/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-面试/Java/五.对象拷贝" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/20/面试/Java/五.对象拷贝/">五.对象拷贝</a>
+    </h1>
+  
+
+        
+        <a href="/2019/05/20/面试/Java/五.对象拷贝/" class="archive-article-date">
+  	<time datetime="2019-05-20T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-20</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <h2><span id="五对象拷贝">五.对象拷贝</span></h2><h4><span id="1为什么要使用克隆">1.为什么要使用克隆？</span></h4><p>克隆的对象可能包含一些已经修改过的属性，而new出来的对象都还是初始化时候的值，所以当需要一个对象来保存当前对象的“状态”就靠克隆方法了。</p>
+<h4><span id="2如何实现对象克隆">2.如何实现对象克隆？</span></h4><ul>
+<li><p>实现<strong>Cloneable</strong>接口并重写<strong>Object</strong>类中的clone()方法。</p>
+</li>
+<li><p>实现<strong>Serializable</strong>接口，通过对象的序列化和反序列化实现克隆，可以实现真正的深度克隆。</p>
+<p>​</p>
+</li>
+</ul>
+<h4><span id="3深拷贝和浅拷贝区别是什么">3.深拷贝和浅拷贝区别是什么？</span></h4><ul>
+<li>浅克隆：当对象被复制时只复制它本身和其中包含的值类型的成员变量，而引用类型的成员对象并没有复制。</li>
+<li>深克隆：除了对象本身被复制外，对象所包含的所有成员变量也将复制。</li>
+</ul>
+<p>​</p>
+<p>​</p>
+<p>​</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/05/20/面试/Java/五.对象拷贝/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-面试/Java/四.反射" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/19/面试/Java/四.反射/">四.反射</a>
+    </h1>
+  
+
+        
+        <a href="/2019/05/19/面试/Java/四.反射/" class="archive-article-date">
+  	<time datetime="2019-05-19T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <h2><span id="四反射">四.反射</span></h2><h4><span id="1什么是反射">1.什么是反射？</span></h4><p>反射是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法;对于任意一个对象，都能够调用它的任意一个方法和属性；这种动态获取的信息以及动态调用对象的方法的功能称为Java语言的反射机制。</p>
+<h4><span id="2什么是java序列化什么情况下需要序列化">2.什么是Java序列化？什么情况下需要序列化？</span></h4><p>Java序列化是为了保存各种对象在内存中的状态，并且可以把保存的对象状态再读出来。</p>
+<p>以下情况需要使用Java序列化：</p>
+<ul>
+<li><p>想把内存中的对象状态保存到一个文件中或者数据库中时候；</p>
+</li>
+<li><p>想用套接字在网络上传送对象的时候；</p>
+</li>
+<li><p>想通过RMI（远程方法调用）传输对象的时候；</p>
+<p>​</p>
+</li>
+</ul>
+<h4><span id="3动态代理是什么有哪些应用">3.动态代理是什么？有哪些应用？</span></h4><p>动态代理是运行时动态生成的代理类。</p>
+<p>动态代理的应用有<strong>spring aop、hibernate</strong>数据查询、测试框架的后端<strong>mock、rpc、Java</strong>注解对象获取等。</p>
+<p>​</p>
+<h4><span id="4怎么实现动态代理">4.怎么实现动态代理？</span></h4><p>JDK原生态代理和cglib动态代理。JDK原生动态代理是基于接口实现的，儿cglib是基于继承当前类的子类实现的。</p>
+<p>​</p>
+<p>​</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/05/19/面试/Java/四.反射/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-面试/Java/三.多线程" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/18/面试/Java/三.多线程/">三.多线程</a>
+    </h1>
+  
+
+        
+        <a href="/2019/05/18/面试/Java/三.多线程/" class="archive-article-date">
+  	<time datetime="2019-05-18T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-18</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <h2><span id="三多线程">三.多线程</span></h2><h4><span id="1-并行和并发有什么区别">1. 并行和并发有什么区别？</span></h4><ul>
+<li>并行：多个处理器或多核处理器同时处理多个任务。</li>
+<li>并发：多个任务在同一个 CPU 核上，按细分的时间片轮流(交替)执行，从逻辑上来看那些任务是同时执行。</li>
+</ul>
+<p>如下图：</p>
+<p><img src="/picture/content/java35-1.png" alt="并发和并行"></p>
+<p>并发 = 两个队列和一台咖啡机。</p>
+<p>并行 = 两个队列和两台咖啡机。</p>
+<h4><span id="2-线程和进程的区别">2. 线程和进程的区别？</span></h4><p>一个程序下至少有一个进程，一个进程下至少有一个线程，一个进程下也可以有多个线程来增加程序的执行速度。</p>
+<h4><span id="3-守护线程是什么">3. 守护线程是什么？</span></h4><p>守护线程是运行在后台的一种特殊进程。它独立于控制终端并且周期性地执行某种任务或等待处理某些发生的事件。在 Java 中垃圾回收线程就是特殊的守护线程。</p>
+<h4><span id="4-创建线程有哪几种方式">4. 创建线程有哪几种方式？</span></h4><p>创建线程有三种方式：</p>
+<ul>
+<li>继承 Thread 重写 run 方法；</li>
+<li>实现 Runnable 接口；</li>
+<li>实现 Callable 接口。</li>
+</ul>
+<h4><span id="5-说一下-runnable-和-callable-有什么区别">5. 说一下 runnable 和 callable 有什么区别？</span></h4><p>runnable 没有返回值，callable 可以拿到有返回值，callable 可以看作是 runnable 的补充。</p>
+<h4><span id="6-线程有哪些状态">6. 线程有哪些状态？</span></h4><p>线程的状态：</p>
+<ul>
+<li>NEW 尚未启动</li>
+<li>RUNNABLE 正在执行中</li>
+<li>BLOCKED 阻塞的（被同步锁或者IO锁阻塞）</li>
+<li>WAITING 永久等待状态</li>
+<li>TIMED_WAITING 等待指定的时间重新被唤醒的状态</li>
+<li>TERMINATED 执行完成</li>
+</ul>
+<h4><span id="1-sleep-和-wait-有什么区别">1. sleep() 和 wait() 有什么区别？</span></h4><ul>
+<li>类的不同：sleep() 来自 Thread，wait() 来自 Object。</li>
+<li>释放锁：sleep() 不释放锁；wait() 释放锁。</li>
+<li>用法不同：sleep() 时间到会自动恢复；wait() 可以使用 notify()/notifyAll()直接唤醒。</li>
+</ul>
+<h4><span id="8-notify和-notifyall有什么区别">8. notify()和 notifyAll()有什么区别？</span></h4><p>notifyAll()会唤醒所有的线程，notify()之后唤醒一个线程。notifyAll() 调用后，会将全部线程由等待池移到锁池，然后参与锁的竞争，竞争成功则继续执行，如果不成功则留在锁池等待锁被释放后再次参与竞争。而 notify()只会唤醒一个线程，具体唤醒哪一个线程由虚拟机控制。</p>
+<h4><span id="9-线程的-run-和-start-有什么区别">9. 线程的 run() 和 start() 有什么区别？</span></h4><p>start() 方法用于启动线程，run() 方法用于执行线程的运行时代码。run() 可以重复调用，而 start() 只能调用一次。</p>
+<h4><span id="10-创建线程池有哪几种方式">10. 创建线程池有哪几种方式？</span></h4><p>线程池创建有七种方式，最核心的是最后一种：</p>
+<ul>
+<li>newSingleThreadExecutor()：它的特点在于工作线程数目被限制为 1，操作一个无界的工作队列，所以它保证了所有任务的都是被顺序执行，最多会有一个任务处于活动状态，并且不允许使用者改动线程池实例，因此可以避免其改变线程数目；</li>
+<li>newCachedThreadPool()：它是一种用来处理大量短时间工作任务的线程池，具有几个鲜明特点：它会试图缓存线程并重用，当无缓存线程可用时，就会创建新的工作线程；如果线程闲置的时间超过 60 秒，则被终止并移出缓存；长时间闲置时，这种线程池，不会消耗什么资源。其内部使用 SynchronousQueue 作为工作队列；</li>
+<li>newFixedThreadPool(int nThreads)：重用指定数目（nThreads）的线程，其背后使用的是无界的工作队列，任何时候最多有 nThreads 个工作线程是活动的。这意味着，如果任务数量超过了活动队列数目，将在工作队列中等待空闲线程出现；如果有工作线程退出，将会有新的工作线程被创建，以补足指定的数目 nThreads；</li>
+<li>newSingleThreadScheduledExecutor()：创建单线程池，返回 ScheduledExecutorService，可以进行定时或周期性的工作调度；</li>
+<li>newScheduledThreadPool(int corePoolSize)：和newSingleThreadScheduledExecutor()类似，创建的是个 ScheduledExecutorService，可以进行定时或周期性的工作调度，区别在于单一工作线程还是多个工作线程；</li>
+<li>newWorkStealingPool(int parallelism)：这是一个经常被人忽略的线程池，Java 8 才加入这个创建方法，其内部会构建ForkJoinPool，利用Work-Stealing算法，并行地处理任务，不保证处理顺序；</li>
+<li>ThreadPoolExecutor()：是最原始的线程池创建，上面1-3创建方式都是对ThreadPoolExecutor的封装。</li>
+</ul>
+<h4><span id="11-线程池都有哪些状态">11. 线程池都有哪些状态？</span></h4><ul>
+<li>RUNNING：这是最正常的状态，接受新的任务，处理等待队列中的任务。</li>
+<li>SHUTDOWN：不接受新的任务提交，但是会继续处理等待队列中的任务。</li>
+<li>STOP：不接受新的任务提交，不再处理等待队列中的任务，中断正在执行任务的线程。</li>
+<li>TIDYING：所有的任务都销毁了，workCount 为 0，线程池的状态在转换为 TIDYING 状态时，会执行钩子方法 terminated()。</li>
+<li>TERMINATED：terminated()方法结束后，线程池的状态就会变成这个。</li>
+</ul>
+<h4><span id="12-线程池中-submit-和-execute-方法有什么区别">12. 线程池中 submit() 和 execute() 方法有什么区别？</span></h4><ul>
+<li>execute()：只能执行 Runnable 类型的任务。</li>
+<li>submit()：可以执行 Runnable 和 Callable 类型的任务。</li>
+</ul>
+<p>Callable 类型的任务可以获取执行的返回值，而 Runnable 执行无返回值。</p>
+<h4><span id="13-在-java-程序中怎么保证多线程的运行安全">13. 在 Java 程序中怎么保证多线程的运行安全？</span></h4><ul>
+<li>方法一：使用安全类，比如 Java. util. concurrent 下的类。</li>
+<li>方法二：使用自动锁 synchronized。</li>
+<li>方法三：使用手动锁 Lock。</li>
+</ul>
+<p>手动锁 Java 示例代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Lock lock = new ReentrantLock();</span><br><span class="line">lock. lock();</span><br><span class="line">try &#123;</span><br><span class="line">    System. out. println(&quot;获得锁&quot;);</span><br><span class="line">&#125; catch (Exception e) &#123;</span><br><span class="line">    // TODO: handle exception</span><br><span class="line">&#125; finally &#123;</span><br><span class="line">    System. out. println(&quot;释放锁&quot;);</span><br><span class="line">    lock. unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4><span id="14-多线程中-synchronized-锁升-级的原理是什么">14. 多线程中 synchronized 锁升 级的原理是什么？</span></h4><p>synchronized 锁升级原理：在锁对象的对象头里面有一个 threadid 字段，在第一次访问的时候 threadid 为空，jvm 让其持有偏向锁，并将 threadid 设置为其线程 id，再次进入的时候会先判断 threadid 是否与其线程 id 一致，如果一致则可以直接使用此对象，如果不一致，则升级偏向锁为轻量级锁，通过自旋循环一定次数来获取锁，执行一定次数之后，如果还没有正常获取到要使用的对象，此时就会把锁从轻量级升级为重量级锁，此过程就构成了 synchronized 锁的升级。</p>
+<p>锁的升级的目的：锁升级是为了减低了锁带来的性能消耗。在 Java 6 之后优化 synchronized 的实现方式，使用了偏向锁升级为轻量级锁再升级到重量级锁的方式，从而减低了锁带来的性能消耗。</p>
+<h4><span id="15-什么是死锁">15. 什么是死锁？</span></h4><p>当线程 A 持有独占锁a，并尝试去获取独占锁 b 的同时，线程 B 持有独占锁 b，并尝试获取独占锁 a 的情况下，就会发生 AB 两个线程由于互相持有对方需要的锁，而发生的阻塞现象，我们称为死锁。</p>
+<h4><span id="16-怎么防止死锁">16. 怎么防止死锁？</span></h4><ul>
+<li>尽量使用 tryLock(long timeout, TimeUnit unit)的方法(ReentrantLock、ReentrantReadWriteLock)，设置超时时间，超时可以退出防止死锁。</li>
+<li>尽量使用 Java. util. concurrent 并发类代替自己手写锁。</li>
+<li>尽量降低锁的使用粒度，尽量不要几个功能用同一把锁。</li>
+<li>尽量减少同步的代码块。</li>
+</ul>
+<h4><span id="17-threadlocal-是什么有哪些使用场景">17. ThreadLocal 是什么？有哪些使用场景？</span></h4><p>ThreadLocal 为每个使用该变量的线程提供独立的变量副本，所以每一个线程都可以独立地改变自己的副本，而不会影响其它线程所对应的副本。</p>
+<p>ThreadLocal 的经典使用场景是数据库连接和 session 管理等。</p>
+<h4><span id="18-说一下-synchronized-底层实现原理">18. 说一下 synchronized 底层实现原理？</span></h4><p>synchronized 是由一对 monitorenter/monitorexit 指令实现的，monitor 对象是同步的基本实现单元。在 Java 6 之前，monitor 的实现完全是依靠操作系统内部的互斥锁，因为需要进行用户态到内核态的切换，所以同步操作是一个无差别的重量级操作，性能也很低。但在 Java 6 的时候，Java 虚拟机 对此进行了大刀阔斧地改进，提供了三种不同的 monitor 实现，也就是常说的三种不同的锁：偏向锁（Biased Locking）、轻量级锁和重量级锁，大大改进了其性能。</p>
+<h4><span id="19-synchronized-和-volatile-的区别是什么">19. synchronized 和 volatile 的区别是什么？</span></h4><ul>
+<li>volatile 是变量修饰符；synchronized 是修饰类、方法、代码段。</li>
+<li>volatile 仅能实现变量的修改可见性，不能保证原子性；而 synchronized 则可以保证变量的修改可见性和原子性。</li>
+<li>volatile 不会造成线程的阻塞；synchronized 可能会造成线程的阻塞。</li>
+</ul>
+<h4><span id="20-synchronized-和-lock-有什么区别">20. synchronized 和 Lock 有什么区别？</span></h4><ul>
+<li>synchronized 可以给类、方法、代码块加锁；而 lock 只能给代码块加锁。</li>
+<li>synchronized 不需要手动获取锁和释放锁，使用简单，发生异常会自动释放锁，不会造成死锁；而 lock 需要自己加锁和释放锁，如果使用不当没有 unLock()去释放锁就会造成死锁。</li>
+<li>通过 Lock 可以知道有没有成功获取锁，而 synchronized 却无法办到。</li>
+</ul>
+<h4><span id="21-synchronized-和-reentrantlock-区别是什么">21. synchronized 和 ReentrantLock 区别是什么？</span></h4><p>synchronized 早期的实现比较低效，对比 ReentrantLock，大多数场景性能都相差较大，但是在 Java 6 中对 synchronized 进行了非常多的改进。</p>
+<p>主要区别如下：</p>
+<ul>
+<li>ReentrantLock 使用起来比较灵活，但是必须有释放锁的配合动作；</li>
+<li>ReentrantLock 必须手动获取与释放锁，而 synchronized 不需要手动释放和开启锁；</li>
+<li>ReentrantLock 只适用于代码块锁，而 synchronized 可用于修饰方法、代码块等。</li>
+<li>volatile 标记的变量不会被编译器优化；synchronized 标记的变量可以被编译器优化。</li>
+</ul>
+<h4><span id="22-说一下-atomic-的原理">22. 说一下 atomic 的原理？</span></h4><p>atomic 主要利用 CAS (Compare And Wwap) 和 volatile 和 native 方法来保证原子操作，从而避免 synchronized 的高开销，执行效率大为提升。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/05/18/面试/Java/三.多线程/">展开全文 >></a>
         </p>
       
 
@@ -518,7 +1464,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 
@@ -629,15 +1575,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">java面试</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">JAVA、Java面试</a>
+                <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
               </li>
             
             <div class="clearfix"></div>
