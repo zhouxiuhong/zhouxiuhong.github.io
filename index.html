@@ -146,6 +146,293 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-MySql基础/01.基础架构：一条SQL查询语句是如何执行的？ - 副本" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/09/MySql基础/01.基础架构：一条SQL查询语句是如何执行的？ - 副本/">01 | 基础架构：一条SQL查询语句是如何执行的？</a>
+    </h1>
+  
+
+        
+        <a href="/2019/08/09/MySql基础/01.基础架构：一条SQL查询语句是如何执行的？ - 副本/" class="archive-article-date">
+  	<time datetime="2019-08-09T06:15:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <h1><span id="01-基础架构一条sql查询语句是如何执行的">01 | 基础架构：一条SQL查询语句是如何执行的？</span></h1><p>林晓斌 2019-08-09 <a href="https://time.geekbang.org/column/article/115537" target="_blank" rel="noopener">地址</a></p>
+<p><img src="https://static001.geekbang.org/resource/image/8b/19/8bd193477badf9d1dfb51fb75cd64019.jpg" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from T where ID=10；</span><br></pre></td></tr></table></figure>
+<p>比如，你有个最简单的表，表里只有一个ID字段，在执行上面这个查询语句时，我们看到的只是输入一条语句，返回一个结果，却不知道这条语句在MySQL内部的执行过程。所以今天我想和你一起把MySQL拆解一下，看看里面都有哪些“零件”，希望借由这个拆解过程，让你对MySQL有更深入的理解。这样当我们碰到MySQL的一些异常或者问题时，就能够直戳本质，更为快速地定位并解决问题。</p>
+<p>下面我给出的是MySQL的基本架构示意图，从中你可以清楚地看到SQL语句在MySQL的各个功能模块中的执行过程。</p>
+<p><img src="/picture/content/mysql-01.png" alt="MySQL的逻辑架构图"></p>
+<p><img src="https://static001.geekbang.org/resource/image/0d/d9/0d2070e8f84c4801adbfa03bda1f98d9.png" alt="MySQL的逻辑架构图"></p>
+<p>大体来说，MySQL可以分为Server层和存储引擎层两部分。</p>
+<p>Server层包括连接器、查询缓存、分析器、优化器、执行器等，涵盖MySQL的大多数核心服务功能，以及所有的内置函数（如日期、时间、数学和加密函数等），所有跨存储引擎的功能都在这一层实现，比如存储过程、触发器、视图等。</p>
+<p>而存储引擎层负责数据的存储和提取。其架构模式是插件式的，支持InnoDB、MyISAM、Memory等多个存储引擎。现在最常用的存储引擎是InnoDB，它从MySQL5.5.5版本开始成为了默认存储引擎。</p>
+<p>也就是说，你执行create table 建表的时候，如果不指定引擎类型，默认使用的就是InnoDB。不过，你也可以通过指定存储引擎的类型来选择别的引擎，比如在create table 语句中使用 engine=memory，来指定使用内存引擎创建表。不同存储引擎的表数据存取方式不同，支持的功能也不同，在后面的文章中，我们会讨论到引擎的选择。</p>
+<p>从图中不难看出，不同的存储引擎共用一个  <strong>Server</strong> 层，也就是从连接器到执行器的部分。你可以先对每个组件的名字有个印象，接下来我会结合开头提到的那条SQL语句，带你走一遍整个执行流程，依次看下每个组件的作用。</p>
+<h4><span id="连接器">连接器</span></h4><p>第一步，你会先连接到这个数据库上，这时候接待你的就是连接器。连接器负责跟客户端建立连接、获取权限、维持和管理连接。连接命令一般是这么写的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -h$ip -P$port -u$user -p</span><br></pre></td></tr></table></figure>
+<p>输完命令之后，你就需要在交互对话里面输入密码。虽然密码也可以直接跟在-p后面写在命令行中，但这样可能会导致你的密码泄漏。如果你连的是生产服务器，强烈建议你不要这样做。</p>
+<p>连接命令中的mysql是客户端工具，用来跟服务端建立连接。在完成经典的TCP握手后，连接器就要开始认证你的身份，这个时候用的就是你输入的用户名和密码。</p>
+<ul>
+<li>如果用户名或密码不对，你就会收到一个“Access denied for user”的错误，然后客户端程序结束执行。</li>
+<li>如果用户名密码认证通过，连接器会到权限表里面查出你拥有的权限。之后，这个连接里面的权限判断逻辑，都将依赖于此时读到的权限。</li>
+</ul>
+<p>这就意味着，一个用户成功建立连接后，即使你用管理员账号对这个用户的权限做了修改，也不会影响已经存在连接的权限。修改完成后，只有再新建的连接才会使用行的权限设置。</p>
+<p>连接完成后，如果你没有后续的动作，这个连接就处于空闲状态，你可以在show processlist命令中看到它。文本中这个图是show processlist的结果，其中的Command列显示为“Sleep”的这一行，就表示现在系统里面有一个空闲连接。</p>
+<p><img src="/picture/content/mysql-01-2.png" alt=""></p>
+<p><img src="https://static001.geekbang.org/resource/image/f2/ed/f2da4aa3a672d48ec05df97b9f992fed.png" alt=""></p>
+<p>客户端如果太长时间没动静，连接器就会自动将它断开。这个时间是由参数wait_timeout控制的，默认值是8小时。</p>
+<p>如果在连接被断开之后，客户端再次发送请求的话，就会收到一个错误提醒：Lost connection to MySQL server during query。这时候如果你要继续，就需要重连，然后再执行请求了。</p>
+<p>数据库里面，长连接是指连接成功后，如果客户端持续有请求，则一直使用同一个连接。短连接则是指每次执行完很少的几次查询就断开连接，下次查询再重新建立一个。</p>
+<p>建立连接的过程通常是比较复杂的，所以我建议你在使用中要尽量减少建立连接的动作，也就是尽量使用长连接。</p>
+<p>但是全部使用长连接后，你可能会发现，有些时候MySQL占用内存涨得特别快，这是因为MySQL在执行过程中临时使用的内存是管理在连接对象里面的。这些资源会在连接断开的时候才释放。所以如果长连接累积下来，可能导致内存占用太大，被系统强行杀掉（OOM），从现象看就是MySQL异常重启了。</p>
+<p>1.定期断开长连接。使用一段时间，或者程序里面判断执行过一个占用内存的大查询后，断开连接，之后要查询再重连。</p>
+<p>2.如果你用的是MySQL5.7或更新版本，可以在每次执行一个比较大的操作后，通过执行mysql_reset_connection来重新初始化连接资源。这个过程不需要重连和重新做权限验证，但是会将连接恢复到刚刚创建完时的状态。</p>
+<h3><span id="查询缓存">查询缓存</span></h3><p>连接建立完成后，你就可以执行select语句了。执行逻辑就会来到第二部：查询缓存。</p>
+<p>MySQL拿到一个查询请求后，会先到查询缓存看看，之前是不是执行过这条语句。之前执行过的语句及其结果可能会以key-value对的形式，被直接缓存在内存中。key是查询的语句，value是查询的结果。如果你的查询能够直接在这个缓存中找到key，那么这个value就会被直接返回给客户端。</p>
+<p>如果语句不在查询缓存中，就会继续后面的执行阶段。执行完成后，执行结果会被存入查询缓存中。你可以看到，如果查询命中缓存，MySQL不需要执行后面的复杂操作，就可以直接返回结果，这个效率会很高。</p>
+<p><strong>但是大多数情况下我会建议你不要使用查询缓存，为什么呢？因为查询缓存往往弊大于利。</strong></p>
+<p>查询缓存的生效非常频繁，只要有对一个表的更新，这个表上所有的查询缓存都会被清空。因此很可能你费劲地把结果存起来，还没使用呢，就被一个更新全清空了。对于更新压力大的数据库来说，查询缓存的命中率会非常低。除非你的业务就是有一张静态表，很长时间才会更新一次。比如，一个系统配置表，那这张表上的查询才适合使用查询缓存。</p>
+<p>好在MySQL也提供了这种“按需使用”的方式。你可以将参数query_cache_type设置成DEMAND，这样对于默认的SQL语句都不使用查询缓存。而对于你确定要使用查询缓存的语句，可以用SQL_CACHE显式指定，像下面这个语句一样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select SQL_CACHE * from T where ID=10；</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，MySQL8.0版本直接将查询缓存的整块功能删掉了，也就是说8.0开始彻底没有这个功能了。</p>
+<h3><span id="分析器">分析器</span></h3><p>如果没有命中查询缓存，就要开始真正执行语句了。首先，MySQL需要知道你要做什么，因此需要对SQL语句做解析。</p>
+<p>分析器先会做“词法分析”。你输入的是由多个字符串和空格组成的一条SQL语句，MySQL需要识别出里面的字符串分别是什么，代表什么。</p>
+<p>MySQL从你输入的“select”这个关键字识别什么，这是一个查询语句。它也要把字符串“T”识别成“表名T”，把字符串“ID”识别成“列ID”。</p>
+<p>做完了这些识别以后，就要做“语法分析”。根据词法分析的结果，词法分析器会根据语法规则，判断你输入的这个SQL语句是否满足MySQL语法。</p>
+<p>如果你的语句不对，就会收到“You have an error in your SQL syntax”的错误提醒，比如下面这个语句select少打了开头的字母“s”。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; elect * from t where ID=1;</span><br><span class="line"></span><br><span class="line">ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near &apos;elect * from t where ID=1&apos; at line 1</span><br></pre></td></tr></table></figure>
+<p>一般语法错误会提示第一个出现的错误的位置，所以你要关注的是紧接“use near”的内容。</p>
+<h3><span id="优化器">优化器</span></h3><p>经过了分析器，MySQL就知道你要做什么了。在开始执行之前，还要先经过优化器的处理。</p>
+<p>优化器是在表里面有多个索引的时候，决定使用哪个索引；或者在一个语句有多表关联（join）的时候，决定各个表的连接顺序。比如你执行下面这样的语句，这个语句是执行两个表的join：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from t1 join t2 using(ID)  where t1.c=10 and t2.d=20;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>既可以先从表t1里面取出c=10的记录的ID值，再根据ID值关联到表t2，再判断t2里面d的值是否等于20。</li>
+<li>也可以先从表t2里面取出d=20的记录的ID值，再根据ID值关联到t1，再判断t1里面c的值是否等于10。</li>
+</ul>
+<p>这两种执行方法的逻辑结果是一样的，但是执行的效率会有不同，而优化器的作用就是决定选择使用哪一个方案。</p>
+<p>优化器阶段完成后，这个语句的执行方案就确定下来了，然后进入执行器阶段。如果你还有一些疑问，比如优化器是怎么选择索引的，有没有可能选择错等等，没关系，我会在后面的文章中单独展开说明优化器的内容。</p>
+<h3><span id="执行器">执行器</span></h3><p>MySQL通过分析器知道了你要做什么，通过优化器知道了该怎么做，于是就进入了执行器阶段，开始执行语句。</p>
+<p>开始执行的时候，要先判断一下你对这个表T有没有执行查询的权限，如果没有，就会返回没有权限的错误，如下所示（在工程实现上，如果命中查询缓存，会在查询缓存返回结果的时候，做权限验证。查询也会在优化器之前调用precheck验证权限）。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from T where ID=10;</span><br><span class="line"></span><br><span class="line">ERROR 1142 (42000): SELECT command denied to user &apos;b&apos;@&apos;localhost&apos; for table &apos;T&apos;</span><br></pre></td></tr></table></figure>
+<p>如果有权限，就打开表继续执行。打开表的时候，执行器就会根据表的引擎定义，去使用这个引擎提供的接口。</p>
+<p>比如我们这个例子中的表T中，ID字段没有索引，那么执行器的执行流程是这样的：</p>
+<ol>
+<li>调用InnoDB引擎接口取这个表的第一行，判断ID值是不是10，如果不是则跳过，如果是则将这行存在结果集中；</li>
+<li>调用引擎接口取“下一行”，重复相同的判断逻辑，直到取到这个表的最后一行。</li>
+<li>执行器将上述遍历过程中所有满足条件的行组成的记录集作为结果集返回给客户端。</li>
+</ol>
+<p>至此，这个语句就执行完成了。</p>
+<p>对于有索引的表，执行的逻辑也差不多。第一次调用的是“取满足条件的第一行”这接口，之后循环取“满足条件的下一行”这个接口，这些接口都是引擎中已经定义好的。</p>
+<p>你会在数据库的慢查询日志中看到一个rows_examined的字段，表示这个语句执行过程中扫描了多少行。这个值就是在执行器每次调用引擎获取数据行的时候累加的。</p>
+<p>在这些场景下，执行器调用一次，在引擎内部则扫描了多行，因此 <strong>引擎扫描行数跟rows_examined并不是完全相同的。</strong> 我们后面会专门有一篇文章来讲存储引擎的内部机制，里面会有详细的说明。</p>
+<h3><span id="小结">小结</span></h3><p>今天我给你介绍了MySQL的逻辑架构，希望你对一个SQL语句完成执行流程的各个阶段有了一个初步的印象。由于篇幅的限制，我只是用一个查询的列子将各个环节过了一遍。如果你还对每个环节的展开细节存有疑问，也不用担心，后续在实战章节中我还会再提到它们。</p>
+<p>我给你留一个问题吧，如果表T中没有字段k，而你执行了这个语句select * from T where k=1,那肯定是会报“不存在这个列”的错误：“Unknown column ‘k’ in ‘where clause’ ”。你觉得这个错误是在我们上面提到的哪个阶段报出来的呢？</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MYSQL</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/08/09/MySql基础/01.基础架构：一条SQL查询语句是如何执行的？ - 副本/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-MySql基础/02.日志架构：一条SQL更新语句是如何执行的？" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/09/MySql基础/02.日志架构：一条SQL更新语句是如何执行的？/">02 | 日志架构：一条SQL更新语句是如何执行的？</a>
+    </h1>
+  
+
+        
+        <a href="/2019/08/09/MySql基础/02.日志架构：一条SQL更新语句是如何执行的？/" class="archive-article-date">
+  	<time datetime="2019-08-09T06:15:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <h1><span id="02-日志架构一条sql更新语句是如何执行的">02 | 日志架构：一条SQL更新语句是如何执行的？</span></h1><p>林晓斌 2019-08-09 <a href="https://time.geekbang.org/column/article/115537" target="_blank" rel="noopener">地址</a></p>
+<p><img src="https://static001.geekbang.org/resource/image/7e/7d/7e43cabc6f9e71f8a1292c86d40a237d.jpg" alt=""></p>
+<p>前面我们系统了解了一个查询语句的执行流程，并介绍了执行过程中涉及的处理模块。相信你还记得，一条查询语句的执行过程一般是经过连接器、分析器、优化器、执行器等功能模块，最后到达存储引擎。</p>
+<p>那么，一条更新语句的执行流程又是怎样的呢？</p>
+<p>之前你可能经常听DBA同事说，MySQL可以恢复到半个月内任意一秒的状态，惊叹的同时，你是不是心中也不免会好奇，这是怎样做到的呢？</p>
+<p>我们还是从一个表的一条更新语句说起，下面是这个表的创建语句，这个表有一个主键ID和一个整型字段c：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table T(ID int primary key, c int);</span><br></pre></td></tr></table></figure>
+<p>如果要将ID = 2 这一行的值加1，SQL语句就会这么写：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; update T set c=c+1 where ID=2;</span><br></pre></td></tr></table></figure>
+<p>前面我有跟你介绍过SQL语句基本的执行链路，这里我再把那张图拿过来，你也可以先简单看看这个图回顾下。首先，可以确定的说，查询语句的那一套流程，更新语句也是同样会走一遍。</p>
+<p><img src="/picture/content/mysql-01.png" alt="MySQL的逻辑架构图"></p>
+<p><img src="https://static001.geekbang.org/resource/image/0d/d9/0d2070e8f84c4801adbfa03bda1f98d9.png" alt="MySQL的逻辑架构图"></p>
+<p>你执行语句前要先连接数据库，这是连接器的工作。</p>
+<p>前面我们说过，在一个表上有更新的时候，跟这个表有关的查询缓存会失效，所以这条语句就会把表T上所有缓存结果都清空。这也就是我们一般不建议使用查询缓存的原因。</p>
+<p>接下来，分析器会通过词法和语法解析知道这是一条更新语句。优化器决定要使用ID这个索引。然后，执行器负责具体执行，找到这一行，然后更新。</p>
+<p>与查询流程不一样的是，更新流程还涉及两个重要的日志模块，它们正是我们今天要讨论的主角：redo log（重做日志）和binlog（归档日志）。如果接触MySQL，那这两个词肯定是绕不过的，我后面的内容里也会不断地和你强调。不过话说回来，redo log 和binlog在设计上有很多有意思的地方，这些涉及思路也可以用到你自己的程序里。</p>
+<h3><span id="重要的日志模块redo-log">重要的日志模块：redo log</span></h3><p>不知道你还记不记得《孔乙已》这篇文章，酒店掌柜有一个粉板，专门用来记录客人的赊账记录。如果赊账的人不多，那么他可以把顾客名和账目写在板上。但如果赊账的人多了，粉板总会有记不下的时候，这个时候掌柜一定还有一个专门记录赊账的账本。</p>
+<p>如果有人要赊账或者还帐的话，掌柜一般有两种做法：</p>
+<ul>
+<li>一种做法是直接把账本翻出来，把这次赊的账加上去或者扣除掉；</li>
+<li>另一种做法是先在粉板上记下这次的账，等打烊以后再把账本放出来核算。</li>
+</ul>
+<p>在生意红火柜台很忙时，掌柜一定会选择后者，因为前者操作实在是太麻烦了。首先，你得找到这个人的赊账总额那条记录。你想想，密密麻麻几十页，掌柜要找到那个名字，可能还得带上老花镜慢慢找，找到之后再拿出算盘计算，最后再将结果写回账本上。</p>
+<p>这整个过程想想都麻烦。相比之下，还是先在粉板上记一下方便。你想想，如果掌柜没有粉板的帮助，每次记账都得翻账本，效率是不是低得让人难以忍受？</p>
+<p>同样，在MySQL里也有这个问题，如果每一次的更新操作都需要写进磁盘，然后磁盘也要找到对应的那条记录，然后再更新，整个过程IO成本、查找成本都很高。为了解决整个问题，MySQL的设计者就用了类似酒店掌柜粉板的思路来提升更新效率。</p>
+<p>而粉板和账本配合的整个过程，其实就是MySQL里经常说到的WAL技术，WAL的全称是Write-Ahead Logging，它的关键点就是先写日志，再写磁盘，也就是先写粉板，等不忙的时候再写账本。</p>
+<p>具体来说，当有一条记录需要更新的时候，InnoDB引擎就会先把记录写到redo log（粉板）里面，并更新内存，这个时候更新就算完成了。同事，InnoDB引擎会在适当的时候，将这个操作记录更新到磁盘里面，而这个更新往往是在系统比较空闲的时候做，这就像打烊以后掌柜做的事。</p>
+<p>如果今天赊账的不多，掌柜可以等打烊后再整理。但如果某天赊账的特别多，粉板写满了，又怎么办呢？这个时候掌柜只好放下手中的活儿，把粉板中的一部分赊账记录更新到账本中，然后把这些记录从粉板上擦掉，为记新帐腾出空间。</p>
+<p>与此类似，InnoDB的redo log 是固定大小的，比如可以配置为一组4个文件，每个文件的大小是1GB，那么这块“粉板”总共就可以记录4GB的操作。从头开始写，写到末尾就又回到开头循环写，如下面这图所示。</p>
+<p><img src="/picture/content/mysql-02.png" alt=""></p>
+<p><img src="https://static001.geekbang.org/resource/image/16/a7/16a7950217b3f0f4ed02db5db59562a7.png" alt=""></p>
+<p>write pos是当前记录的位置，一边写一边后移，写到第3号文件末尾后就回到0号文件开头。checkpoint是当前要擦除的位置，也是往后推移并且循环的，擦除记录前要把记录更新到数据文件。</p>
+<p>write pos 和checkpoint之间的是“粉板”上还空着的部分，可以用来记录新的操作。如果write pos追上checkpoint，表示“粉板”满了，这时候不能再执行新的更新，得停下来先擦掉一些记录，把checkpoint推进一下。</p>
+<p>有了redo log，InnoDB就可以保证即使数据库发生异常重启，之前提交的记录都不会丢失，这个能力称为 <strong>crash-safe</strong> 。</p>
+<p>要理解crash-safe这个概念，可以想想我们前面赊账记录的例子。只要赊账记录记在了粉板上或写在了账本上，之后即使掌柜忘记了，比如突然停业几天，恢复生意后依然可以通过账本和粉板上的数据明确赊账账目。</p>
+<h3><span id="重要的日志模块binlog">重要的日志模块：binlog</span></h3><p>前面我们讲过，MySQL整体来看，其实就有两块：一块是Server层，它主要做的是MySQL功能层面的事情；还有一块是引擎层，负责存储相关的具体事宜。上面我们聊到的粉板redo log是InnoDB引擎特有的日志，而Server层也有自己的日志，称为binlog（归档日志）。</p>
+<p>我想你肯定会问，为什么会有两份日志呢？</p>
+<p>因为最开始MySQL里并没有InnoDB引擎。MySQL自带的引擎是MyISAM，但是MyISAM没有crash-safe的能力，binlog日志只能用于归档。而InnoDB是另一个公司以插件形式引入MySQL的，既然指依靠binlog是没有crash-safe能力的，所以InnoDB使用另外一套日志系统——也就是redo log 来实现crash-safe能力。</p>
+<p>这两种日志有以下三点不同。</p>
+<ol>
+<li>redo log是InnoDB引擎特有的；binlog是MySQL的Server层实现的，所有引擎都可以使用。</li>
+<li>redo log是物理日志，记录的是“在某个数据页上做了什么修改”；binlog是逻辑日志，记录的是这个语句的原始逻辑，比如 “给ID = 2这一行的c字段加1”。</li>
+<li>redo log 是循环写的，空间固定会用完；binlog 是可以追加写入的。 “追加写” 是指binlog文件写到一定大小后会切换到下一个，并不会覆盖以前的日志。</li>
+</ol>
+<p>有了对这两个日志的概念性理解，我们再来看执行器和InnoDB引擎在执行这个简单的update语句时的内部流程。</p>
+<ol>
+<li>执行器先找引擎取ID = 2 这一行。ID是主键，引擎直接用树搜索找到这一行。如果ID = 2这一行所在的数据页本来就在内存中，就直接返回给执行器；否则，需要先从磁盘读入内存，然后再返回。</li>
+<li>执行器拿到引擎给的行数据，把这个值加上1，比如原来是N，现在就是N+1，得到新的一行数据，再调用引擎接口写入这行数据。</li>
+<li>引擎将这行新数据更新到内存中，同时将这个更新操作记录到redo log里面，此时redo log 处于prepare状态。然后告知执行器执行完成了，随时可以提交事务。</li>
+<li>执行器生成这个操作的binlog，并把binlog写入磁盘。</li>
+<li>执行器调用引擎的提交事务接口，引擎把刚刚写入的redo log改成提交（commit）状态，更新完成。</li>
+</ol>
+<p>这里我给出这个update语句的执行流程图，图中浅色框表示是在InnoDB内部执行的，深色框表示是在执行器中执行的。</p>
+<p><img src="/picture/content/mysql-02-2.png" alt="update语句执行流程"></p>
+<p><img src="https://static001.geekbang.org/resource/image/2e/be/2e5bff4910ec189fe1ee6e2ecc7b4bbe.png" alt=""></p>
+<p>你可能注意到了，最后三步看上去有点“绕”，将redo log的写入拆成了两个步骤：prepare和commit，这就是“两阶段提交”。</p>
+<h3><span id="两阶段提交">两阶段提交</span></h3><p>为什么必须有“两阶段提交”呢？这是为了让两份日志之间的逻辑一致。要说明这个问题，我们得从文章开头的那个问题说起： <strong>怎样让数据库恢复到半个月内任意一秒的状态？</strong></p>
+<p>前面我们说过了，binlog会记录所有的逻辑操作，并且是采用 “追加写” 的形式。如果你的DBA承诺说半个月内可以恢复，那么备份系统中一定会保存最近半个月的所有binlog，同时系统会定期做整库备份。这里的“定期”取决于系统的重要性，可以是一天一备，也可以是一周一备。</p>
+<p>当需要恢复到指定的某一秒时，比如某天下午两点发现中午十二点有一次误删表，需要找回数据，那你可以这么做：</p>
+<ul>
+<li>首先，找到最近的一次全量备份，如果你运气好，可能就是昨天晚上的一个备份，从这个备份恢复到临时库；</li>
+<li>然后，从备份的时间点开始，将备份的binlog依次取出来，重放到中午误删表之前的那个时刻。</li>
+</ul>
+<p>这样你的临时库就跟误删之前的线上库一样了，然后你可以把表数据从临时库取出来，按需要恢复到线上库去。<br>好了，说完了数据恢复过程，我们回来说说，为什么日志需要“两阶段提交”。这里不妨用反证法来进行解释。</p>
+<p>由于redo log和binlog是两个独立的逻辑，如果不用两阶段提交，要么就是先写完redo log再写binlog，或者采用反过来的顺序。我们看看这两种方式会有什么问题。</p>
+<p>仍然用前面的update语句做例子。假设当前ID=2的行，字段c的值是0，再假设执行update语句过程中在写完第一个日志后，第二个日志还没有写完期间发生了crash，会出现什么情况呢？</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MYSQL</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/08/09/MySql基础/02.日志架构：一条SQL更新语句是如何执行的？/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-tags/随笔" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
@@ -719,6 +1006,161 @@
 
 
   
+    <article id="post-第8讲-对比Vector、ArrayList、LinkedList有何区别" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/08/第8讲-对比Vector、ArrayList、LinkedList有何区别/">第8讲 | String、StringBuffer、StringBuilder有什么区别？</a>
+    </h1>
+  
+
+        
+        <a href="/2019/06/08/第8讲-对比Vector、ArrayList、LinkedList有何区别/" class="archive-article-date">
+  	<time datetime="2019-06-08T03:17:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <p><strong>对比Vector、ArrayList、LinkedList有何区别？</strong></p>
+<p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/7810" target="_blank" rel="noopener">https://time.geekbang.org/column/article/7810</a></p>
+<p><strong>典型回答</strong></p>
+<p>这三者都是实现集合框架中的list，也就是所谓的有序集合，因此具体功能也比较近似，比如都提供按照位置进行定位、添加或者删除的操作，都提供迭代器以遍历其内容等。但因为具体的设计区别，在行为、性能、线程安全等方面，表现又有很大不同。</p>
+<p>Vector是Java早期提供的 <strong>线程安全的动态数组</strong> ，如果不需要线程安全，并不建议选择，毕竟同步是有额外开销的。Vector内部是使用对象数组来保存数据，可以根据需要自动的增加容量，当数组已满时，会创建新的数组，并拷贝原有数组数据。</p>
+<p>ArrayList是应用更加广泛的 <strong>动态数组</strong> 实现，它本身不是线程安全的，所以性能要好很多。与Vector近似，ArrayList也是可以根据需要调整容量，不过两者的调整逻辑有所区别，Vector在扩容时会提高1倍，而ArrayList则是增加50%。</p>
+<p>LinkedList顾名思义是Java提供的 <strong>双向链表</strong> ，所以它不需要像上面两种那样调整容量，它也不是线程安全的。</p>
+<p><strong>考点分析</strong></p>
+<p>似乎从我接触Java开始，这个问题就一直是经典的面试题，前面我的回答覆盖了三者的一些基本的设计何实现。</p>
+<p>一般来说，也可以补充一下不同容器类型适合的场景：</p>
+<ul>
+<li><p>Vector和ArrayList作为动态数组，其内部元素以数组形式顺序存储的，所以非常适合随机访问的场合。除了尾部插入和删除元素，往往性能会相应较差，比如我们在中间位置插入一个元素，需要移动后续所有元素。</p>
+</li>
+<li><p>而LinkedList进行节点插入、删除却要高效得多，但是随机访问性能则要比动态数组慢。</p>
+<p>所以，在应用开发中，如果事先可以估计到，应用操作是偏向于插入、删除，还是随机访问较多，就可以针对性的进行选择。这也是面试最常见的一个考察角度，给定一个场景，选择适合的数据结构，所以对于这种典型选择一定要掌握清楚。</p>
+</li>
+</ul>
+<p>考察java集合框架，我觉得有很多方面需要掌握：</p>
+<ul>
+<li>java集合框架的设计结构，至少要有一个整体印象。</li>
+<li>java提供的主要容器（集合和Map）类型，了解或掌握对应的 <strong>数据结构、算法</strong>  ， 思考具体技术选择。</li>
+<li>将问题扩展到性能、并发等领域。</li>
+<li>集合框架的演进与发展。</li>
+</ul>
+<p>作为java专栏，我会在尽量围绕java相关进行扩展，否则光是罗列集合部分涉及的数据结构就要占用很大篇幅。这并不代表那些不重要，数据结构和算法是基本功，往往也是必考的点，有些公司甚至以考察这些方面而非常知名。我这里以需要掌握典型排序算法为例，你至少需要熟知：</p>
+<ul>
+<li>内部排序，至少掌握基础算法如归并排序、交换排序（冒泡、快排）、选择排序、插入排序等。</li>
+<li>外部排序，掌握利用内存和外部存储处理超大数据集，至少要理解过程和思路。</li>
+</ul>
+<p>考察算法不仅仅是如何简单实现，面试官往往会刨根问底，比如哪些是排序是不稳定的呢（快排、堆排），或者思考稳定意味着什么；对不同数据集，各种排序的最好或最差情况；从某个角度如何进一步优化（比如空间占用，假设业务场景需要最小辅助空间，这个角度堆排序就比归并优异）等，从简单的了解，到进一步的思考，面试官通常还会观察面试者处理问题和沟通时的思路。</p>
+<p>以上只是一个方面的例子，建议学习相关书籍，如《算法导论》《编程珠玑》等，或相关<a href="https://www.coursera.org/learn/algorithms-part1" target="_blank" rel="noopener">教程</a> 。对于特定领域，比如推荐系统，建议咨询领域专家。单纯从面试的角度，很多朋友推荐使用一些算法网站如LeetCode等，帮助复习和准备面试，但坦白说我并没有刷过这些算法题，这也是仁者见仁智者见智的事情，招聘时我更倾向于考察面试者自身最擅长的东西，免得招到纯面试高手。</p>
+<p><strong>知识扩展</strong></p>
+<p>我们先一起来理解集合框架的整体设计，为了有个直观的印象，我画了一个简要的类图。注意，为了避免混淆，我这里没有把java.util.concurrent下面的线程安全容器添加进来；也没有列出Map容器，虽然通常概念上我们也会把Map作为集合框架的一部分，但是它本身并不是真正的集合（Collection）。</p>
+<p>所以，我今天主要围绕侠义的集合框架，其他都会在专栏后面的内容进行讲解。</p>
+<p><img src="/picture/content/java36-8.png" alt=""></p>
+<p>我们可以看到Java的集合框架，Collection接口是所有集合的根，然后扩展开提供了三大类集合，分别是：</p>
+<ul>
+<li>List，也就是我们前面介绍更多的有序集合，它提供了方便的访问、插入、删除等操作。</li>
+<li>Set，Set是不允许重复元素的，这是和List最明显的区别，也就是不存在两个对象equals返回true。我们在日常开发中有很多需要保证元素唯一性的场合。</li>
+<li>Queue/Deque，则是Jave提供的标准队列结构的实现，除了集合的基本功能，它还支持类似先入先出（FIFO,First-in-First-Out）或者后入先出（LIFO，Last-In-First-Out）等特定行为。这里不包括BlockingQueue，因为通常是并发编程场合，所以被放置在并发包里。</li>
+</ul>
+<p>每种集合的通用逻辑，都被抽象到相应的抽象类之中，比如AbstractList就集中了各种List操作的通用部分。这些集合不是完全孤立的，比如，LinkedList本身，既是List，也是Deque哦。</p>
+<p>如果阅读过更多 <a href="http://hg.openjdk.java.net/jdk/jdk/file/bf9177eac58d/src/java.base/share/classes/java/util/TreeSet.java" target="_blank" rel="noopener">源码</a> ，你会发现，其实，TreeSet代码里实际默认是利用TreeMap实现的，Java类库创建了一个Dummy对象 “PRESENT” 作为value，然后所有插入的元素其实是以键的形式放入了TreeMap里面；同理，HashSet其实也是以HashMap为基础实现的，原来他们只是Map类的马甲！</p>
+<p>就像前面提到过的，我们需要对各种具体集合实现，至少了解基本特征和典型使用场景，以Set的几个实现为例：</p>
+<ul>
+<li>TreeSet支持自然顺序访问，但是添加、删除、包含等操作要相对低效（log（n）时间）。</li>
+<li>HashSet则是利用哈希算法，理想情况下，如果哈希散列正常，可以提供常数时间的添加、删除、包含等操作，但是它不保证有序。</li>
+<li>LinkedHashSet，内部构建了一个记录插入顺序的双向链表，因此提供了按照插入顺序遍历的能力，与此同时，也保证了常数时间的添加、删除、包含等操作，这些操作性能略低于HashSet，因此需要维护链表的开销。</li>
+<li>在遍历元素时HashSet性能受自身容量影响，所以初始化时，除非有必要，不然不要将其背后的HashMap容量设置过大。而对于LinkedHashSet，由于其内部链表提供的方便，便利性能只和元素多少有关系。</li>
+</ul>
+<p>我今天介绍的这些集合类，都不是线程安全的，对于java.util.concurrent里面的线程安全容器，我在专栏后面回去介绍。但是，并不代表这些集合完全不能支持并发编程的场景，在Collections工具类中，提供了一系列的synchronized方法，比如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">static &lt;T&gt; List&lt;T&gt; synchronizedList(List&lt;T&gt; list)</span><br></pre></td></tr></table></figure>
+<p>我们完全可以利用类似方法来实现基本的线程安全集合：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List list = Collections.synchronizedList(new ArrayList());</span><br></pre></td></tr></table></figure>
+<p>它的实现，基本就是将每个基本方法，比如get、set、add之类，都通过synchronizd添加基本的同步支持，非常简单粗暴，但也非常实用。注意这些方法创建的线程安全集合，都符合迭代时fail-fast行为，当发生意外的并发修改时，尽早抛出ConcurrentModificationException异常，以避免不可预计的行为。</p>
+<p>另外一个经常会被考察到的问题，就是理解java提供的默认排序算法，具体是什么排序方式以及设计思路等。</p>
+<p>这个问题本身就是有点陷阱的意味，因为需要区分是Arrays.sort()还是Collections.sort()（底层是调用Arrays.sort()）；什么数据类型；多大的数据集（太小的数据集，复杂排序是没必要的，java会直接进行二分插入排序）等。</p>
+<ul>
+<li>对于原始数据类型，目前使用的是所谓双轴快速排序（Dual-Pivot QuickSort），是一种改进的快速排序算法，早期版本是相对传统的快速排序，你可以阅读 <a href="http://hg.openjdk.java.net/jdk/jdk/file/26ac622a4cab/src/java.base/share/classes/java/util/DualPivotQuicksort.java" target="_blank" rel="noopener">源码</a> 。</li>
+<li>而对于对象数据类型，目前则是使用 <a href="http://hg.openjdk.java.net/jdk/jdk/file/26ac622a4cab/src/java.base/share/classes/java/util/TimSort.java" target="_blank" rel="noopener">TimSort</a> ,思想上也是一种归并和二分插入排序（binarySort）结合的优化排序算法。TimSort并不是Java的独创，简单说它的思路是查找数据集中已经排好序的分区（这里叫run），然后合并这些分区来达到排序的目的。</li>
+</ul>
+<p>另外，java8引入了并行排序算法（直接使用parallelSort方法），这是为了充分利用现代多核处理器的计算能力，底层实现基于fork-join框架，当处理的数据集比较小的时候，差距不明显，甚至还表现差一点；但是，当数据集增长到数万或百万以上时，提高就非常大了，具体还是取决于处理器和系统环境。</p>
+<p>排序算法仍然在不断改进，最近双轴快速排序实现的作者提交了一个更进一步的改进，历时多年的研究，目前真正审核和验证阶段。根据作者的性能测试对比，相比于基于归并排序的实现，新改进可以提高随机数据排序速度提高10%~20%，甚至在其他特征的数据集上也有几倍的提高，有兴趣的话你可以参考具体代码和介绍：<a href="http://mail.openjdk.java.net/pipermail/core-libs-dev/2018-January/051000.html" target="_blank" rel="noopener">代码</a> 。</p>
+<p>在Java8之中，Java平台支持了Lambda和Stream，相应的Java集合框架也进行了大范围的增强，以支持类似为集合创建相应stream或者parallelStream的方法实现，我们可以非常方便的实现函数式代码。</p>
+<p>阅读Java源代码，你会发现，这些API的设计和实现比较独特，它们并不是实现在抽象类里面，而是以 <strong>默认方法</strong> 的形式实现在Collection这样的接口里！这是Java8在语言层面的新特性，允许接口实现默认方法，理论上来说，我们原来实现在类似Collections这种工具类中的方法，大多可以转换到相应的接口上。针对这一点，我在面向对象主题，会专门梳理Java语言面向对象基本机制的演进。</p>
+<p>在Java9中，Java标准类库提供了一系列的静态工厂方法，比如，List.of() 、Set.of()，大大简化了构建小的容器实例的代码量。根据业界实践经验，我们发现相当一部分集合实例都是容量非常有限的，而且在生命周期中并不会进行修改。但是，在原有的Java类库中，我们可能不得不写成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ArrayList&lt;String&gt;  list = new ArrayList&lt;&gt;();</span><br><span class="line">list.add(&quot;Hello&quot;);</span><br><span class="line">list.add(&quot;World&quot;);</span><br></pre></td></tr></table></figure>
+<p>而利用新的容器静态工厂方法，一句代码就够了，并且保证了不可变性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; simpleList = List.of(&quot;Hello&quot;,&quot;world&quot;);</span><br></pre></td></tr></table></figure>
+<p>更进一步，通过各种of静态工厂方法创建的实例，还应用了一些我们所谓的最佳实践，比如，它是不可变的，符合我们对线程安全的需求；它因为不需要考虑扩容，所以空间上更加紧凑等。</p>
+<p>如果我们去看of方法的源码，你还会发现一个特别有意思的地方：我们知道java已经至此所谓的可变参数（varargs），但是官方类库还是提供了一系列特定参数长度的方法，看起来似乎非常不优雅，为什么呢？这其实是为了最优的性能，JVM在处理变长参数的时候会有明显的额外开销，如果你需要实现性能敏感的API，也可以进行参考。</p>
+<p>今天我从Verctor、ArrayList、LinkedList开始，逐步分析其设计实现区别、适合的应用场景等，并进一步对集合框架进行了简单的归纳，介绍了集合框架从基础算法到API设计实现的各种改进，希望能对你的日常开发和API设计能够有帮助。</p>
+<p><strong>一课一练</strong></p>
+<p>思考题：比如你需要实现一个云计算任务调度系统，希望可以保证VIP客户的任务被优先处理，你可以利用哪些数据结构或者标准的集合类型呢？更进一步讲，类似场景大多是基于什么数据结构呢？</p>
+<p>由于要处理的任务有前后顺序关系，所以首先想到使用优先队列。使用 PriorityQueue，将VIP用户的优先级设置为最高，优先处理。借鉴操作系统中的调度算法，对于其他用户，我们还可以设计各种公平的优先级选择算法（基于排队先后顺序，基于调度任务所需的时间长短（操作系统中的短作业优先算法）排序、高响应比（（所用时间+等待时间）/等待时间）优先进行排序），与 PriorityQueue 结合使用。<br>类似场景大多就是基于队列的数据结构了。实际工具的话，消息队列（MQ）就是很直接的例子了。可以使用消息队列对用户请求进行削锋操作，前台快速响应，后台私下进行处理操作。<br>除此之外可以想到优化：利用分布式系统的优点，将VIP用户的请求分发到运算力更高的服务器上进行处理。达到高可用的特点！</p>
+<p>看了一下PriorityQueue的源码，发现其是使用最小堆结构(二叉堆)，存放在数组中(数组索引对应树的从上到下，从左到右)。采用上面最小，每插入一个数据，就先与根节点比较，如果小于根节，依次换位置；大于根节点，就放在最后一个位置。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Java核心技术36讲</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/06/08/第8讲-对比Vector、ArrayList、LinkedList有何区别/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-第6讲-动态代理是基于什么原理？" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
@@ -785,7 +1227,7 @@
 <p>另外，从性能角度，我想补充几句。记得有人曾经得出结论说JDK PRoxy 比cglib或者Javassist慢几十倍。坦白说，不去争论具体的benchmark细节，在主流JDK版本中，JDK PRoxy在典型场景可以提供对等的性能水平，数量级的差距基本上不是广泛存在的。而且，反射机制性能在现代JDK中，自身已经得到了极大的改进和优化，同时，JDK很多性能也不完全是反射，同样使用了ASM进行字节码操作。</p>
 <p>我们在选型中，性能未必是唯一考量，可靠性、可维护性、编程工作量等往往是更主要的考虑因素，毕竟标准类库和反射编程的门槛要低得多，代码量也是更加可控的，如果我们比较下不同开源项目在动态代理开发上的投入，也能看到这一点。</p>
 <p>动态代理应用非常广泛，虽然最初多是因为RPC等使用进入我们视线，但是动态代理的使用场景远远不仅如此，它完美符合Spring AOP等切面编程。我在后面的专栏还会进一步详细分析AOP的目的和能力。简单来说它可以看作是对OOP的一个补充，因为OOP对于跨越不同对象或类的分散、纠缠逻辑表现力不够，比如在不同模块的特定阶段做一些事情，类似日志、用户鉴权、全局性异常处理、性能监控、甚至事务处理等，你可以参考下面这张图。</p>
-<p><img src="/picture/content/java35-1.png" alt=""></p>
+<p><img src="/picture/content/java35-6.png" alt=""></p>
 <p>AOP通过（动态）代理机制可以让开发者从这些繁琐事项中抽身出来，大幅度提高了代码的抽象程度和复用度。从逻辑上来说，我们在软件设计和实现中的类似代理，如Facade、Observer等很多设计目的，都可以通过动态代理优雅地实现。</p>
 <p><strong>反射与动态代理原理</strong></p>
 <p>1.关于反射</p>
@@ -1133,415 +1575,6 @@
 
 
   
-    <article id="post-面试/Java/十五.kafka" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/01/面试/Java/十五.kafka/">十五.kafka</a>
-    </h1>
-  
-
-        
-        <a href="/2019/06/01/面试/Java/十五.kafka/" class="archive-article-date">
-  	<time datetime="2019-06-01T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-01</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-	
-        <h2><span id="十五kafka">十五.kafka</span></h2><h4><span id="1-kafka-可以脱离-zookeeper-单独使用吗为什么">1. kafka 可以脱离 zookeeper 单独使用吗？为什么？</span></h4><p>kafka 不能脱离 zookeeper 单独使用，因为 kafka 使用 zookeeper 管理和协调 kafka 的节点服务器。</p>
-<h4><span id="2-kafka-有几种数据保留的策略">2. kafka 有几种数据保留的策略？</span></h4><p>kafka 有两种数据保存策略：按照过期时间保留和按照存储的消息大小保留。</p>
-<h4><span id="3-kafka-同时设置了-7-天和-10g-清除数据到第五天的时候消息达到了-10g这个时候-kafka-将如何处理">3. kafka 同时设置了 7 天和 10G 清除数据，到第五天的时候消息达到了 10G，这个时候 kafka 将如何处理？</span></h4><p>这个时候 kafka 会执行数据清除工作，时间和大小不论那个满足条件，都会清空数据。</p>
-<h4><span id="4-什么情况会导致-kafka-运行变慢">4. 什么情况会导致 kafka 运行变慢？</span></h4><ul>
-<li>cpu 性能瓶颈</li>
-<li>磁盘读写瓶颈</li>
-<li>网络瓶颈</li>
-</ul>
-<h4><span id="5-使用-kafka-集群需要注意什么">5. 使用 kafka 集群需要注意什么？</span></h4><ul>
-<li>集群的数量不是越多越好，最好不要超过 7 个，因为节点越多，消息复制需要的时间就越长，整个群组的吞吐量就越低。</li>
-<li>集群数量最好是单数，因为超过一半故障集群就不能用了，设置为单数容错率更高。</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/06/01/面试/Java/十五.kafka/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-面试/Java/十四.RabbitMQ" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/30/面试/Java/十四.RabbitMQ/">十四.RabbitMQ</a>
-    </h1>
-  
-
-        
-        <a href="/2019/05/30/面试/Java/十四.RabbitMQ/" class="archive-article-date">
-  	<time datetime="2019-05-30T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-30</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-	
-        <h2><span id="十四rabbitmq">十四.RabbitMQ</span></h2><h4><span id="1-rabbitmq-的使用场景有哪些">1. RabbitMQ 的使用场景有哪些？</span></h4><ul>
-<li>抢购活动，削峰填谷，防止系统崩塌。</li>
-<li>延迟信息处理，比如 10 分钟之后给下单未付款的用户发送邮件提醒。</li>
-<li>解耦系统，对于新增的功能可以单独写模块扩展，比如用户确认评价之后，新增了给用户返积分的功能，这个时候不用在业务代码里添加新增积分的功能，只需要把新增积分的接口订阅确认评价的消息队列即可，后面再添加任何功能只需要订阅对应的消息队列即可。</li>
-</ul>
-<h4><span id="2-rabbitmq-有哪些重要的角色">2. RabbitMQ 有哪些重要的角色？</span></h4><p>RabbitMQ 中重要的角色有：生产者、消费者和代理：</p>
-<ul>
-<li>生产者：消息的创建者，负责创建和推送数据到消息服务器；</li>
-<li>消费者：消息的接收方，用于处理数据和确认消息；</li>
-<li>代理：就是 RabbitMQ 本身，用于扮演“快递”的角色，本身不生产消息，只是扮演“快递”的角色。</li>
-</ul>
-<h4><span id="137-rabbitmq-有哪些重要的组件">137. RabbitMQ 有哪些重要的组件？</span></h4><ul>
-<li>ConnectionFactory（连接管理器）：应用程序与Rabbit之间建立连接的管理器，程序代码中使用。</li>
-<li>Channel（信道）：消息推送使用的通道。</li>
-<li>Exchange（交换器）：用于接受、分配消息。</li>
-<li>Queue（队列）：用于存储生产者的消息。</li>
-<li>RoutingKey（路由键）：用于把生成者的数据分配到交换器上。</li>
-<li>BindingKey（绑定键）：用于把交换器的消息绑定到队列上。</li>
-</ul>
-<h4><span id="4-rabbitmq-中-vhost-的作用是什么">4. RabbitMQ 中 vhost 的作用是什么？</span></h4><p>vhost：每个 RabbitMQ 都能创建很多 vhost，我们称之为虚拟主机，每个虚拟主机其实都是 mini 版的RabbitMQ，它拥有自己的队列，交换器和绑定，拥有自己的权限机制。</p>
-<h4><span id="5-rabbitmq-的消息是怎么发送的">5. RabbitMQ 的消息是怎么发送的？</span></h4><p>首先客户端必须连接到 RabbitMQ 服务器才能发布和消费消息，客户端和 rabbit server 之间会创建一个 tcp 连接，一旦 tcp 打开并通过了认证（认证就是你发送给 rabbit 服务器的用户名和密码），你的客户端和 RabbitMQ 就创建了一条 amqp 信道（channel），信道是创建在“真实” tcp 上的虚拟连接，amqp 命令都是通过信道发送出去的，每个信道都会有一个唯一的 id，不论是发布消息，订阅队列都是通过这个信道完成的。</p>
-<h4><span id="6-rabbitmq-怎么保证消息的稳定性">6. RabbitMQ 怎么保证消息的稳定性？</span></h4><ul>
-<li>提供了事务的功能。</li>
-<li>通过将 channel 设置为 confirm（确认）模式。</li>
-</ul>
-<h4><span id="7-rabbitmq-怎么避免消息丢失">7. RabbitMQ 怎么避免消息丢失？</span></h4><ul>
-<li>把消息持久化磁盘，保证服务器重启消息不丢失。</li>
-<li>每个集群中至少有一个物理磁盘，保证消息落入磁盘。</li>
-</ul>
-<h4><span id="8-要保证消息持久化成功的条件有哪些">8. 要保证消息持久化成功的条件有哪些？</span></h4><ul>
-<li>声明队列必须设置持久化 durable 设置为 true.</li>
-<li>消息推送投递模式必须设置持久化，deliveryMode 设置为 2（持久）。</li>
-<li>消息已经到达持久化交换器。</li>
-<li>消息已经到达持久化队列。</li>
-</ul>
-<p>以上四个条件都满足才能保证消息持久化成功。</p>
-<h4><span id="9-rabbitmq-持久化有什么缺点">9. RabbitMQ 持久化有什么缺点？</span></h4><p>持久化的缺地就是降低了服务器的吞吐量，因为使用的是磁盘而非内存存储，从而降低了吞吐量。可尽量使用 ssd 硬盘来缓解吞吐量的问题。</p>
-<h4><span id="10-rabbitmq-有几种广播类型">10. RabbitMQ 有几种广播类型？</span></h4><ul>
-<li>direct（默认方式）：最基础最简单的模式，发送方把消息发送给订阅方，如果有多个订阅者，默认采取轮询的方式进行消息发送。</li>
-<li>headers：与 direct 类似，只是性能很差，此类型几乎用不到。</li>
-<li>fanout：分发模式，把消费分发给所有订阅者。</li>
-<li>topic：匹配订阅模式，使用正则匹配到消息队列，能匹配到的都能接收到。</li>
-</ul>
-<h4><span id="11-rabbitmq-怎么实现延迟消息队列">11. RabbitMQ 怎么实现延迟消息队列？</span></h4><p>延迟队列的实现有两种方式：</p>
-<ul>
-<li>通过消息过期后进入死信交换器，再由交换器转发到延迟消费队列，实现延迟功能；</li>
-<li>使用 RabbitMQ-delayed-message-exchange 插件实现延迟功能。</li>
-</ul>
-<h4><span id="12-rabbitmq-集群有什么用">12. RabbitMQ 集群有什么用？</span></h4><p>集群主要有以下两个用途：</p>
-<ul>
-<li>高可用：某个服务器出现问题，整个 RabbitMQ 还可以继续使用；</li>
-<li>高容量：集群可以承载更多的消息量。</li>
-</ul>
-<h4><span id="13-rabbitmq-节点的类型有哪些">13. RabbitMQ 节点的类型有哪些？</span></h4><ul>
-<li>磁盘节点：消息会存储到磁盘。</li>
-<li>内存节点：消息都存储在内存中，重启服务器消息丢失，性能高于磁盘类型。</li>
-</ul>
-<h4><span id="14-rabbitmq-集群搭建需要注意哪些问题">14. RabbitMQ 集群搭建需要注意哪些问题？</span></h4><ul>
-<li>各节点之间使用“–link”连接，此属性不能忽略。</li>
-<li>各节点使用的 erlang cookie 值必须相同，此值相当于“秘钥”的功能，用于各节点的认证。</li>
-<li>整个集群中必须包含一个磁盘节点。</li>
-</ul>
-<h4><span id="15-rabbitmq-每个节点是其他节点的完整拷贝吗为什么">15. RabbitMQ 每个节点是其他节点的完整拷贝吗？为什么？</span></h4><p>不是，原因有以下两个：</p>
-<ul>
-<li>存储空间的考虑：如果每个节点都拥有所有队列的完全拷贝，这样新增节点不但没有新增存储空间，反而增加了更多的冗余数据；</li>
-<li>性能的考虑：如果每条消息都需要完整拷贝到每一个集群节点，那新增节点并没有提升处理消息的能力，最多是保持和单节点相同的性能甚至是更糟。</li>
-</ul>
-<h4><span id="16-rabbitmq-集群中唯一一个磁盘节点崩溃了会发生什么情况">16. RabbitMQ 集群中唯一一个磁盘节点崩溃了会发生什么情况？</span></h4><p>如果唯一磁盘的磁盘节点崩溃了，不能进行以下操作：</p>
-<ul>
-<li>不能创建队列</li>
-<li>不能创建交换器</li>
-<li>不能创建绑定</li>
-<li>不能添加用户</li>
-<li>不能更改权限</li>
-<li>不能添加和删除集群节点</li>
-</ul>
-<p>唯一磁盘节点崩溃了，集群是可以保持运行的，但你不能更改任何东西。</p>
-<h4><span id="17-rabbitmq-对集群节点停止顺序有要求吗">17. RabbitMQ 对集群节点停止顺序有要求吗？</span></h4><p>RabbitMQ 对集群的停止的顺序是有要求的，应该先关闭内存节点，最后再关闭磁盘节点。如果顺序恰好相反的话，可能会造成消息的丢失。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/05/30/面试/Java/十四.RabbitMQ/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-面试/Java/十三.MyBatis" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/29/面试/Java/十三.MyBatis/">十三.MyBatis</a>
-    </h1>
-  
-
-        
-        <a href="/2019/05/29/面试/Java/十三.MyBatis/" class="archive-article-date">
-  	<time datetime="2019-05-29T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-29</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-	
-        <h2><span id="十三mybatis">十三.MyBatis</span></h2><h4><span id="1-mybatis-中-和-的区别是什么">1. MyBatis 中 #{}和 ${}的区别是什么？</span></h4><p><code>\#{}</code>是预编译处理，<code>${}</code>是字符替换。 在使用 <code>#{}</code>时，MyBatis 会将 SQL 中的 <code>#{}</code>替换成“?”，配合 PreparedStatement 的 set 方法赋值，这样可以有效的防止 SQL 注入，保证程序的运行安全。</p>
-<h4><span id="2-mybatis-有几种分页方式">2. MyBatis 有几种分页方式？</span></h4><p>分页方式：逻辑分页和物理分页。</p>
-<p>逻辑分页： 使用 MyBatis 自带的 RowBounds 进行分页，它是一次性查询很多数据，然后在数据中再进行检索。</p>
-<p>物理分页： 自己手写 SQL 分页或使用分页插件 PageHelper，去数据库查询指定条数的分页数据的形式。</p>
-<h4><span id="3-rowbounds-是一次性查询全部结果吗为什么">3. RowBounds 是一次性查询全部结果吗？为什么？</span></h4><p>RowBounds 表面是在“所有”数据中检索数据，其实并非是一次性查询出所有数据，因为 MyBatis 是对 jdbc 的封装，在 jdbc 驱动中有一个 Fetch Size 的配置，它规定了每次最多从数据库查询多少条数据，假如你要查询更多数据，它会在你执行 next()的时候，去查询更多的数据。就好比你去自动取款机取 10000 元，但取款机每次最多能取 2500 元，所以你要取 4 次才能把钱取完。只是对于 jdbc 来说，当你调用 next()的时候会自动帮你完成查询工作。这样做的好处可以有效的防止内存溢出。</p>
-<p>Fetch Size 官方相关文档：<a href="http://t" target="_blank" rel="noopener">http://t</a>. cn/EfSE2g3</p>
-<h4><span id="4-mybatis-逻辑分页和物理分页的区别是什么">4. MyBatis 逻辑分页和物理分页的区别是什么？</span></h4><ul>
-<li>逻辑分页是一次性查询很多数据，然后再在结果中检索分页的数据。这样做弊端是需要消耗大量的内存、有内存溢出的风险、对数据库压力较大。</li>
-<li>物理分页是从数据库查询指定条数的数据，弥补了一次性全部查出的所有数据的种种缺点，比如需要大量的内存，对数据库查询压力较大等问题。</li>
-</ul>
-<h4><span id="5-mybatis-是否支持延迟加载延迟加载的原理是什么">5. MyBatis 是否支持延迟加载？延迟加载的原理是什么？</span></h4><p>MyBatis 支持延迟加载，设置 lazyLoadingEnabled=true 即可。</p>
-<p>延迟加载的原理的是调用的时候触发加载，而不是在初始化的时候就加载信息。比如调用 a. getB(). getName()，这个时候发现 a. getB() 的值为 null，此时会单独触发事先保存好的关联 B 对象的 SQL，先查询出来 B，然后再调用 a. setB(b)，而这时候再调用 a. getB(). getName() 就有值了，这就是延迟加载的基本原理。</p>
-<h4><span id="6-说一下-mybatis-的一级缓存和二级缓存">6. 说一下 MyBatis 的一级缓存和二级缓存？</span></h4><ul>
-<li>一级缓存：基于 PerpetualCache 的 HashMap 本地缓存，它的声明周期是和 SQLSession 一致的，有多个 SQLSession 或者分布式的环境中数据库操作，可能会出现脏数据。当 Session flush 或 close 之后，该 Session 中的所有 Cache 就将清空，默认一级缓存是开启的。</li>
-<li>二级缓存：也是基于 PerpetualCache 的 HashMap 本地缓存，不同在于其存储作用域为 Mapper 级别的，如果多个SQLSession之间需要共享缓存，则需要使用到二级缓存，并且二级缓存可自定义存储源，如 Ehcache。默认不打开二级缓存，要开启二级缓存，使用二级缓存属性类需要实现 Serializable 序列化接口(可用来保存对象的状态)。</li>
-</ul>
-<p>开启二级缓存数据查询流程：二级缓存 -&gt; 一级缓存 -&gt; 数据库。</p>
-<p>缓存更新机制：当某一个作用域(一级缓存 Session/二级缓存 Mapper)进行了C/U/D 操作后，默认该作用域下所有 select 中的缓存将被 clear。</p>
-<h4><span id="7-mybatis-和-hibernate-的区别有哪些">7. MyBatis 和 hibernate 的区别有哪些？</span></h4><ul>
-<li>灵活性：MyBatis 更加灵活，自己可以写 SQL 语句，使用起来比较方便。</li>
-<li>可移植性：MyBatis 有很多自己写的 SQL，因为每个数据库的 SQL 可以不相同，所以可移植性比较差。</li>
-<li>学习和使用门槛：MyBatis 入门比较简单，使用门槛也更低。</li>
-<li>二级缓存：hibernate 拥有更好的二级缓存，它的二级缓存可以自行更换为第三方的二级缓存。</li>
-</ul>
-<h4><span id="8-mybatis-有哪些执行器executor">8. MyBatis 有哪些执行器（Executor）？</span></h4><p>MyBatis 有三种基本的Executor执行器：</p>
-<ul>
-<li>SimpleExecutor：每执行一次 update 或 select 就开启一个 Statement 对象，用完立刻关闭 Statement 对象；</li>
-<li>ReuseExecutor：执行 update 或 select，以 SQL 作为 key 查找 Statement 对象，存在就使用，不存在就创建，用完后不关闭 Statement 对象，而是放置于 Map 内供下一次使用。简言之，就是重复使用 Statement 对象；</li>
-<li>BatchExecutor：执行 update（没有 select，jdbc 批处理不支持 select），将所有 SQL 都添加到批处理中（addBatch()），等待统一执行（executeBatch()），它缓存了多个 Statement 对象，每个 Statement 对象都是 addBatch()完毕后，等待逐一执行 executeBatch()批处理，与 jdbc 批处理相同。</li>
-</ul>
-<h4><span id="9-mybatis-分页插件的实现原理是什么">9. MyBatis 分页插件的实现原理是什么？</span></h4><p>分页插件的基本原理是使用 MyBatis 提供的插件接口，实现自定义插件，在插件的拦截方法内拦截待执行的 SQL，然后重写 SQL，根据 dialect 方言，添加对应的物理分页语句和物理分页参数。</p>
-<h4><span id="10-mybatis-如何编写一个自定义插件">10. MyBatis 如何编写一个自定义插件？</span></h4><p>自定义插件实现原理</p>
-<p>MyBatis 自定义插件针对 MyBatis 四大对象（Executor、StatementHandler、ParameterHandler、ResultSetHandler）进行拦截：</p>
-<ul>
-<li>Executor：拦截内部执行器，它负责调用 StatementHandler 操作数据库，并把结果集通过 ResultSetHandler 进行自动映射，另外它还处理了二级缓存的操作；</li>
-<li>StatementHandler：拦截 SQL 语法构建的处理，它是 MyBatis 直接和数据库执行 SQL 脚本的对象，另外它也实现了 MyBatis 的一级缓存；</li>
-<li>ParameterHandler：拦截参数的处理；</li>
-<li>ResultSetHandler：拦截结果集的处理。</li>
-</ul>
-<p>自定义插件实现关键</p>
-<p>MyBatis 插件要实现 Interceptor 接口，接口包含的方法，如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public interface Interceptor &#123;   </span><br><span class="line">   Object intercept(Invocation invocation) throws Throwable;       </span><br><span class="line">   Object plugin(Object target);    </span><br><span class="line">   void setProperties(Properties properties);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>setProperties 方法是在 MyBatis 进行配置插件的时候可以配置自定义相关属性，即：接口实现对象的参数配置；</li>
-<li>plugin 方法是插件用于封装目标对象的，通过该方法我们可以返回目标对象本身，也可以返回一个它的代理，可以决定是否要进行拦截进而决定要返回一个什么样的目标对象，官方提供了示例：return Plugin. wrap(target, this)；</li>
-<li>intercept 方法就是要进行拦截的时候要执行的方法。</li>
-</ul>
-<p>自定义插件实现示例</p>
-<p>官方插件实现：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">@Intercepts(&#123;@Signature(type = Executor. class, method = &quot;query&quot;,</span><br><span class="line">        args = &#123;MappedStatement. class, Object. class, RowBounds. class, ResultHandler. class&#125;)&#125;)</span><br><span class="line">public class TestInterceptor implements Interceptor &#123;</span><br><span class="line">   public Object intercept(Invocation invocation) throws Throwable &#123;</span><br><span class="line">     Object target = invocation. getTarget(); //被代理对象</span><br><span class="line">     Method method = invocation. getMethod(); //代理方法</span><br><span class="line">     Object[] args = invocation. getArgs(); //方法参数</span><br><span class="line">     // do something . . . . . .  方法拦截前执行代码块</span><br><span class="line">     Object result = invocation. proceed();</span><br><span class="line">     // do something . . . . . . . 方法拦截后执行代码块</span><br><span class="line">     return result;</span><br><span class="line">   &#125;</span><br><span class="line">   public Object plugin(Object target) &#123;</span><br><span class="line">     return Plugin. wrap(target, this);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/05/29/面试/Java/十三.MyBatis/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -1647,6 +1680,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">MYSQL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
@@ -1660,6 +1697,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">计算机</a>
               </li>
             
             <div class="clearfix"></div>

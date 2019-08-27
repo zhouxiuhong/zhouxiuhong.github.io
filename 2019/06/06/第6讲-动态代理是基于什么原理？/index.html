@@ -16,12 +16,12 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="谈谈Java反射机制，动态代理是基于什么原理？ 极客时间版权所有: https://time.geekbang.org/column/article/7489 典型回答 反射机制是Java语言提供的一种基础功能，赋予程序在运行时 自省（introspect，官方用语）的能力。通过反射我们可以直接操作类或者对象，比如获取某个对象的类定义，获取类声明的属性和方法，调用方法或者构造对象，甚至可以运行时修">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="http://yoursite.com/picture/content/java35-1.png">
-<meta property="og:updated_time" content="2019-07-19T09:45:53.366Z">
+<meta property="og:image" content="http://yoursite.com/picture/content/java35-6.png">
+<meta property="og:updated_time" content="2019-07-30T08:56:07.654Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="第6讲 | 动态代理是基于什么原理？">
 <meta name="twitter:description" content="谈谈Java反射机制，动态代理是基于什么原理？ 极客时间版权所有: https://time.geekbang.org/column/article/7489 典型回答 反射机制是Java语言提供的一种基础功能，赋予程序在运行时 自省（introspect，官方用语）的能力。通过反射我们可以直接操作类或者对象，比如获取某个对象的类定义，获取类声明的属性和方法，调用方法或者构造对象，甚至可以运行时修">
-<meta name="twitter:image" content="http://yoursite.com/picture/content/java35-1.png">
+<meta name="twitter:image" content="http://yoursite.com/picture/content/java35-6.png">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -217,7 +217,7 @@
 <p>另外，从性能角度，我想补充几句。记得有人曾经得出结论说JDK PRoxy 比cglib或者Javassist慢几十倍。坦白说，不去争论具体的benchmark细节，在主流JDK版本中，JDK PRoxy在典型场景可以提供对等的性能水平，数量级的差距基本上不是广泛存在的。而且，反射机制性能在现代JDK中，自身已经得到了极大的改进和优化，同时，JDK很多性能也不完全是反射，同样使用了ASM进行字节码操作。</p>
 <p>我们在选型中，性能未必是唯一考量，可靠性、可维护性、编程工作量等往往是更主要的考虑因素，毕竟标准类库和反射编程的门槛要低得多，代码量也是更加可控的，如果我们比较下不同开源项目在动态代理开发上的投入，也能看到这一点。</p>
 <p>动态代理应用非常广泛，虽然最初多是因为RPC等使用进入我们视线，但是动态代理的使用场景远远不仅如此，它完美符合Spring AOP等切面编程。我在后面的专栏还会进一步详细分析AOP的目的和能力。简单来说它可以看作是对OOP的一个补充，因为OOP对于跨越不同对象或类的分散、纠缠逻辑表现力不够，比如在不同模块的特定阶段做一些事情，类似日志、用户鉴权、全局性异常处理、性能监控、甚至事务处理等，你可以参考下面这张图。</p>
-<p><img src="/picture/content/java35-1.png" alt=""></p>
+<p><img src="/picture/content/java35-6.png" alt=""></p>
 <p>AOP通过（动态）代理机制可以让开发者从这些繁琐事项中抽身出来，大幅度提高了代码的抽象程度和复用度。从逻辑上来说，我们在软件设计和实现中的类似代理，如Facade、Observer等很多设计目的，都可以通过动态代理优雅地实现。</p>
 <p><strong>反射与动态代理原理</strong></p>
 <p>1.关于反射</p>
@@ -358,11 +358,11 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/06/24/面试/Java/十六.MySQL /" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/06/08/第8讲-对比Vector、ArrayList、LinkedList有何区别/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          十六.MySQL
+          第8讲 | String、StringBuffer、StringBuilder有什么区别？
         
       </div>
     </a>
@@ -518,6 +518,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">MYSQL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
@@ -531,6 +535,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">计算机</a>
               </li>
             
             <div class="clearfix"></div>
