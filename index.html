@@ -146,6 +146,147 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-MySql基础/02.日志架构：一条SQL更新语句是如何执行的？" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/09/MySql基础/02.日志架构：一条SQL更新语句是如何执行的？/">02 | 日志架构：一条SQL更新语句是如何执行的？</a>
+    </h1>
+  
+
+        
+        <a href="/2019/08/09/MySql基础/02.日志架构：一条SQL更新语句是如何执行的？/" class="archive-article-date">
+  	<time datetime="2019-08-09T06:15:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-09</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <h1><span id="02-日志架构一条sql更新语句是如何执行的">02 | 日志架构：一条SQL更新语句是如何执行的？</span></h1><p>林晓斌 2019-08-09 <a href="https://time.geekbang.org/column/article/115537" target="_blank" rel="noopener">地址</a></p>
+<p><img src="https://static001.geekbang.org/resource/image/7e/7d/7e43cabc6f9e71f8a1292c86d40a237d.jpg" alt=""></p>
+<p>前面我们系统了解了一个查询语句的执行流程，并介绍了执行过程中涉及的处理模块。相信你还记得，一条查询语句的执行过程一般是经过连接器、分析器、优化器、执行器等功能模块，最后到达存储引擎。</p>
+<p>那么，一条更新语句的执行流程又是怎样的呢？</p>
+<p>之前你可能经常听DBA同事说，MySQL可以恢复到半个月内任意一秒的状态，惊叹的同时，你是不是心中也不免会好奇，这是怎样做到的呢？</p>
+<p>我们还是从一个表的一条更新语句说起，下面是这个表的创建语句，这个表有一个主键ID和一个整型字段c：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table T(ID int primary key, c int);</span><br></pre></td></tr></table></figure>
+<p>如果要将ID = 2 这一行的值加1，SQL语句就会这么写：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; update T set c=c+1 where ID=2;</span><br></pre></td></tr></table></figure>
+<p>前面我有跟你介绍过SQL语句基本的执行链路，这里我再把那张图拿过来，你也可以先简单看看这个图回顾下。首先，可以确定的说，查询语句的那一套流程，更新语句也是同样会走一遍。</p>
+<p><img src="/picture/content/mysql-01.png" alt="MySQL的逻辑架构图"></p>
+<p><img src="https://static001.geekbang.org/resource/image/0d/d9/0d2070e8f84c4801adbfa03bda1f98d9.png" alt="MySQL的逻辑架构图"></p>
+<p>你执行语句前要先连接数据库，这是连接器的工作。</p>
+<p>前面我们说过，在一个表上有更新的时候，跟这个表有关的查询缓存会失效，所以这条语句就会把表T上所有缓存结果都清空。这也就是我们一般不建议使用查询缓存的原因。</p>
+<p>接下来，分析器会通过词法和语法解析知道这是一条更新语句。优化器决定要使用ID这个索引。然后，执行器负责具体执行，找到这一行，然后更新。</p>
+<p>与查询流程不一样的是，更新流程还涉及两个重要的日志模块，它们正是我们今天要讨论的主角：redo log（重做日志）和binlog（归档日志）。如果接触MySQL，那这两个词肯定是绕不过的，我后面的内容里也会不断地和你强调。不过话说回来，redo log 和binlog在设计上有很多有意思的地方，这些涉及思路也可以用到你自己的程序里。</p>
+<h3><span id="重要的日志模块redo-log">重要的日志模块：redo log</span></h3><p>不知道你还记不记得《孔乙已》这篇文章，酒店掌柜有一个粉板，专门用来记录客人的赊账记录。如果赊账的人不多，那么他可以把顾客名和账目写在板上。但如果赊账的人多了，粉板总会有记不下的时候，这个时候掌柜一定还有一个专门记录赊账的账本。</p>
+<p>如果有人要赊账或者还帐的话，掌柜一般有两种做法：</p>
+<ul>
+<li>一种做法是直接把账本翻出来，把这次赊的账加上去或者扣除掉；</li>
+<li>另一种做法是先在粉板上记下这次的账，等打烊以后再把账本放出来核算。</li>
+</ul>
+<p>在生意红火柜台很忙时，掌柜一定会选择后者，因为前者操作实在是太麻烦了。首先，你得找到这个人的赊账总额那条记录。你想想，密密麻麻几十页，掌柜要找到那个名字，可能还得带上老花镜慢慢找，找到之后再拿出算盘计算，最后再将结果写回账本上。</p>
+<p>这整个过程想想都麻烦。相比之下，还是先在粉板上记一下方便。你想想，如果掌柜没有粉板的帮助，每次记账都得翻账本，效率是不是低得让人难以忍受？</p>
+<p>同样，在MySQL里也有这个问题，如果每一次的更新操作都需要写进磁盘，然后磁盘也要找到对应的那条记录，然后再更新，整个过程IO成本、查找成本都很高。为了解决整个问题，MySQL的设计者就用了类似酒店掌柜粉板的思路来提升更新效率。</p>
+<p>而粉板和账本配合的整个过程，其实就是MySQL里经常说到的WAL技术，WAL的全称是Write-Ahead Logging，它的关键点就是先写日志，再写磁盘，也就是先写粉板，等不忙的时候再写账本。</p>
+<p>具体来说，当有一条记录需要更新的时候，InnoDB引擎就会先把记录写到redo log（粉板）里面，并更新内存，这个时候更新就算完成了。同事，InnoDB引擎会在适当的时候，将这个操作记录更新到磁盘里面，而这个更新往往是在系统比较空闲的时候做，这就像打烊以后掌柜做的事。</p>
+<p>如果今天赊账的不多，掌柜可以等打烊后再整理。但如果某天赊账的特别多，粉板写满了，又怎么办呢？这个时候掌柜只好放下手中的活儿，把粉板中的一部分赊账记录更新到账本中，然后把这些记录从粉板上擦掉，为记新帐腾出空间。</p>
+<p>与此类似，InnoDB的redo log 是固定大小的，比如可以配置为一组4个文件，每个文件的大小是1GB，那么这块“粉板”总共就可以记录4GB的操作。从头开始写，写到末尾就又回到开头循环写，如下面这图所示。</p>
+<p><img src="/picture/content/mysql-02.png" alt=""></p>
+<p><img src="https://static001.geekbang.org/resource/image/16/a7/16a7950217b3f0f4ed02db5db59562a7.png" alt=""></p>
+<p>write pos是当前记录的位置，一边写一边后移，写到第3号文件末尾后就回到0号文件开头。checkpoint是当前要擦除的位置，也是往后推移并且循环的，擦除记录前要把记录更新到数据文件。</p>
+<p>write pos 和checkpoint之间的是“粉板”上还空着的部分，可以用来记录新的操作。如果write pos追上checkpoint，表示“粉板”满了，这时候不能再执行新的更新，得停下来先擦掉一些记录，把checkpoint推进一下。</p>
+<p>有了redo log，InnoDB就可以保证即使数据库发生异常重启，之前提交的记录都不会丢失，这个能力称为 <strong>crash-safe</strong> 。</p>
+<p>要理解crash-safe这个概念，可以想想我们前面赊账记录的例子。只要赊账记录记在了粉板上或写在了账本上，之后即使掌柜忘记了，比如突然停业几天，恢复生意后依然可以通过账本和粉板上的数据明确赊账账目。</p>
+<h3><span id="重要的日志模块binlog">重要的日志模块：binlog</span></h3><p>前面我们讲过，MySQL整体来看，其实就有两块：一块是Server层，它主要做的是MySQL功能层面的事情；还有一块是引擎层，负责存储相关的具体事宜。上面我们聊到的粉板redo log是InnoDB引擎特有的日志，而Server层也有自己的日志，称为binlog（归档日志）。</p>
+<p>我想你肯定会问，为什么会有两份日志呢？</p>
+<p>因为最开始MySQL里并没有InnoDB引擎。MySQL自带的引擎是MyISAM，但是MyISAM没有crash-safe的能力，binlog日志只能用于归档。而InnoDB是另一个公司以插件形式引入MySQL的，既然指依靠binlog是没有crash-safe能力的，所以InnoDB使用另外一套日志系统——也就是redo log 来实现crash-safe能力。</p>
+<p>这两种日志有以下三点不同。</p>
+<ol>
+<li>redo log是InnoDB引擎特有的；binlog是MySQL的Server层实现的，所有引擎都可以使用。</li>
+<li>redo log是物理日志，记录的是“在某个数据页上做了什么修改”；binlog是逻辑日志，记录的是这个语句的原始逻辑，比如 “给ID = 2这一行的c字段加1”。</li>
+<li>redo log 是循环写的，空间固定会用完；binlog 是可以追加写入的。 “追加写” 是指binlog文件写到一定大小后会切换到下一个，并不会覆盖以前的日志。</li>
+</ol>
+<p>有了对这两个日志的概念性理解，我们再来看执行器和InnoDB引擎在执行这个简单的update语句时的内部流程。</p>
+<ol>
+<li>执行器先找引擎取ID = 2 这一行。ID是主键，引擎直接用树搜索找到这一行。如果ID = 2这一行所在的数据页本来就在内存中，就直接返回给执行器；否则，需要先从磁盘读入内存，然后再返回。</li>
+<li>执行器拿到引擎给的行数据，把这个值加上1，比如原来是N，现在就是N+1，得到新的一行数据，再调用引擎接口写入这行数据。</li>
+<li>引擎将这行新数据更新到内存中，同时将这个更新操作记录到redo log里面，此时redo log 处于prepare状态。然后告知执行器执行完成了，随时可以提交事务。</li>
+<li>执行器生成这个操作的binlog，并把binlog写入磁盘。</li>
+<li>执行器调用引擎的提交事务接口，引擎把刚刚写入的redo log改成提交（commit）状态，更新完成。</li>
+</ol>
+<p>这里我给出这个update语句的执行流程图，图中浅色框表示是在InnoDB内部执行的，深色框表示是在执行器中执行的。</p>
+<p><img src="/picture/content/mysql-02-2.png" alt="update语句执行流程"></p>
+<p><img src="https://static001.geekbang.org/resource/image/2e/be/2e5bff4910ec189fe1ee6e2ecc7b4bbe.png" alt=""></p>
+<p>你可能注意到了，最后三步看上去有点“绕”，将redo log的写入拆成了两个步骤：prepare和commit，这就是“两阶段提交”。</p>
+<h3><span id="两阶段提交">两阶段提交</span></h3><p>为什么必须有“两阶段提交”呢？这是为了让两份日志之间的逻辑一致。要说明这个问题，我们得从文章开头的那个问题说起： <strong>怎样让数据库恢复到半个月内任意一秒的状态？</strong></p>
+<p>前面我们说过了，binlog会记录所有的逻辑操作，并且是采用 “追加写” 的形式。如果你的DBA承诺说半个月内可以恢复，那么备份系统中一定会保存最近半个月的所有binlog，同时系统会定期做整库备份。这里的“定期”取决于系统的重要性，可以是一天一备，也可以是一周一备。</p>
+<p>当需要恢复到指定的某一秒时，比如某天下午两点发现中午十二点有一次误删表，需要找回数据，那你可以这么做：</p>
+<ul>
+<li>首先，找到最近的一次全量备份，如果你运气好，可能就是昨天晚上的一个备份，从这个备份恢复到临时库；</li>
+<li>然后，从备份的时间点开始，将备份的binlog依次取出来，重放到中午误删表之前的那个时刻。</li>
+</ul>
+<p>这样你的临时库就跟误删之前的线上库一样了，然后你可以把表数据从临时库取出来，按需要恢复到线上库去。<br>好了，说完了数据恢复过程，我们回来说说，为什么日志需要“两阶段提交”。这里不妨用反证法来进行解释。</p>
+<p>由于redo log和binlog是两个独立的逻辑，如果不用两阶段提交，要么就是先写完redo log再写binlog，或者采用反过来的顺序。我们看看这两种方式会有什么问题。</p>
+<p>仍然用前面的update语句做例子。假设当前ID=2的行，字段c的值是0，再假设执行update语句过程中在写完第一个日志后，第二个日志还没有写完期间发生了crash，会出现什么情况呢？</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MYSQL</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/08/09/MySql基础/02.日志架构：一条SQL更新语句是如何执行的？/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-MySql基础/01.基础架构：一条SQL查询语句是如何执行的？ - 副本" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
@@ -262,147 +403,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/08/09/MySql基础/01.基础架构：一条SQL查询语句是如何执行的？ - 副本/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-MySql基础/02.日志架构：一条SQL更新语句是如何执行的？" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/08/09/MySql基础/02.日志架构：一条SQL更新语句是如何执行的？/">02 | 日志架构：一条SQL更新语句是如何执行的？</a>
-    </h1>
-  
-
-        
-        <a href="/2019/08/09/MySql基础/02.日志架构：一条SQL更新语句是如何执行的？/" class="archive-article-date">
-  	<time datetime="2019-08-09T06:15:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-08-09</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-	
-        <h1><span id="02-日志架构一条sql更新语句是如何执行的">02 | 日志架构：一条SQL更新语句是如何执行的？</span></h1><p>林晓斌 2019-08-09 <a href="https://time.geekbang.org/column/article/115537" target="_blank" rel="noopener">地址</a></p>
-<p><img src="https://static001.geekbang.org/resource/image/7e/7d/7e43cabc6f9e71f8a1292c86d40a237d.jpg" alt=""></p>
-<p>前面我们系统了解了一个查询语句的执行流程，并介绍了执行过程中涉及的处理模块。相信你还记得，一条查询语句的执行过程一般是经过连接器、分析器、优化器、执行器等功能模块，最后到达存储引擎。</p>
-<p>那么，一条更新语句的执行流程又是怎样的呢？</p>
-<p>之前你可能经常听DBA同事说，MySQL可以恢复到半个月内任意一秒的状态，惊叹的同时，你是不是心中也不免会好奇，这是怎样做到的呢？</p>
-<p>我们还是从一个表的一条更新语句说起，下面是这个表的创建语句，这个表有一个主键ID和一个整型字段c：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table T(ID int primary key, c int);</span><br></pre></td></tr></table></figure>
-<p>如果要将ID = 2 这一行的值加1，SQL语句就会这么写：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; update T set c=c+1 where ID=2;</span><br></pre></td></tr></table></figure>
-<p>前面我有跟你介绍过SQL语句基本的执行链路，这里我再把那张图拿过来，你也可以先简单看看这个图回顾下。首先，可以确定的说，查询语句的那一套流程，更新语句也是同样会走一遍。</p>
-<p><img src="/picture/content/mysql-01.png" alt="MySQL的逻辑架构图"></p>
-<p><img src="https://static001.geekbang.org/resource/image/0d/d9/0d2070e8f84c4801adbfa03bda1f98d9.png" alt="MySQL的逻辑架构图"></p>
-<p>你执行语句前要先连接数据库，这是连接器的工作。</p>
-<p>前面我们说过，在一个表上有更新的时候，跟这个表有关的查询缓存会失效，所以这条语句就会把表T上所有缓存结果都清空。这也就是我们一般不建议使用查询缓存的原因。</p>
-<p>接下来，分析器会通过词法和语法解析知道这是一条更新语句。优化器决定要使用ID这个索引。然后，执行器负责具体执行，找到这一行，然后更新。</p>
-<p>与查询流程不一样的是，更新流程还涉及两个重要的日志模块，它们正是我们今天要讨论的主角：redo log（重做日志）和binlog（归档日志）。如果接触MySQL，那这两个词肯定是绕不过的，我后面的内容里也会不断地和你强调。不过话说回来，redo log 和binlog在设计上有很多有意思的地方，这些涉及思路也可以用到你自己的程序里。</p>
-<h3><span id="重要的日志模块redo-log">重要的日志模块：redo log</span></h3><p>不知道你还记不记得《孔乙已》这篇文章，酒店掌柜有一个粉板，专门用来记录客人的赊账记录。如果赊账的人不多，那么他可以把顾客名和账目写在板上。但如果赊账的人多了，粉板总会有记不下的时候，这个时候掌柜一定还有一个专门记录赊账的账本。</p>
-<p>如果有人要赊账或者还帐的话，掌柜一般有两种做法：</p>
-<ul>
-<li>一种做法是直接把账本翻出来，把这次赊的账加上去或者扣除掉；</li>
-<li>另一种做法是先在粉板上记下这次的账，等打烊以后再把账本放出来核算。</li>
-</ul>
-<p>在生意红火柜台很忙时，掌柜一定会选择后者，因为前者操作实在是太麻烦了。首先，你得找到这个人的赊账总额那条记录。你想想，密密麻麻几十页，掌柜要找到那个名字，可能还得带上老花镜慢慢找，找到之后再拿出算盘计算，最后再将结果写回账本上。</p>
-<p>这整个过程想想都麻烦。相比之下，还是先在粉板上记一下方便。你想想，如果掌柜没有粉板的帮助，每次记账都得翻账本，效率是不是低得让人难以忍受？</p>
-<p>同样，在MySQL里也有这个问题，如果每一次的更新操作都需要写进磁盘，然后磁盘也要找到对应的那条记录，然后再更新，整个过程IO成本、查找成本都很高。为了解决整个问题，MySQL的设计者就用了类似酒店掌柜粉板的思路来提升更新效率。</p>
-<p>而粉板和账本配合的整个过程，其实就是MySQL里经常说到的WAL技术，WAL的全称是Write-Ahead Logging，它的关键点就是先写日志，再写磁盘，也就是先写粉板，等不忙的时候再写账本。</p>
-<p>具体来说，当有一条记录需要更新的时候，InnoDB引擎就会先把记录写到redo log（粉板）里面，并更新内存，这个时候更新就算完成了。同事，InnoDB引擎会在适当的时候，将这个操作记录更新到磁盘里面，而这个更新往往是在系统比较空闲的时候做，这就像打烊以后掌柜做的事。</p>
-<p>如果今天赊账的不多，掌柜可以等打烊后再整理。但如果某天赊账的特别多，粉板写满了，又怎么办呢？这个时候掌柜只好放下手中的活儿，把粉板中的一部分赊账记录更新到账本中，然后把这些记录从粉板上擦掉，为记新帐腾出空间。</p>
-<p>与此类似，InnoDB的redo log 是固定大小的，比如可以配置为一组4个文件，每个文件的大小是1GB，那么这块“粉板”总共就可以记录4GB的操作。从头开始写，写到末尾就又回到开头循环写，如下面这图所示。</p>
-<p><img src="/picture/content/mysql-02.png" alt=""></p>
-<p><img src="https://static001.geekbang.org/resource/image/16/a7/16a7950217b3f0f4ed02db5db59562a7.png" alt=""></p>
-<p>write pos是当前记录的位置，一边写一边后移，写到第3号文件末尾后就回到0号文件开头。checkpoint是当前要擦除的位置，也是往后推移并且循环的，擦除记录前要把记录更新到数据文件。</p>
-<p>write pos 和checkpoint之间的是“粉板”上还空着的部分，可以用来记录新的操作。如果write pos追上checkpoint，表示“粉板”满了，这时候不能再执行新的更新，得停下来先擦掉一些记录，把checkpoint推进一下。</p>
-<p>有了redo log，InnoDB就可以保证即使数据库发生异常重启，之前提交的记录都不会丢失，这个能力称为 <strong>crash-safe</strong> 。</p>
-<p>要理解crash-safe这个概念，可以想想我们前面赊账记录的例子。只要赊账记录记在了粉板上或写在了账本上，之后即使掌柜忘记了，比如突然停业几天，恢复生意后依然可以通过账本和粉板上的数据明确赊账账目。</p>
-<h3><span id="重要的日志模块binlog">重要的日志模块：binlog</span></h3><p>前面我们讲过，MySQL整体来看，其实就有两块：一块是Server层，它主要做的是MySQL功能层面的事情；还有一块是引擎层，负责存储相关的具体事宜。上面我们聊到的粉板redo log是InnoDB引擎特有的日志，而Server层也有自己的日志，称为binlog（归档日志）。</p>
-<p>我想你肯定会问，为什么会有两份日志呢？</p>
-<p>因为最开始MySQL里并没有InnoDB引擎。MySQL自带的引擎是MyISAM，但是MyISAM没有crash-safe的能力，binlog日志只能用于归档。而InnoDB是另一个公司以插件形式引入MySQL的，既然指依靠binlog是没有crash-safe能力的，所以InnoDB使用另外一套日志系统——也就是redo log 来实现crash-safe能力。</p>
-<p>这两种日志有以下三点不同。</p>
-<ol>
-<li>redo log是InnoDB引擎特有的；binlog是MySQL的Server层实现的，所有引擎都可以使用。</li>
-<li>redo log是物理日志，记录的是“在某个数据页上做了什么修改”；binlog是逻辑日志，记录的是这个语句的原始逻辑，比如 “给ID = 2这一行的c字段加1”。</li>
-<li>redo log 是循环写的，空间固定会用完；binlog 是可以追加写入的。 “追加写” 是指binlog文件写到一定大小后会切换到下一个，并不会覆盖以前的日志。</li>
-</ol>
-<p>有了对这两个日志的概念性理解，我们再来看执行器和InnoDB引擎在执行这个简单的update语句时的内部流程。</p>
-<ol>
-<li>执行器先找引擎取ID = 2 这一行。ID是主键，引擎直接用树搜索找到这一行。如果ID = 2这一行所在的数据页本来就在内存中，就直接返回给执行器；否则，需要先从磁盘读入内存，然后再返回。</li>
-<li>执行器拿到引擎给的行数据，把这个值加上1，比如原来是N，现在就是N+1，得到新的一行数据，再调用引擎接口写入这行数据。</li>
-<li>引擎将这行新数据更新到内存中，同时将这个更新操作记录到redo log里面，此时redo log 处于prepare状态。然后告知执行器执行完成了，随时可以提交事务。</li>
-<li>执行器生成这个操作的binlog，并把binlog写入磁盘。</li>
-<li>执行器调用引擎的提交事务接口，引擎把刚刚写入的redo log改成提交（commit）状态，更新完成。</li>
-</ol>
-<p>这里我给出这个update语句的执行流程图，图中浅色框表示是在InnoDB内部执行的，深色框表示是在执行器中执行的。</p>
-<p><img src="/picture/content/mysql-02-2.png" alt="update语句执行流程"></p>
-<p><img src="https://static001.geekbang.org/resource/image/2e/be/2e5bff4910ec189fe1ee6e2ecc7b4bbe.png" alt=""></p>
-<p>你可能注意到了，最后三步看上去有点“绕”，将redo log的写入拆成了两个步骤：prepare和commit，这就是“两阶段提交”。</p>
-<h3><span id="两阶段提交">两阶段提交</span></h3><p>为什么必须有“两阶段提交”呢？这是为了让两份日志之间的逻辑一致。要说明这个问题，我们得从文章开头的那个问题说起： <strong>怎样让数据库恢复到半个月内任意一秒的状态？</strong></p>
-<p>前面我们说过了，binlog会记录所有的逻辑操作，并且是采用 “追加写” 的形式。如果你的DBA承诺说半个月内可以恢复，那么备份系统中一定会保存最近半个月的所有binlog，同时系统会定期做整库备份。这里的“定期”取决于系统的重要性，可以是一天一备，也可以是一周一备。</p>
-<p>当需要恢复到指定的某一秒时，比如某天下午两点发现中午十二点有一次误删表，需要找回数据，那你可以这么做：</p>
-<ul>
-<li>首先，找到最近的一次全量备份，如果你运气好，可能就是昨天晚上的一个备份，从这个备份恢复到临时库；</li>
-<li>然后，从备份的时间点开始，将备份的binlog依次取出来，重放到中午误删表之前的那个时刻。</li>
-</ul>
-<p>这样你的临时库就跟误删之前的线上库一样了，然后你可以把表数据从临时库取出来，按需要恢复到线上库去。<br>好了，说完了数据恢复过程，我们回来说说，为什么日志需要“两阶段提交”。这里不妨用反证法来进行解释。</p>
-<p>由于redo log和binlog是两个独立的逻辑，如果不用两阶段提交，要么就是先写完redo log再写binlog，或者采用反过来的顺序。我们看看这两种方式会有什么问题。</p>
-<p>仍然用前面的update语句做例子。假设当前ID=2的行，字段c的值是0，再假设执行update语句过程中在写完第一个日志后，第二个日志还没有写完期间发生了crash，会出现什么情况呢？</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">MYSQL</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/08/09/MySql基础/02.日志架构：一条SQL更新语句是如何执行的？/">展开全文 >></a>
         </p>
       
 
@@ -695,153 +695,6 @@
 
 
   
-    <article id="post-面试/Java/十七.Redis" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/06/24/面试/Java/十七.Redis/">十七.Redis</a>
-    </h1>
-  
-
-        
-        <a href="/2019/06/24/面试/Java/十七.Redis/" class="archive-article-date">
-  	<time datetime="2019-06-24T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-	
-        <h4><span id="179-redis-是什么都有哪些使用场景">179. Redis 是什么？都有哪些使用场景？</span></h4><p>Redis 是一个使用 C 语言开发的高速缓存数据库。</p>
-<p>Redis 使用场景：</p>
-<ul>
-<li>记录帖子点赞数、点击数、评论数；</li>
-<li>缓存近期热帖；</li>
-<li>缓存文章详情信息；</li>
-<li>记录用户会话信息。</li>
-</ul>
-<h4><span id="180-redis-有哪些功能">180. Redis 有哪些功能？</span></h4><ul>
-<li>数据缓存功能</li>
-<li>分布式锁的功能</li>
-<li>支持数据持久化</li>
-<li>支持事务</li>
-<li>支持消息队列</li>
-</ul>
-<h4><span id="181-redis-和-memcache-有什么区别">181. Redis 和 memcache 有什么区别？</span></h4><ul>
-<li>存储方式不同：memcache 把数据全部存在内存之中，断电后会挂掉，数据不能超过内存大小；Redis 有部份存在硬盘上，这样能保证数据的持久性。</li>
-<li>数据支持类型：memcache 对数据类型支持相对简单；Redis 有复杂的数据类型。</li>
-<li>使用底层模型不同：它们之间底层实现方式，以及与客户端之间通信的应用协议不一样，Redis 自己构建了 vm 机制，因为一般的系统调用系统函数的话，会浪费一定的时间去移动和请求。</li>
-<li>value 值大小不同：Redis 最大可以达到 512mb；memcache 只有 1mb。</li>
-</ul>
-<h4><span id="182-redis-为什么是单线程的">182. Redis 为什么是单线程的？</span></h4><p>因为 cpu 不是 Redis 的瓶颈，Redis 的瓶颈最有可能是机器内存或者网络带宽。既然单线程容易实现，而且 cpu 又不会成为瓶颈，那就顺理成章地采用单线程的方案了。</p>
-<p>关于 Redis 的性能，官方网站也有，普通笔记本轻松处理每秒几十万的请求。</p>
-<p>而且单线程并不代表就慢 nginx 和 nodejs 也都是高性能单线程的代表。</p>
-<h4><span id="183-什么是缓存穿透怎么解决">183. 什么是缓存穿透？怎么解决？</span></h4><p>缓存穿透：指查询一个一定不存在的数据，由于缓存是不命中时需要从数据库查询，查不到数据则不写入缓存，这将导致这个不存在的数据每次请求都要到数据库去查询，造成缓存穿透。</p>
-<p>解决方案：最简单粗暴的方法如果一个查询返回的数据为空（不管是数据不存在，还是系统故障），我们就把这个空结果进行缓存，但它的过期时间会很短，最长不超过五分钟。</p>
-<h4><span id="184-redis-支持的数据类型有哪些">184. Redis 支持的数据类型有哪些？</span></h4><p>Redis 支持的数据类型：string（字符串）、list（列表）、hash（字典）、set（集合）、zset（有序集合）。</p>
-<h4><span id="185-redis-支持的-java-客户端都有哪些">185. Redis 支持的 Java 客户端都有哪些？</span></h4><p>支持的 Java 客户端有 Redisson、jedis、lettuce 等。</p>
-<h4><span id="186-jedis-和-redisson-有哪些区别">186. jedis 和 Redisson 有哪些区别？</span></h4><ul>
-<li>jedis：提供了比较全面的 Redis 命令的支持。</li>
-<li>Redisson：实现了分布式和可扩展的 Java 数据结构，与 jedis 相比 Redisson 的功能相对简单，不支持排序、事务、管道、分区等 Redis 特性。</li>
-</ul>
-<h4><span id="187-怎么保证缓存和数据库数据的一致性">187. 怎么保证缓存和数据库数据的一致性？</span></h4><ul>
-<li>合理设置缓存的过期时间。</li>
-<li>新增、更改、删除数据库操作时同步更新 Redis，可以使用事物机制来保证数据的一致性。</li>
-</ul>
-<h4><span id="188-redis-持久化有几种方式">188. Redis 持久化有几种方式？</span></h4><p>Redis 的持久化有两种方式，或者说有两种策略：</p>
-<ul>
-<li>RDB（Redis Database）：指定的时间间隔能对你的数据进行快照存储。</li>
-<li>AOF（Append Only File）：每一个收到的写命令都通过write函数追加到文件中。</li>
-</ul>
-<h4><span id="189-redis-怎么实现分布式锁">189. Redis 怎么实现分布式锁？</span></h4><p>Redis 分布式锁其实就是在系统里面占一个“坑”，其他程序也要占“坑”的时候，占用成功了就可以继续执行，失败了就只能放弃或稍后重试。</p>
-<p>占坑一般使用 setnx(set if not exists)指令，只允许被一个程序占有，使用完调用 del 释放锁。</p>
-<h4><span id="190-redis-分布式锁有什么缺陷">190. Redis 分布式锁有什么缺陷？</span></h4><p>Redis 分布式锁不能解决超时的问题，分布式锁有一个超时时间，程序的执行如果超出了锁的超时时间就会出现问题。</p>
-<h4><span id="191-redis-如何做内存优化">191. Redis 如何做内存优化？</span></h4><p>尽量使用 Redis 的散列表，把相关的信息放到散列表里面存储，而不是把每个字段单独存储，这样可以有效的减少内存使用。比如将 Web 系统的用户对象，应该放到散列表里面再整体存储到 Redis，而不是把用户的姓名、年龄、密码、邮箱等字段分别设置 key 进行存储。</p>
-<h4><span id="192-redis-淘汰策略有哪些">192. Redis 淘汰策略有哪些？</span></h4><ul>
-<li>volatile-lru：从已设置过期时间的数据集（server. db[i]. expires）中挑选最近最少使用的数据淘汰。</li>
-<li>volatile-ttl：从已设置过期时间的数据集（server. db[i]. expires）中挑选将要过期的数据淘汰。</li>
-<li>volatile-random：从已设置过期时间的数据集（server. db[i]. expires）中任意选择数据淘汰。</li>
-<li>allkeys-lru：从数据集（server. db[i]. dict）中挑选最近最少使用的数据淘汰。</li>
-<li>allkeys-random：从数据集（server. db[i]. dict）中任意选择数据淘汰。</li>
-<li>no-enviction（驱逐）：禁止驱逐数据。</li>
-</ul>
-<h4><span id="193-redis-常见的性能问题有哪些该如何解决">193. Redis 常见的性能问题有哪些？该如何解决？</span></h4><ul>
-<li>主服务器写内存快照，会阻塞主线程的工作，当快照比较大时对性能影响是非常大的，会间断性暂停服务，所以主服务器最好不要写内存快照。</li>
-<li>Redis 主从复制的性能问题，为了主从复制的速度和连接的稳定性，主从库最好在同一个局域网内。</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/06/24/面试/Java/十七.Redis/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
     <article id="post-面试/Java/十六.MySQL " class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
@@ -976,6 +829,153 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2019/06/24/面试/Java/十六.MySQL /">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-面试/Java/十七.Redis" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/24/面试/Java/十七.Redis/">十七.Redis</a>
+    </h1>
+  
+
+        
+        <a href="/2019/06/24/面试/Java/十七.Redis/" class="archive-article-date">
+  	<time datetime="2019-06-24T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-24</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <h4><span id="179-redis-是什么都有哪些使用场景">179. Redis 是什么？都有哪些使用场景？</span></h4><p>Redis 是一个使用 C 语言开发的高速缓存数据库。</p>
+<p>Redis 使用场景：</p>
+<ul>
+<li>记录帖子点赞数、点击数、评论数；</li>
+<li>缓存近期热帖；</li>
+<li>缓存文章详情信息；</li>
+<li>记录用户会话信息。</li>
+</ul>
+<h4><span id="180-redis-有哪些功能">180. Redis 有哪些功能？</span></h4><ul>
+<li>数据缓存功能</li>
+<li>分布式锁的功能</li>
+<li>支持数据持久化</li>
+<li>支持事务</li>
+<li>支持消息队列</li>
+</ul>
+<h4><span id="181-redis-和-memcache-有什么区别">181. Redis 和 memcache 有什么区别？</span></h4><ul>
+<li>存储方式不同：memcache 把数据全部存在内存之中，断电后会挂掉，数据不能超过内存大小；Redis 有部份存在硬盘上，这样能保证数据的持久性。</li>
+<li>数据支持类型：memcache 对数据类型支持相对简单；Redis 有复杂的数据类型。</li>
+<li>使用底层模型不同：它们之间底层实现方式，以及与客户端之间通信的应用协议不一样，Redis 自己构建了 vm 机制，因为一般的系统调用系统函数的话，会浪费一定的时间去移动和请求。</li>
+<li>value 值大小不同：Redis 最大可以达到 512mb；memcache 只有 1mb。</li>
+</ul>
+<h4><span id="182-redis-为什么是单线程的">182. Redis 为什么是单线程的？</span></h4><p>因为 cpu 不是 Redis 的瓶颈，Redis 的瓶颈最有可能是机器内存或者网络带宽。既然单线程容易实现，而且 cpu 又不会成为瓶颈，那就顺理成章地采用单线程的方案了。</p>
+<p>关于 Redis 的性能，官方网站也有，普通笔记本轻松处理每秒几十万的请求。</p>
+<p>而且单线程并不代表就慢 nginx 和 nodejs 也都是高性能单线程的代表。</p>
+<h4><span id="183-什么是缓存穿透怎么解决">183. 什么是缓存穿透？怎么解决？</span></h4><p>缓存穿透：指查询一个一定不存在的数据，由于缓存是不命中时需要从数据库查询，查不到数据则不写入缓存，这将导致这个不存在的数据每次请求都要到数据库去查询，造成缓存穿透。</p>
+<p>解决方案：最简单粗暴的方法如果一个查询返回的数据为空（不管是数据不存在，还是系统故障），我们就把这个空结果进行缓存，但它的过期时间会很短，最长不超过五分钟。</p>
+<h4><span id="184-redis-支持的数据类型有哪些">184. Redis 支持的数据类型有哪些？</span></h4><p>Redis 支持的数据类型：string（字符串）、list（列表）、hash（字典）、set（集合）、zset（有序集合）。</p>
+<h4><span id="185-redis-支持的-java-客户端都有哪些">185. Redis 支持的 Java 客户端都有哪些？</span></h4><p>支持的 Java 客户端有 Redisson、jedis、lettuce 等。</p>
+<h4><span id="186-jedis-和-redisson-有哪些区别">186. jedis 和 Redisson 有哪些区别？</span></h4><ul>
+<li>jedis：提供了比较全面的 Redis 命令的支持。</li>
+<li>Redisson：实现了分布式和可扩展的 Java 数据结构，与 jedis 相比 Redisson 的功能相对简单，不支持排序、事务、管道、分区等 Redis 特性。</li>
+</ul>
+<h4><span id="187-怎么保证缓存和数据库数据的一致性">187. 怎么保证缓存和数据库数据的一致性？</span></h4><ul>
+<li>合理设置缓存的过期时间。</li>
+<li>新增、更改、删除数据库操作时同步更新 Redis，可以使用事物机制来保证数据的一致性。</li>
+</ul>
+<h4><span id="188-redis-持久化有几种方式">188. Redis 持久化有几种方式？</span></h4><p>Redis 的持久化有两种方式，或者说有两种策略：</p>
+<ul>
+<li>RDB（Redis Database）：指定的时间间隔能对你的数据进行快照存储。</li>
+<li>AOF（Append Only File）：每一个收到的写命令都通过write函数追加到文件中。</li>
+</ul>
+<h4><span id="189-redis-怎么实现分布式锁">189. Redis 怎么实现分布式锁？</span></h4><p>Redis 分布式锁其实就是在系统里面占一个“坑”，其他程序也要占“坑”的时候，占用成功了就可以继续执行，失败了就只能放弃或稍后重试。</p>
+<p>占坑一般使用 setnx(set if not exists)指令，只允许被一个程序占有，使用完调用 del 释放锁。</p>
+<h4><span id="190-redis-分布式锁有什么缺陷">190. Redis 分布式锁有什么缺陷？</span></h4><p>Redis 分布式锁不能解决超时的问题，分布式锁有一个超时时间，程序的执行如果超出了锁的超时时间就会出现问题。</p>
+<h4><span id="191-redis-如何做内存优化">191. Redis 如何做内存优化？</span></h4><p>尽量使用 Redis 的散列表，把相关的信息放到散列表里面存储，而不是把每个字段单独存储，这样可以有效的减少内存使用。比如将 Web 系统的用户对象，应该放到散列表里面再整体存储到 Redis，而不是把用户的姓名、年龄、密码、邮箱等字段分别设置 key 进行存储。</p>
+<h4><span id="192-redis-淘汰策略有哪些">192. Redis 淘汰策略有哪些？</span></h4><ul>
+<li>volatile-lru：从已设置过期时间的数据集（server. db[i]. expires）中挑选最近最少使用的数据淘汰。</li>
+<li>volatile-ttl：从已设置过期时间的数据集（server. db[i]. expires）中挑选将要过期的数据淘汰。</li>
+<li>volatile-random：从已设置过期时间的数据集（server. db[i]. expires）中任意选择数据淘汰。</li>
+<li>allkeys-lru：从数据集（server. db[i]. dict）中挑选最近最少使用的数据淘汰。</li>
+<li>allkeys-random：从数据集（server. db[i]. dict）中任意选择数据淘汰。</li>
+<li>no-enviction（驱逐）：禁止驱逐数据。</li>
+</ul>
+<h4><span id="193-redis-常见的性能问题有哪些该如何解决">193. Redis 常见的性能问题有哪些？该如何解决？</span></h4><ul>
+<li>主服务器写内存快照，会阻塞主线程的工作，当快照比较大时对性能影响是非常大的，会间断性暂停服务，所以主服务器最好不要写内存快照。</li>
+<li>Redis 主从复制的性能问题，为了主从复制的速度和连接的稳定性，主从库最好在同一个局域网内。</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/06/24/面试/Java/十七.Redis/">展开全文 >></a>
         </p>
       
 
@@ -1684,6 +1684,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">计算机</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
@@ -1697,10 +1701,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">计算机</a>
               </li>
             
             <div class="clearfix"></div>
