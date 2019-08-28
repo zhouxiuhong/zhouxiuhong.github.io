@@ -8,14 +8,20 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="article">
+  <meta name="description" content="-  title:第9讲-对比Hashtable、HashMap、TreeMap有什么不同？ date:2019-06-09 11:17:05 tags:-    JAVA - Java核心技术36讲 toc:true对比Hashtable、HashMap、TreeMap有什么不同？ 极客时间版权所有: https://time.geekbang.org/column/article/7810">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
 <meta property="og:url" content="http://yoursite.com/2019/08/27/第9将-对比Hashtable、HashMap、TreeMap有什么不同？/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="-  title:第9讲-对比Hashtable、HashMap、TreeMap有什么不同？ date:2019-06-09 11:17:05 tags:-    JAVA - Java核心技术36讲 toc:true对比Hashtable、HashMap、TreeMap有什么不同？ 极客时间版权所有: https://time.geekbang.org/column/article/7810">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-08-28T05:35:09.992Z">
+<meta property="og:image" content="http://yoursite.com/picture/content/java36-title-09.jpg">
+<meta property="og:image" content="http://yoursite.com/picture/content/java36-9.png">
+<meta property="og:updated_time" content="2019-08-28T05:45:04.489Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo">
+<meta name="twitter:description" content="-  title:第9讲-对比Hashtable、HashMap、TreeMap有什么不同？ date:2019-06-09 11:17:05 tags:-    JAVA - Java核心技术36讲 toc:true对比Hashtable、HashMap、TreeMap有什么不同？ 极客时间版权所有: https://time.geekbang.org/column/article/7810">
+<meta name="twitter:image" content="http://yoursite.com/picture/content/java36-title-09.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -56,20 +62,14 @@
 			
 				<li><a href="/">主页</a></li>
 	        
+				<li><a href="/tags/随笔/">随笔</a></li>
+	        
 			</ul>
 		</nav>
 		<nav class="header-smart-menu">
     		
     			
     			<a q-on="click: openSlider(e, 'innerArchive')" href="javascript:void(0)">所有文章</a>
-    			
-            
-    			
-    			<a q-on="click: openSlider(e, 'friends')" href="javascript:void(0)">友链</a>
-    			
-            
-    			
-    			<a q-on="click: openSlider(e, 'aboutme')" href="javascript:void(0)">关于我</a>
     			
             
 		</nav>
@@ -110,6 +110,8 @@
 			
 				
 			
+				
+			
 			
 			
 			<nav class="header-nav">
@@ -130,7 +132,9 @@
 				<ul style="width: 50%">
 				
 				
-					<li style="width: 100%"><a href="/">主页</a></li>
+					<li style="width: 50%"><a href="/">主页</a></li>
+		        
+					<li style="width: 50%"><a href="/tags/随笔/">随笔</a></li>
 		        
 				</ul>
 			</nav>
@@ -151,7 +155,71 @@
     <div class="article-entry" itemprop="articleBody">
       
 	
-        
+        <hr>
+<blockquote>
+<p>-<br>  title:第9讲-对比Hashtable、HashMap、TreeMap有什么不同？ date:2019-06-09 11:17:05 tags:-</p>
+</blockquote>
+<h2><span id="java-java核心技术36讲-toctrue">  JAVA - Java核心技术36讲 toc:true</span></h2><p><strong>对比Hashtable、HashMap、TreeMap有什么不同？</strong></p>
+<p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/7810" target="_blank" rel="noopener">https://time.geekbang.org/column/article/7810</a></p>
+<p><img src="/picture/content/java36-title-09.jpg" alt=""></p>
+<p><strong>典型回答</strong></p>
+<p>Hashtable、HashMap、TreeMap都是最常见的一些Map实现，是以 <strong>键值对</strong> 的形式存储和操作数据的容器类型。</p>
+<p>Hashetable是早期Java类库提供的一个 <a href="https://zh.wikipedia.org/wiki/%E5%93%88%E5%B8%8C%E8%A1%A8" target="_blank" rel="noopener">哈希表</a> 实现，本身是同步的，不支持null键和值，由于同步导致的性能开销，所以已经很少被推荐使用。</p>
+<p>HashMap是应用更加广泛的哈希表实现，行为上大致与HashTable一致，主要区别在于HashMap不是同步的，支持null键和值等。通常情况下，HashMap进行put或者get操作，可以达到常数时间的性能，所以 <strong>它的绝大部分利用键值对存取场景的首选</strong> ，比如，实现一个用户ID和用户信息对应的运行时存储结构。</p>
+<p>TreeMap则是基于红黑树的一种提供顺序访问的Map，和HashMap不同，它的get、put、remove之类操作都是O（log（n））的时间复杂度，具体顺序可以由指定的Comparator来决定，或者根据键的自然顺序来判断。</p>
+<p><strong>考点分析</strong></p>
+<p>上面的回答，只是对一些基本特征的简单总结，针对Map相关可以扩展的问题很多，从各种数据结构、典型应用场景，到程序设计实现的技术考量，尤其是在java8里，HashMap本身发生了非常大的变化，这些都是经常考察的方面。</p>
+<ul>
+<li>理解Map相关类似整体结构，尤其是有序数据结构的一些要点。</li>
+<li>从源码去分析HashMap的设计和实现要带你，理解容量、负载因子等，为什么需要这些参数，如何影响Map的性能，实践中如何取舍等。</li>
+<li>理解树化改造的相关原理和改进原因。</li>
+</ul>
+<p>除了典型的代码分析，还有一些有意思的并发相关问题也经常会被提到，如HashMap在并发环境可能出现 <a href="https://bugs.java.com/bugdatabase/view_bug.do?bug_id=6423457" target="_blank" rel="noopener">无限循环占用CPU</a> 、size不准确等诡异的问题。</p>
+<p>我认为者是一种典型的使用错误，因为HashMap明确声明不是线程安全的数据结构，如果忽略这一点，简单用在多线程场景里，难免会出现问题。</p>
+<p>理解导致这种错误的原因，也是深入理解并发程序运行的好办法。对于具体发生了什么，你可以参考这篇很久以前的 <a href="http://mailinator.blogspot.com/2009/06/beautiful-race-condition.html" target="_blank" rel="noopener">分析</a> ，里面甚至提供了示意图，我就不在重复别人写好的内容了。</p>
+<p><strong>知识扩展</strong></p>
+<ol>
+<li><p>Map整体结构</p>
+<p>首先，我们想对Map相关类型有个整体了解，Map虽然通常被包括在Java集合框架里，但是其本身并不是侠义上的集合类型（Collection），具体你可以参考下面这个简单类图。</p>
+<p><img src="/picture/content/java36-9.png" alt=""></p>
+<p>Hashtable比较特别，作为类似Vector、Stack的早期集合相关类型，它是扩展了Dictionary类的，类结构上与HashMap之类明显不同。</p>
+<p>HashMap等其他Map实现则是都扩展了AbstractMap，里面包含了通用方法抽象。不同Map的用途，从类图结构就能体现出来，设计目的已经体现在不同接口上。</p>
+<p>大部分使用Map的场景，通常就是放入、访问或者删除，而对顺序没有特别要求，HashMap在这种情况下基本是最好的选择。 <strong>HashMap的性能表现非常依赖于哈希码的有效性，请务必掌握hashCode和equals的一些基本约定，</strong> 比如</p>
+<ul>
+<li>equals相等，hashCode一定要相等。</li>
+<li>重写了hashCode也要重写equals。</li>
+<li>hashCode需要抱持一致性，状态改变返回的哈希值仍然要一致。</li>
+<li>equals的对称、反射、传递等特性。</li>
+</ul>
+<p>针对有序Map的分析内容比较有限，我再补充一些，虽然LinkedHashMap和TreeMap都可以保证某种顺序，但二者还是非常不同的。</p>
+<ul>
+<li>LinkedHashMap通常提供的是遍历顺序符合插入顺序，它的实现是通过为条目（键值对）维护一个双向链表。注意，通过特定构造函数，我们可以创建反映访问顺序的实例，所谓的put、get、compute等，都算作“访问”。</li>
+</ul>
+<p>这种行为适用于一些特定应用场景，例如，我们构建一个空间占用敏感的资源池，希望可以自动将最不常被访问的对象释放掉，这就可以利用LinkedHashMap提供的机制来实现，参考下面的示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">import java.util.LinkedHashMap;</span><br><span class="line">import java.util.Map;  </span><br><span class="line">public class LinkedHashMapSample &#123;</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        LinkedHashMap&lt;String, String&gt; accessOrderedMap = new LinkedHashMap&lt;String, String&gt;(16, 0.75F, true)&#123;</span><br><span class="line">            @Override</span><br><span class="line">            protected boolean removeEldestEntry(Map.Entry&lt;String, String&gt; eldest) &#123; // 实现自定义删除策略，否则行为就和普遍 Map 没有区别</span><br><span class="line">                return size() &gt; 3;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        accessOrderedMap.put(&quot;Project1&quot;, &quot;Valhalla&quot;);</span><br><span class="line">        accessOrderedMap.put(&quot;Project2&quot;, &quot;Panama&quot;);</span><br><span class="line">        accessOrderedMap.put(&quot;Project3&quot;, &quot;Loom&quot;);</span><br><span class="line">        accessOrderedMap.forEach( (k,v) -&gt; &#123;</span><br><span class="line">            System.out.println(k +&quot;:&quot; + v);</span><br><span class="line">        &#125;);</span><br><span class="line">        // 模拟访问</span><br><span class="line">        accessOrderedMap.get(&quot;Project2&quot;);</span><br><span class="line">        accessOrderedMap.get(&quot;Project2&quot;);</span><br><span class="line">        accessOrderedMap.get(&quot;Project3&quot;);</span><br><span class="line">        System.out.println(&quot;Iterate over should be not affected:&quot;);</span><br><span class="line">        accessOrderedMap.forEach( (k,v) -&gt; &#123;</span><br><span class="line">            System.out.println(k +&quot;:&quot; + v);</span><br><span class="line">        &#125;);</span><br><span class="line">        // 触发删除</span><br><span class="line">        accessOrderedMap.put(&quot;Project4&quot;, &quot;Mission Control&quot;);</span><br><span class="line">        System.out.println(&quot;Oldest entry should be removed:&quot;);</span><br><span class="line">        accessOrderedMap.forEach( (k,v) -&gt; &#123;// 遍历顺序不变</span><br><span class="line">            System.out.println(k +&quot;:&quot; + v);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- ​       对于TreeMap，它的整体顺序是由键的顺序关系决定的，通过Comparator或Comparable（自然顺序）来决定。</span><br><span class="line"></span><br><span class="line">我在上一讲留给你的思考题提到了，构建一个具有优先级的调度系统的问题，其本质就是个典型的优先队列场景，Java标准库提供了基于二叉堆实现的PriorityQueue，它们都是依赖于同一种排序机制，当然也包括TreeMap的马甲TreeSet。</span><br><span class="line"></span><br><span class="line">类似hashCode和equals的约定，为了避免摸棱两可的情况，自然顺序同样需要符合一个约定，就是compareTo的返回值需要和equals一致，否则就会出现摸棱两可情况。</span><br><span class="line"></span><br><span class="line">我们可以分析TreeMap的put方法实现：</span><br></pre></td></tr></table></figure>
+<p>public V put(K key, V value) {</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Entry&lt;K,V&gt; t = …</span><br><span class="line">cmp = k.compareTo(t.key);</span><br><span class="line">if (cmp &lt; 0)</span><br><span class="line">    t = t.left;</span><br><span class="line">else if (cmp &gt; 0)</span><br><span class="line">    t = t.right;</span><br><span class="line">else</span><br><span class="line">    return t.setValue(value);</span><br><span class="line">    // ...</span><br></pre></td></tr></table></figure>
+<p>   }</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">从代码里，你可以看出什么呢？当我不遵守约定时，两个不符合唯一性（equals）要求的对象被当作是同一个（因为，compareTo返回0），这会导致歧义的行为表现。</span><br><span class="line"></span><br><span class="line">2. HashMap源码分析</span><br><span class="line"></span><br><span class="line">   前面提到，HashMap设计与实现是个非常高频的面试题，所以我会在这进行相对详细的源码解读，主要围绕：</span><br><span class="line"></span><br><span class="line">   - HashMap内部实现基本点分析。</span><br><span class="line">   - 容量（capacity）和负载系数（load factor）。</span><br><span class="line">   - 树化。</span><br><span class="line"></span><br><span class="line">   首先，我们一起看看HashMap内部的结构，它可以看作是数组（Node&lt;K, V&gt;[] table）和链表结合组成的复合结构，数组被分为一个个桶（bucket），通过哈希值决定了键值对在这个数组的寻址；哈希值相同的键值对，则以链表形式存储，你可以参考下面的示意图。这里需要注意的是，如果链表大小超过阙值（TREEIFY_THRESHOLD,8）,图中的链表就会被改造为树形结构。</span><br><span class="line"></span><br><span class="line">   ![](/picture/content/java36-9-2.png)</span><br><span class="line"></span><br><span class="line">   从非拷贝构造函数的实现来看，这个表格（数组）似乎并没有在最初就初始化好，仅仅设置了一些初始值而已。</span><br></pre></td></tr></table></figure>
+<p>   public HashMap(int initialCapacity, float loadFactor){  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// ... </span><br><span class="line">this.loadFactor = loadFactor;</span><br><span class="line">this.threshold = tableSizeFor(initialCapacity);</span><br></pre></td></tr></table></figure>
+<p>   }</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">所以，我们深刻怀疑，HashMap也许是按照lazy-load原则，在首次使用时被初始化（拷贝构造函数除外， 我这里仅介绍最通用的场景）。既然如此，我们去看看put方法实现，似乎只有一个putVal的调用：</span><br></pre></td></tr></table></figure>
+<p>   public V put(K key, V value) {</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">return putVal(hash(key), key, value, false, true);</span><br></pre></td></tr></table></figure>
+<p>   }</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">​       看来主要的密码似乎藏在putVal里面，到底有什么秘密呢？为了节省空间，我这里只截取了putVal比较关键的几部分。</span><br><span class="line"></span><br><span class="line">​</span><br></pre></td></tr></table></figure>
+<p>final V putVal(int hash, K key, V value, boolean onlyIfAbent,</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">           boolean evit) &#123;</span><br><span class="line">Node&lt;K,V&gt;[] tab; Node&lt;K,V&gt; p; int , i;</span><br><span class="line">if ((tab = table) == null || (n = tab.length) = 0)</span><br><span class="line">    n = (tab = resize()).length;</span><br><span class="line">if ((p = tab[i = (n - 1) &amp; hash]) == ull)</span><br><span class="line">    tab[i] = newNode(hash, key, value, nll);</span><br><span class="line">else &#123;</span><br><span class="line">    // ...</span><br><span class="line">    if (binCount &gt;= TREEIFY_THRESHOLD - 1) // -1 for first </span><br><span class="line">       treeifyBin(tab, hash);</span><br><span class="line">    //  ... </span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">从putVal方法最初的几行，我们就可以发现几个有意思的地方：</span><br><span class="line"></span><br><span class="line">- 如果表格是null，resize方法会负责初始化它，这从tab=resize（）可以看出。</span><br><span class="line"></span><br><span class="line">- resize方法兼顾两个职责，创建初始存储表格，或者在容量不满足需求的时候，进行扩容（resize）。</span><br><span class="line"></span><br><span class="line">- 在放置性的键值对的过程中，如果发生下面条件，就会发生扩容。</span><br></pre></td></tr></table></figure>
+<p>  if (++size &gt; threshold)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">resize();</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">**一课一练**</span><br></pre></td></tr></table></figure>
+
       
 
       
@@ -254,8 +322,8 @@
     </a>
   
   
-    <a href="/2019/08/09/MySql基础/01.基础架构：一条SQL查询语句是如何执行的？ - 副本/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">01 | 基础架构：一条SQL查询语句是如何执行的？</div>
+    <a href="/2019/08/09/MySql基础/02.日志架构：一条SQL更新语句是如何执行的？/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">02 | 日志架构：一条SQL更新语句是如何执行的？</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -340,29 +408,13 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
       
       
     
-      
-      
-      
-    
-      
-      
-      
-    
     
 
     <ul style="width: 70%">
     
     
       
-      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
-      
-        
-      
-      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'friends')"><a href="javascript:void(0)" q-class="active:friends">友链</a></li>
-      
-        
-      
-      <li style="width: 33.333333333333336%" q-on="click: openSlider(e, 'aboutme')"><a href="javascript:void(0)" q-class="active:aboutme">关于我</a></li>
+      <li style="width: 100%" q-on="click: openSlider(e, 'innerArchive')"><a href="javascript:void(0)" q-class="active:innerArchive">所有文章</a></li>
       
         
     </ul>
@@ -458,45 +510,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
     
 
     
-    	<section class="tools-section tools-section-friends" q-show="friends">
-  		
-        <ul class="search-ul">
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接1</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接2</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接3</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接4</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接5</a>
-            </li>
-          
-            <li class="search-li">
-              <a href="http://localhost:4000/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>友情链接6</a>
-            </li>
-          
-        </ul>
-  		
-    	</section>
-    
 
-    
-    	<section class="tools-section tools-section-me" q-show="aboutme">
-  	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">很惭愧&lt;br&gt;&lt;br&gt;只做了一点微小的工作&lt;br&gt;谢谢大家</div>
-  	  	
-    	</section>
     
   </div>
   
