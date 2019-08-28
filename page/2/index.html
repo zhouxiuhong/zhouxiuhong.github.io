@@ -146,6 +146,424 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-第6讲-动态代理是基于什么原理？" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/06/第6讲-动态代理是基于什么原理？/">第6讲 | 动态代理是基于什么原理？</a>
+    </h1>
+  
+
+        
+        <a href="/2019/06/06/第6讲-动态代理是基于什么原理？/" class="archive-article-date">
+  	<time datetime="2019-06-06T03:17:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-06</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <p><strong>谈谈Java反射机制，动态代理是基于什么原理？</strong></p>
+<p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/7489" target="_blank" rel="noopener">https://time.geekbang.org/column/article/7489</a></p>
+<p><img src="/picture/content/java36-title-06.jpg" alt=""></p>
+<p><strong>典型回答</strong></p>
+<p>反射机制是Java语言提供的一种基础功能，赋予程序在运行时 <strong>自省</strong>（introspect，官方用语）的能力。通过反射我们可以直接操作类或者对象，比如获取某个对象的类定义，获取类声明的属性和方法，调用方法或者构造对象，甚至可以运行时修改类定义。</p>
+<p>动态代理是一种方便运行时动态构建代理、动态处理代理方法调用的机制，很多场景都是利用类似机制做到的，比如用来包装RPC调用、面先切面的编程（AOP）。</p>
+<p>实现动态代理的方式很多，比如JDK自身提供的动态代理，就是主要利用了上面提到的反射机制。还有其他的实现方式，比如利用传说中更高性能的字节码操作机制，类似ASM、cglib（基于ASM）、Javassist等。</p>
+<p><strong>考点分析</strong></p>
+<p>这个题目给我的第一印象是稍微有点诱导的嫌疑，可能会下意识地以为动态代理就是利用反射机制实现的，这么说也不算错但稍微有些不全面。功能才是目的，实现的方法有很多。总的来说，这道题目考察的是Java语言的另外一种基础机制：反射，它就像是一种魔法，引入运行时自省能力，赋予了Java语言令人意外的活力，通过运行时操作元数据或对象，Java可以灵活地操作运行时才能确定的信息，而动态代理，则是延伸出来的一种广泛应用于产品开发中的技术，很多繁琐的重复编程，都可以被动态代理机制优雅地解决。</p>
+<p>从考察知识点的角度，这道题涉及的知识点比较庞杂，所以面试官能否扩展或者深挖的内容非常多，比如：</p>
+<p>1.考察你对反射机制的了解和掌握程度</p>
+<p>2.动态代理解决了什么问题，在你业务系统中的应用场景是什么？</p>
+<p>3.JDK动态代理在设计和实现上与cglib等方式有什么不同，进而如何取舍？</p>
+<p><strong>知识扩展</strong></p>
+<p>1.反射机制及其演进</p>
+<p>对于Java语言的反射机制本身，如果你去看一下java.lang或java.lang.reflect包下的相关抽象，就会有一个很直观的印象了。Class、Field、Method、Constructor等，这些完全就是我们去操作类和对象的元数据对应。反射各种典型用例的编程，相信有太多文章或书籍进行过详细的介绍，至少你需要掌握基本场景编程，这里是官方提供的参考文档：<a href="https://docs.oracle.com/javase/tutorial/reflect/index.html" target="_blank" rel="noopener">oracle</a></p>
+<p>关于反射，有一点我需要特意提一下，就是反射提供的AccessibleObject.setAccessible(boolean flag) 它的子类也大都重写了这个方法，这里的所谓accessible可以理解成修饰成员的public、protected、private，这意味着我们可以在运行时修改成员访问限制！</p>
+<p>setAccessible的应用场景非常普通，遍布我们的日常开发、测试、依赖注入等各种框架中。比如，在O/R Mapping框架中，我们为一个java实体对象，运行时自动生成setter、getter的逻辑，这是加载或者持久化数据非常必要的，框架通常可以利用反射做这个事情，而不需要开发者手动写类似的重复代码。</p>
+<p>另一个典型场景就是绕过API访问控制。我们日常开发时可能被迫要调用内部API去做些事情，比如，自定义的高性能NIO框架需要显式地释放DirectBuffer，使用反射绕开限制是一种常见办法。</p>
+<p>但是，在java9以后，这个方法的使用可能会存在一些争议，英文Jigsaw项目新增的模块化系统，出于强封装性的考虑，对反射访问进行了限制。Jigsaw引入了所谓Open的概念，只有当被反射操作的模块和指定的包对反射电泳者模块Open，才能使用setAccessible；否则，被认为是不合法（illegal）操作。如果我们的实体类是定义在模块里面，我们需要在模块描述中明确声明：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">module MyEntities &#123;</span><br><span class="line">    // Open for reflection</span><br><span class="line">    opens com.mycorp to java.persistence;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>因为反射机制使用广泛，根据社区讨论，目前，Java9仍然保留了兼容Java8的行为，但是很有可能在未来版本，完全启用前面提到的针对setAccessible的限制，即只有当被反射操作的模块和指定的包对反射调用者模块Open，才能使用setAccessible，我们可以使用下面参数显式设置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--illegal-access=&#123; permit | warn | deny &#125;</span><br></pre></td></tr></table></figure>
+<p>2.动态代理</p>
+<p>前面的问题问到了动态代理，我们一起看看，它到底是解决什么问题？</p>
+<p>首先，它是一个 <strong>代理机制</strong>。如果熟悉设计模式中的代理模式，我们会知道，代理可以看作是对调用目标的一个包装，这样我们对目标代码的调用不是直接发生的，而是通过代理完成。其实很多动态代理场景，我认为也可以看作是装饰器（Decorator）模式的应用，我会在后面的专栏设计模式主题予以补充。</p>
+<p>通过代理可以让调用者与实现者之间 <strong>解耦</strong>。比如进行RPC调用，框架内部的寻址、序列化、发序列化等，对于调用者往往是没有太大意义的，通过代理，可以提供更加友善的界面。</p>
+<p>代理的发展经历了静态到动态的过程，源于静态代理引入的额外工作。类似早期的RMI之类古董技术，还需要rmic之类工具生成静态stub等各种文件，增加了很多繁琐的准备工作，而这又和我们的业务逻辑没有关系。利用动态代理机制，相应的stub等类，可以在运行时生成，对应的调用操作也是动态完成，极大地提高了我们的生产力。改进后的RMI已经不再需要手动去准备这些了，虽然它仍然是相对古老落后的技术，未来也许会逐步被移除。</p>
+<p>这么说可能不够直观，我们可以看JDK动态代理的一个简单例子。下面只是加了一句print，在生产系统中，我们可以轻松扩展类似逻辑进行诊断、限流等。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">public class MyDynamicProxy &#123;</span><br><span class="line">    public static  void main (String[] args) &#123;</span><br><span class="line">        HelloImpl hello = new HelloImpl();</span><br><span class="line">        MyInvocationHandler handler = new MyInvocationHandler(hello);</span><br><span class="line">        // 构造代码实例</span><br><span class="line">        Hello proxyHello = (Hello) Proxy.newProxyInstance(HelloImpl.class.getClassLoader(), HelloImpl.class.getInterfaces(), handler);</span><br><span class="line">        // 调用代理方法</span><br><span class="line">        proxyHello.sayHello();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">interface Hello &#123;</span><br><span class="line">    void sayHello();</span><br><span class="line">&#125;</span><br><span class="line">class HelloImpl implements  Hello &#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void sayHello() &#123;</span><br><span class="line">        System.out.println(&quot;Hello World&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> class MyInvocationHandler implements InvocationHandler &#123;</span><br><span class="line">    private Object target;</span><br><span class="line">    public MyInvocationHandler(Object target) &#123;</span><br><span class="line">        this.target = target;</span><br><span class="line">    &#125;</span><br><span class="line">    @Override</span><br><span class="line">    public Object invoke(Object proxy, Method method, Object[] args)</span><br><span class="line">            throws Throwable &#123;</span><br><span class="line">        System.out.println(&quot;Invoking sayHello&quot;);</span><br><span class="line">        Object result = method.invoke(target, args);</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的JDK Proxy例子，非常简单地实现了动态代理的构建和代理操作。首先，实现对应的InvocationHandler；然后，以接口Hello为纽带，为被调用目标构建代理对象，进而应用程序就可以使用代理对象间接运行调用目标的逻辑，代理为应用插入额外逻辑（这里是println）提供了便利的入口。</p>
+<p>从API设计和实现的角度，这种实现仍然有局限性，因为它是以接口为中心的，相当于添加了一种对于被调用者没有太大意义的限制。我们实例化的是Proxy对象，而不是真正的被调用类型，这在实践中还是可能带来各种不便和能力退化。</p>
+<p>如果被调用者没有实现接口，而我们还是希望利用动态代理机制，那么可以考虑其他方式。我们知道Spring AOP支持两种模式的动态代理，JDK PRoxy或者cglib，如果我们限制cglib方式，你会发现对接口的依赖被克服了。</p>
+<p>cglib动态代理采取的是创建目标类的子类的方式，因为是子类化，我们可以达到近似使用被调用者本身的效果。在Spring编程中，框架通常会处理这种情况，当然我们也可以<a href="http://cliffmeyers.com/blog/2006/12/29/spring-aop-cglib-or-jdk-dynamic-proxies.html" target="_blank" rel="noopener">显式指定</a>。关于类似方案的实现细节，我就不再详细讨论了。</p>
+<p>那我们在开发中怎样选择呢？我来简单对比下两种方式各自优势。</p>
+<p>JDK Proxy的优势：</p>
+<p>1.最小化依赖关系，减少依赖意味着简化开发和维护，JDK本身的支持，可能比cglib更加可靠。</p>
+<p>2.平滑进行JDK版本升级，而字节码类库通常需要进行更新以保证在新版Java上能够使用。</p>
+<p>3.代码实现简单。</p>
+<p>基于类似cglib框架的优势：</p>
+<p>1.有的时候调用目标可能不便实现额外接口，从某种角度看，限定调用者实现接口是有些侵入性的实践，类似cglib动态代理就没有这种限制。</p>
+<p>2.只操作我们关系的类，而不必为其他相关类增加工作量。</p>
+<p>3.高性能。</p>
+<p>另外，从性能角度，我想补充几句。记得有人曾经得出结论说JDK PRoxy 比cglib或者Javassist慢几十倍。坦白说，不去争论具体的benchmark细节，在主流JDK版本中，JDK PRoxy在典型场景可以提供对等的性能水平，数量级的差距基本上不是广泛存在的。而且，反射机制性能在现代JDK中，自身已经得到了极大的改进和优化，同时，JDK很多性能也不完全是反射，同样使用了ASM进行字节码操作。</p>
+<p>我们在选型中，性能未必是唯一考量，可靠性、可维护性、编程工作量等往往是更主要的考虑因素，毕竟标准类库和反射编程的门槛要低得多，代码量也是更加可控的，如果我们比较下不同开源项目在动态代理开发上的投入，也能看到这一点。</p>
+<p>动态代理应用非常广泛，虽然最初多是因为RPC等使用进入我们视线，但是动态代理的使用场景远远不仅如此，它完美符合Spring AOP等切面编程。我在后面的专栏还会进一步详细分析AOP的目的和能力。简单来说它可以看作是对OOP的一个补充，因为OOP对于跨越不同对象或类的分散、纠缠逻辑表现力不够，比如在不同模块的特定阶段做一些事情，类似日志、用户鉴权、全局性异常处理、性能监控、甚至事务处理等，你可以参考下面这张图。</p>
+<p><img src="/picture/content/java35-6.png" alt=""></p>
+<p>AOP通过（动态）代理机制可以让开发者从这些繁琐事项中抽身出来，大幅度提高了代码的抽象程度和复用度。从逻辑上来说，我们在软件设计和实现中的类似代理，如Facade、Observer等很多设计目的，都可以通过动态代理优雅地实现。</p>
+<p><strong>反射与动态代理原理</strong></p>
+<p>1.关于反射</p>
+<p>反射最大的作用之一就在与我们可以不在编译时知道某个对象的类型，而在运行时通过提供完整的“包名+类名.class”得到。注意：不是在编译时，而是在运行时。</p>
+<p>功能：</p>
+<ul>
+<li><p>在运行时能判断任意一个对象所属的类。</p>
+</li>
+<li><p>在运行时能构造任意一个类的对象，</p>
+</li>
+<li><p>在运行时判断任意一个类所具有的成员变量和方法。</p>
+</li>
+<li><p>在运行时调用任意一个对象的方法。</p>
+<p>​</p>
+</li>
+</ul>
+<p>说大白话就是，利用Java反射机制我们可以加载一个运行时才得知名称的class，获悉其构造方法，并声成其对象实体，能对其fields设值并唤起其methods。</p>
+<p>应用场景：</p>
+<p>反射技术常用在各类通用框架开发中。因为为了保证框架的通用性，需要根据配置文件加载不同的对象或类，并调用不同的方法，这个时候就会用到反射——运行时动态加载需要加载的对象。</p>
+<p>特点：</p>
+<p>由于反射会额外消耗一定的系统资源，因此如果不需要动态地创建一个对象，那么就不需要用反射。另外，反射调用方法时可以忽略权限检查，因此可能会破环封装性而导致安全问题。</p>
+<p>2.动态代理</p>
+<p>为其他对象提供一种代理以控制对这个对象的访问。在某些情况下，一个对象不适合或者不能直接引用另一个对象，而代理对象可以在两者之间起到中介的作用（可类比房屋中介，房东委托中介销售房屋、签订合同等）。</p>
+<p>所谓动态代理，就是实现阶段不用关心代理谁，而是在运行阶段才指定代理哪个一个对象（不确定性）。如果是自己写代理类的方式就是静态代理（确定性）。</p>
+<p>组成要素：</p>
+<p>（动态）代理模式主要涉及三个要素：</p>
+<p>其一：抽象类接口</p>
+<p>其二：被代理类（具体实现抽象接口的类）</p>
+<p>其三：动态代理类：实际调用被代理类的方法和属性的类</p>
+<p>实现方式：</p>
+<p>实现动态代理的方式很多，比如JDK自身提供的动态代理，就是主要利用了反射机制。还有其他的实现方式，比如利用字节码操作机制，类似ASM、CGLIB（基于ASM）、Javassist等。</p>
+<p>举例，常可采用的JDK提供的动态代理接口InvocationHandler来实现动态代理类。其中invoke方法是该接口定义必须实现的，它完成对真实方法的调用。通过InvocationHandler接口，所有方法都由该Handler进行处理，即所有被代理的方法都由InvocationHandler接管实际的处理任务。此外，我们常可以在invoke方法实现中增加自定义的逻辑实现，实现对被代理类的业务逻辑无侵入。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Java核心技术36讲</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/06/06/第6讲-动态代理是基于什么原理？/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-第5讲-String、StringBuffer、StringBuilder有什么区别？" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/05/第5讲-String、StringBuffer、StringBuilder有什么区别？/">第5讲 | String、StringBuffer、StringBuilder有什么区别？</a>
+    </h1>
+  
+
+        
+        <a href="/2019/06/05/第5讲-String、StringBuffer、StringBuilder有什么区别？/" class="archive-article-date">
+  	<time datetime="2019-06-05T03:17:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-05</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <p>杨晓峰 2018-05-05 </p>
+<p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/6845" target="_blank" rel="noopener">https://time.geekbang.org/column/article/6845</a></p>
+<p><img src="/picture/content/java36-title-05.jpg" alt=""></p>
+<p><strong>理解java的字符串，String、StringBuffer、StringBuilder有什么区别？</strong></p>
+<p><strong>典型回答</strong></p>
+<p>String是Java语言非常基础和重要的类，提供了构造和管理字符串的各种基本逻辑。它是典型的Immutable类，被声明成为final class，所有属性也都是final的。也由于它的不可变性，类似拼接、剪裁字符串等动作，都会产生新的String对象。由于字符串操作的普遍性，所以相关操作的效率往往对应用性能有明显影响。</p>
+<p>StringBuffer是为解决上面提到拼接产生太多中间对象的问题而提供的一个类，我们可以用append或者add方法，把字符串添加到已有序列的末尾或者指定位置。StringBuffer本质是一个线程安全的可修改字符序列，它保证了线程安全，也随之带来了额外的性能开销，所以除非有线程安全的需要，不然还是推荐使用它的后继者，也就是StringBuilder。</p>
+<p>StringBuiler是java1.5中新增的，在能力上和StringBuffer没有本质区别，但是它去掉了线程安全的部分，有效减小了开销，是绝大部分情况下进行字符串拼接的首选。</p>
+<p><strong>考点分析</strong></p>
+<p>几乎所有的应用开发都离不开操作字符串，理解字符串的设计和实现以及相关工具如拼接类的使用，对写出高质量代码是非常有帮助的。关于这个问题，我前面的回答是一个通常的该药性回答，至少你要指定String是Immutable的，字符串操作不当可能会产生大量临时字符串，以及线程安全方面的区别。</p>
+<p>如果继续深入，面试官可以从各种不同的角度考察，比如可以：<br>（1）通过String和相关类，考察基本的线程安全设计与实现，各种基础变成实践。</p>
+<p>（2）考察JVM对象缓存机制的理解以及如何良好地使用。</p>
+<p>（3）考察JVM优化Java代码的一些技巧。</p>
+<p>（4）String相关类的演进，比如java9中实现的巨大变化。</p>
+<p>………</p>
+<p><strong>知识扩展</strong></p>
+<p>1.字符串设计和实现考量</p>
+<p>String是Immutable类的典型实现，原生的保证了基础线程安全，因为你无法对它内部数据进行任何修改，这种便利甚至体现在拷贝构造函数中，由于不可变，Immutable对象在拷贝时不需要额外复制数据。</p>
+<p>我们再来看看StringBuffer实现的一些细节，它的线程安全是通过把各种修改数据的方法都加上synchronization关键字实现的，非常直白。其实，这种简单粗暴的实现方式，非常适合我们常见的线程安全类实现，不必纠结于synchronized性能之类的，有人说“过早优化是万恶之源”，考虑可靠性、正确性和代码可读性才是大多数应用开发最重要的因素。</p>
+<p>为了实现修改字符串序列的目的，StringBuffer和StringBuilder底层都是利用可修改的（char， JDK9以后是byte）数组，二者都继承了AbstractStringBuilder，里面包含了基本操作，区别仅在于最终的方法是否加了synchronized。</p>
+<p>另外，这个内部数组应该创建成多大的呢？如果太小，拼接的时候可能要重新创建足够大的数组；如果太大，又会浪费空间。目前的实现是，构建时初始字符串长度加16（这意味着，如果没有构建对象时输入最初的字符串，那么初始值就是16）。我们如果确定拼接会发生非常多次，而且大概是可预计的，那么久可以指定合适的大小，避免很多次扩容的开销。扩容会产生多重开销，因为要抛弃原有数组，创建新的（可以简单认为是倍数）数组，还要进行arraycopy。</p>
+<p>在没有线程安全问题的情况下，全部拼接操作是应该都用StringBuilder实现吗？毕竟这样书写的代码，还是要敲很多字的，可读性也不理想，下面的对比非常明显。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">String strByBuilder  = new</span><br><span class="line">StringBuilder().append(&quot;aa&quot;).append(&quot;bb&quot;).append(&quot;cc&quot;).append</span><br><span class="line">            (&quot;dd&quot;).toString();</span><br><span class="line">             </span><br><span class="line">String strByConcat = &quot;aa&quot; + &quot;bb&quot; + &quot;cc&quot; + &quot;dd&quot;;</span><br></pre></td></tr></table></figure>
+<p>其实，在通常情况下，没有必要过于担心，要相信java还是非常智能的。</p>
+<p>我们来做个实验，把下面一段代码，利用不同版本的JDK编译，然后再反编译，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public class StringConcat &#123;</span><br><span class="line">     public static String concat(String str) &#123;</span><br><span class="line">       return str + “aa” + “bb”;</span><br><span class="line">     &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>先编译再反编译，比如使用不同版本的JDK：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$&#123;JAVA_HOME&#125;/bin/javac StringConcat.java</span><br><span class="line">$&#123;JAVA_HOME&#125;/bin/javap -v StringConcat.class</span><br></pre></td></tr></table></figure>
+<p>JDK8的输出片段是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"> 0: new           #2                  // class java/lang/StringBuilder</span><br><span class="line"> 3: dup</span><br><span class="line"> 4: invokespecial #3                  // Method java/lang/StringBuilder.&quot;&lt;init&gt;&quot;:()V</span><br><span class="line"> 7: aload_0</span><br><span class="line"> 8: invokevirtual #4                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;</span><br><span class="line">11: ldc           #5                  // String aa</span><br><span class="line">13: invokevirtual #4                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;</span><br><span class="line">16: ldc           #6                  // String bb</span><br><span class="line">18: invokevirtual #4                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;</span><br><span class="line">21: invokevirtual #7                  // Method java/lang/StringBuilder.toString:()Ljava/lang/String;</span><br></pre></td></tr></table></figure>
+<p>而在JDK9中，反编译的结果就会有点特别了，片段是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// concat method</span><br><span class="line">1: invokedynamic #2,  0              // InvokeDynamic #0:makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;</span><br><span class="line"></span><br><span class="line">// ...</span><br><span class="line">// 实际是利用了 MethodHandle, 统一了入口</span><br><span class="line">0: #15 REF_invokeStatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/invoke/CallSite;</span><br></pre></td></tr></table></figure>
+<p>你可以看到，非静态的拼接逻辑在JDK8中会自动被javac转换为StringBuilder操作；而在JDK9里面，则是体现了思路的变化。java9利用InvokeDynamic，将字符串拼接的优化与javac生成的字节码解耦，假设未来JVM增强相关运行时实现，将不需要依赖javac的任何修改。</p>
+<p>在日常编程中，保证程序的可读性、可维护性，往往比所谓的最优性能更重要，你可以根据实际需求酌情选择具体的编码方式。</p>
+<p>2.字符串缓存</p>
+<p>我们粗略统计过，把常见应用进行堆转储（Dump Heap），然后分析对象组成，会发现平均25%的对象是字符串，并且其中约半数是重复的。如果能避免创建重复字符串，可以有效降低内存消耗和对象创建开销。</p>
+<p>String在Java6以后提供了intern（）方法，目的是提示JVM把相应字符串缓存起来，以备重复使用。在我们创建字符串对象并调用intern（）方法的时候，如果已经有缓存的字符串，就会返回缓存里的实例，否则将其缓存起来。一般来说，JVM会将所有的类似“abc”这样的文本字符串，或者字符串常量之类缓存起来。</p>
+<p>看起来不错是吧？但实际情况估计会让你大跌眼镜。一般使用java6这种历史版本，并不推荐大量使用intern，为什么呢？魔鬼存在于细节中，被缓存的字符串是存在所谓PermGen里的，也就是臭名昭著的“永久代”，这个空间是很有限的，也基本不会被FullGC之外的垃圾收集照顾到。所以，如果使用不当，OOM就会光顾。</p>
+<p>在后续版本中，这个缓存被放置在堆中，这样就极大避免了永久代占满的问题，甚至永久代在JDK8中被MetaSpace（元数据区）替代了。而且，默认缓存大小也在不断地扩大中，从最初的1009，到7u40以后被修改为60013。你可以使用下面的参数直接打印具体数字，可以拿自己的JDK立刻试验一下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-XX:+PrintStringTableStatistics</span><br></pre></td></tr></table></figure>
+<p>你也可以使用下面的JVM参数手动调整大小，但是绝大部分情况下并不需要调整，除非你确定它的大小已经影响了操作效率。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-XX:StringTableSize=N</span><br></pre></td></tr></table></figure>
+<p>Intern是一种  <strong>显式地排重机制</strong>，但是它也有一定的副作用，因为需要开发者写代码时明确调用，一是不方便，每一个都显式调用是非常麻烦的；另外就是我们很难保证效率，应用开发阶段很难清除地预计字符串的重复情况，有人认为这是一种污染代码的实践。</p>
+<p>幸好在Oracle JDK 8u之后，推出了一个新的特性，也就是G1 GC下的字符串排重。它是通过将相同数据的字符串指向同一份数据来做到的，是JVM底层的改变，并不需要Java类库做什么修改。</p>
+<p>注意这个功能目前是默认关闭的，你需要使用下面参数开启，并且记得指定使用G1 GC:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-XX:+UseStringDeduplication</span><br></pre></td></tr></table></figure>
+<p>前面说到的几个方面，只是Java底层对字符串各种优化的一角，在运行时，字符串的一些基础操作会直接利用JVM内部的Intrinsic机制，往往运行的就是特殊优化的本地代码，而根本就不是Java代码生成的字节码。Intrinsic可以简单理解为，是一种利用native方式hard-coded的逻辑，算是一种特别的内联，很多优化还是需要直接使用特定的CPU指令，具体可以看相关源码，搜索“string”以查找相关Intrinsic定义。当然，你也可以在启动实验应用时，使用下面参数，了解intrinsic发生的状态。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-XX:+PrintCompilation -XX:+UnlockDiagnosticVMOptions -XX:+PrintInlining</span><br><span class="line">    // 样例输出片段    </span><br><span class="line">        180    3       3       java.lang.String::charAt (25 bytes)  </span><br><span class="line">                                  @ 1   java.lang.String::isLatin1 (19 bytes)   </span><br><span class="line">                                  ...  </span><br><span class="line">                                  @ 7 java.lang.StringUTF16::getChar (60 bytes) intrinsic</span><br></pre></td></tr></table></figure>
+<p>可以看出，仅仅是字符串一个实现，就需要Java平台工程师和科学家付出如此大且默默无闻的努力，我们得到的很多便利都是来源于此。</p>
+<p>3.String自身的演化</p>
+<p>如果你仔细观察过Java的字符串，在历史版本中，它是使用char数组来存数据的，这样非常直接。但是Java中的char是两个bytes大小，拉丁语系语言的字符，根本就不需要太宽的char，这样无区别的实现就造成了一定的浪费。密度是编程语言平台永恒的话题，因为归根结底绝大部分任务是要来操作数据的。</p>
+<p>其实在Java6的时候，Oracle JDK就提供了压缩字符串的特性，但是这个特性的实现并不是开源的，而且在实践中也暴露出了一些问题，所以在最新的JDK版本中已经将它移除了。</p>
+<p>在Java9中，我们引入了Compact Strings的设计，对字符串进行了大刀阔斧的改进。将数据存储方式从char数据，改变为一个byte数组加上一个标识编码的所谓coder，并且将相关字符串操作类都进行了修改。另外，所有相关的Intrinsic之类也都进行了重写，以保证没有任何性能损失。</p>
+<p>虽然底层实现发生了这么大的改变，但是Java字符串的行为并没有任何大的变化，所以这个特性对于绝大部分应用来说是透明的，绝大部分情况不需要修改已有代码。</p>
+<p>当然，在极端情况下，字符串也出现了一些能力退化，比如最大字符串的大小。你可以思考下，原来char数组的实现，字符串的最大长度就是数组本身的长度限制，但是替换成byte数组，同样数组长度下，存储能力是退化了一倍的！还好这是存在于理论中的极限，还没有发现现实应用受此影响。</p>
+<p>在通用的性能测试和产品实验中，我们能非常明显地看到紧凑字符串带来的优势， <strong>即更小的内存占用、更快的操作速度</strong>。</p>
+<p>今天我从String、StringBuffer和StringBuilder的主要设计喝实现特点开始，分析了字符串缓存的intern机制、非代码侵入性的虚拟机层面排重、Java9中紧凑字符的改进，并且初步接触了JVM的底层优化机制intrinsic。从实践的角度，不管是Compact Strings还是底层intrinsic优化，都说明了使用Java基础类库的优势，它们往往能够得到最大程度、最高质量的优化，而且只要升级JDK版本，就能零成本地享受这些益处。</p>
+<p><strong>学习心得</strong></p>
+<p>1.String</p>
+<p>(1)String的创建机理</p>
+<p>由于String在java世界中使用过于频繁，Java为了避免在一个系统中产生大量的String对象，引入了字符串常量池。其运行机制是：创建一个字符串时，首先检查池中是否有值相同的字符串对象，如果有则不需要创建直接从池中刚查找到的对象引用；如果没有则新建字符串对象，返回对象引用，并且将新创建的对象放入池中。但是，通过new方法创建的String对象是不检查字符串池的，而是直接在堆区或栈区创建一个新的对象，也不会把对象放入池中。上述原则只适用于通过直接量给String对象引用赋值的情况。</p>
+<p>举例：String str1 = “123”; //通过直接量赋值方式，放入字符串常量池</p>
+<p>String str2 = new String(“123”); //通过new方式赋值方式，不放入字符串常量池</p>
+<p>注意：String提供了inter()方法。调用该方法时，如果常量池中包括了一个等于此String对象的字符串（由equals方法确定），则返回池中的字符串。否则，将此String对象添加到池中，并且返回池中对象的引用。</p>
+<p>（2）String的特性</p>
+<p>[A]不可变。是指String对象一旦生成，则不能再堆它进行改变。不可变的主要作用在于当一个对象需要被多线程共享，并且访问频繁时，可以省略同步和锁等待的时间，从而大幅度提高系统性能。不可变模式是一个可以提高多线程程序的性能，降低多线程程序复杂度的设计模式。</p>
+<p>[B]针对常量池的优化。当2个String对象拥有相同的值时，他们只引用常量池中的同一个拷贝。当同一个字符串反复出现时，这个技术可以大幅度节省内存空间。</p>
+<p>2.StringBuffer/StringBuilder</p>
+<p>StringBuffer和StringBuilder都实现了AbstractStringBuilder抽象类，拥有几乎一致对外提供的调用接口；其底层在内存中的存储方式与String相同，都是以一个有序的字符序列（char类型的数组）进行存储，不同点是StringBuffer/StringBuilder对象的值是可以改变的，并且值改变以后，对象引用不会发生改变；两者对象在构造过程中，首先按照默认大小申请一个字符数组，由于会不断加入新数据，当超过默认大小后，会创建一个更大的数组，并将原先的数组内容复制过来，再丢弃旧的数组。因此，由于较大的对象的扩容会涉及大量的内存复制操作，如果能够预先评估大小，可提升性能。</p>
+<p>唯一需要注意的是：StringBuffer是线程安全的，但是StringBuilder是线程不安全的。可参看Java标准类库的源代码，StringBuffer类中方法定义前面都会由synchronize关键字。为此，StringBuffer的性能要远低于StringBuilder。</p>
+<p>3.应用场景</p>
+<p>[A]在字符串内容不经常发生变化的业务场景优先使用String类。例如：常量声明、少量的字符串拼接操作等。如果有大量的字符串内容拼接，避免使用String与String之间的“+”操作，因为这样会产生大量无用的中间对象，耗费空间且执行效率低下（新建对象、回收对象花费大量时间）。</p>
+<p>[B]在频繁进行字符串的运算（如拼接、替换、删除等），并且运行在多线程环境下，建议使用StringBuffer，例如XML解析、HTTP参数解析与封装。</p>
+<p>[C]在频繁进行字符串的运算（如拼接、替换、删除等），并且运行在单线程环境下，建议使用StringBuilder，例如SQL语句拼装、JSON封装等。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Java核心技术36讲</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/06/05/第5讲-String、StringBuffer、StringBuilder有什么区别？/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-面试/Java/十六.zookeeper" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/06/02/面试/Java/十六.zookeeper/">十六.zookeeper</a>
+    </h1>
+  
+
+        
+        <a href="/2019/06/02/面试/Java/十六.zookeeper/" class="archive-article-date">
+  	<time datetime="2019-06-02T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <h2><span id="十六zookeeper">十六.zookeeper</span></h2><h4><span id="1-zookeeper-是什么">1. zookeeper 是什么？</span></h4><p>zookeeper 是一个分布式的，开放源码的分布式应用程序协调服务，是 google chubby 的开源实现，是 hadoop 和 hbase 的重要组件。它是一个为分布式应用提供一致性服务的软件，提供的功能包括：配置维护、域名服务、分布式同步、组服务等。</p>
+<h4><span id="2-zookeeper-都有哪些功能">2. zookeeper 都有哪些功能？</span></h4><ul>
+<li>集群管理：监控节点存活状态、运行请求等。</li>
+<li>主节点选举：主节点挂掉了之后可以从备用的节点开始新一轮选主，主节点选举说的就是这个选举的过程，使用 zookeeper 可以协助完成这个过程。</li>
+<li>分布式锁：zookeeper 提供两种锁：独占锁、共享锁。独占锁即一次只能有一个线程使用资源，共享锁是读锁共享，读写互斥，即可以有多线线程同时读同一个资源，如果要使用写锁也只能有一个线程使用。zookeeper可以对分布式锁进行控制。</li>
+<li>命名服务：在分布式系统中，通过使用命名服务，客户端应用能够根据指定名字来获取资源或服务的地址，提供者等信息。</li>
+</ul>
+<h4><span id="3-zookeeper-有几种部署模式">3. zookeeper 有几种部署模式？</span></h4><p>zookeeper 有三种部署模式：</p>
+<ul>
+<li>单机部署：一台集群上运行；</li>
+<li>集群部署：多台集群运行；</li>
+<li>伪集群部署：一台集群启动多个 zookeeper 实例运行。</li>
+</ul>
+<h4><span id="4-zookeeper-怎么保证主从节点的状态同步">4. zookeeper 怎么保证主从节点的状态同步？</span></h4><p>zookeeper 的核心是原子广播，这个机制保证了各个 server 之间的同步。实现这个机制的协议叫做 zab 协议。 zab 协议有两种模式，分别是恢复模式（选主）和广播模式（同步）。当服务启动或者在领导者崩溃后，zab 就进入了恢复模式，当领导者被选举出来，且大多数 server 完成了和 leader 的状态同步以后，恢复模式就结束了。状态同步保证了 leader 和 server 具有相同的系统状态。</p>
+<h4><span id="5-集群中为什么要有主节点">5. 集群中为什么要有主节点？</span></h4><p>在分布式环境中，有些业务逻辑只需要集群中的某一台机器进行执行，其他的机器可以共享这个结果，这样可以大大减少重复计算，提高性能，所以就需要主节点。</p>
+<h4><span id="6-集群中有-3-台服务器其中一个节点宕机这个时候-zookeeper-还可以使用吗">6. 集群中有 3 台服务器，其中一个节点宕机，这个时候 zookeeper 还可以使用吗？</span></h4><p>可以继续使用，单数服务器只要没超过一半的服务器宕机就可以继续使用。</p>
+<h4><span id="7-说一下-zookeeper-的通知机制">7. 说一下 zookeeper 的通知机制？</span></h4><p>客户端端会对某个 znode 建立一个 watcher 事件，当该 znode 发生变化时，这些客户端会收到 zookeeper 的通知，然后客户端可以根据 znode 变化来做出业务上的改变。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/06/02/面试/Java/十六.zookeeper/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-面试/Java/十五.kafka" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
@@ -1078,406 +1496,9 @@
 
 
   
-    <article id="post-面试/Java/八.网络" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/23/面试/Java/八.网络/">八.网络</a>
-    </h1>
-  
-
-        
-        <a href="/2019/05/23/面试/Java/八.网络/" class="archive-article-date">
-  	<time datetime="2019-05-23T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-	
-        <h2><span id="八网络">八.网络</span></h2><h4><span id="1-http-响应码-301-和-302-代表的是什么有什么区别">1. http 响应码 301 和 302 代表的是什么？有什么区别？</span></h4><p>301：永久重定向。</p>
-<p>302：暂时重定向。</p>
-<p>它们的区别是，301 对搜索引擎优化（SEO）更加有利；302 有被提示为网络拦截的风险。</p>
-<h4><span id="2-forward-和-redirect-的区别">2. forward 和 redirect 的区别？</span></h4><p>forward 是转发 和 redirect 是重定向：</p>
-<ul>
-<li>地址栏 url 显示：foward url 不会发生改变，redirect url 会发生改变；</li>
-<li>数据共享：forward 可以共享 request 里的数据，redirect 不能共享；</li>
-<li>效率：forward 比 redirect 效率高。</li>
-</ul>
-<h4><span id="3-简述-tcp-和-udp的区别">3. 简述 tcp 和 udp的区别？</span></h4><p>tcp 和 udp 是 OSI 模型中的运输层中的协议。tcp 提供可靠的通信传输，而 udp 则常被用于让广播和细节控制交给应用的通信传输。</p>
-<p>两者的区别大致如下：</p>
-<ul>
-<li>tcp 面向连接，udp 面向非连接即发送数据前不需要建立链接；</li>
-<li>tcp 提供可靠的服务（数据传输），udp 无法保证；</li>
-<li>tcp 面向字节流，udp 面向报文；</li>
-<li>tcp 数据传输慢，udp 数据传输快；</li>
-</ul>
-<h4><span id="4-tcp-为什么要三次握手两次不行吗为什么">4. tcp 为什么要三次握手，两次不行吗？为什么？</span></h4><p>如果采用两次握手，那么只要服务器发出确认数据包就会建立连接，但由于客户端此时并未响应服务器端的请求，那此时服务器端就会一直在等待客户端，这样服务器端就白白浪费了一定的资源。若采用三次握手，服务器端没有收到来自客户端的再此确认，则就会知道客户端并没有要求建立请求，就不会浪费服务器的资源。</p>
-<h4><span id="5-说一下-tcp-粘包是怎么产生的">5. 说一下 tcp 粘包是怎么产生的？</span></h4><p>tcp 粘包可能发生在发送端或者接收端，分别来看两端各种产生粘包的原因：</p>
-<ul>
-<li>发送端粘包：发送端需要等缓冲区满才发送出去，造成粘包；</li>
-<li>接收方粘包：接收方不及时接收缓冲区的包，造成多个包接收。</li>
-</ul>
-<h4><span id="6-osi-的七层模型都有哪些">6. OSI 的七层模型都有哪些？</span></h4><ul>
-<li>物理层：利用传输介质为数据链路层提供物理连接，实现比特流的透明传输。</li>
-<li>数据链路层：负责建立和管理节点间的链路。</li>
-<li>网络层：通过路由选择算法，为报文或分组通过通信子网选择最适当的路径。</li>
-<li>传输层：向用户提供可靠的端到端的差错和流量控制，保证报文的正确传输。</li>
-<li>会话层：向两个实体的表示层提供建立和使用连接的方法。</li>
-<li>表示层：处理用户信息的表示问题，如编码、数据格式转换和加密解密等。</li>
-<li>应用层：直接向用户提供服务，完成用户希望在网络上完成的各种工作。</li>
-</ul>
-<h4><span id="7-get-和-post-请求有哪些区别">7. get 和 post 请求有哪些区别？</span></h4><ul>
-<li>get 请求会被浏览器主动缓存，而 post 不会。</li>
-<li>get 传递参数有大小限制，而 post 没有。</li>
-<li>post 参数传输更安全，get 的参数会明文限制在 url 上，post 不会。</li>
-</ul>
-<h4><span id="8-如何实现跨域">8. 如何实现跨域？</span></h4><p>实现跨域有以下几种方案：</p>
-<ul>
-<li>服务器端运行跨域 设置 CORS 等于 *；</li>
-<li>在单个接口使用注解 @CrossOrigin 运行跨域；</li>
-<li>使用 jsonp 跨域；</li>
-</ul>
-<h4><span id="9-说一下-jsonp-实现原理">9. 说一下 JSONP 实现原理？</span></h4><p>jsonp：JSON with Padding，它是利用script标签的 src 连接可以访问不同源的特性，加载远程返回的“JS 函数”来执行的。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/05/23/面试/Java/八.网络/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-面试/Java/七.异常" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/22/面试/Java/七.异常/">七.异常</a>
-    </h1>
-  
-
-        
-        <a href="/2019/05/22/面试/Java/七.异常/" class="archive-article-date">
-  	<time datetime="2019-05-22T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-22</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-	
-        <h2><span id="七异常">七.异常</span></h2><h4><span id="1-throw-和-throws-的区别">1. throw 和 throws 的区别？</span></h4><ul>
-<li>throw：是真实抛出一个异常。</li>
-<li>throws：是声明可能会抛出一个异常。</li>
-</ul>
-<h4><span id="2-final-finally-finalize-有什么区别">2. final、finally、finalize 有什么区别？</span></h4><ul>
-<li>final：是修饰符，如果修饰类，此类不能被继承；如果修饰方法和变量，则表示此方法和此变量不能在被改变，只能使用。</li>
-<li>finally：是 try{} catch{} finally{} 最后一部分，表示不论发生任何情况都会执行，finally 部分可以省略，但如果 finally 部分存在，则一定会执行 finally 里面的代码。</li>
-<li>finalize： 是 Object 类的一个方法，在垃圾收集器执行的时候会调用被回收对象的此方法。</li>
-</ul>
-<h4><span id="3-try-catch-finally-中哪个部分可以省略">3. try-catch-finally 中哪个部分可以省略？</span></h4><p>try-catch-finally 其中 catch 和 finally 都可以被省略，但是不能同时省略，也就是说有 try 的时候，必须后面跟一个 catch 或者 finally。</p>
-<h4><span id="4-try-catch-finally-中如果-catch-中-return-了finally-还会执行吗">4. try-catch-finally 中，如果 catch 中 return 了，finally 还会执行吗？</span></h4><p>finally 一定会执行，即使是 catch 中 return 了，catch 中的 return 会等 finally 中的代码执行完之后，才会执行。</p>
-<h4><span id="5-常见的异常类有哪些">5. 常见的异常类有哪些？</span></h4><ul>
-<li>NullPointerException 空指针异常</li>
-<li>ClassNotFoundException 指定类不存在</li>
-<li>NumberFormatException 字符串转换为数字异常</li>
-<li>IndexOutOfBoundsException 数组下标越界异常</li>
-<li>ClassCastException 数据类型转换异常</li>
-<li>FileNotFoundException 文件未找到异常</li>
-<li>NoSuchMethodException 方法不存在异常</li>
-<li>IOException IO 异常</li>
-<li>SocketException Socket 异常</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/05/22/面试/Java/七.异常/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-面试/Java/六.JavaWeb" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/21/面试/Java/六.JavaWeb/">六.Java Web</a>
-    </h1>
-  
-
-        
-        <a href="/2019/05/21/面试/Java/六.JavaWeb/" class="archive-article-date">
-  	<time datetime="2019-05-21T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-21</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-	
-        <h2><span id="六java-web">六.Java Web</span></h2><h4><span id="1jsp和servlet有什么区别">1.JSP和servlet有什么区别？</span></h4><p>JSP是servlet技术的扩展，本质上就是servlet的简易方式。servlet和JSP最主要的不同点在于，servlet的应用逻辑是在Java文件中，并且完全从表示层中的html里分离开来，而JSP的情况是Java和html可以组合成一个扩展名为JSP的文件。JSP侧重于视图，servlet主要用于控制逻辑。</p>
-<h4><span id="2jsp有哪些内置对象作用分别是什么">2.JSP有哪些内置对象？作用分别是什么？</span></h4><p>JSP有9大内置对象：</p>
-<ul>
-<li><p>request：封装客户端的请求，其中包含来自get或post请求的参数；</p>
-</li>
-<li><p>response：封装服务器对客户端的响应；</p>
-</li>
-<li><p>pageContext：通过该对象可以获取其他对象；</p>
-</li>
-<li><p>session：封装用户会话的对象；</p>
-</li>
-<li><p>application：封装服务器运行环境的对象；</p>
-</li>
-<li><p>out：输出服务器响应的输出流对象；</p>
-</li>
-<li><p>config：Web应用的配置对象；</p>
-</li>
-<li><p>page：JSP页面对象（相当于java程序中的this）；</p>
-</li>
-<li><p>exception：封装页面抛出异常的对象。</p>
-<p>​</p>
-</li>
-</ul>
-<h4><span id="3说一下jsp的4种作用域">3.说一下JSP的4种作用域？</span></h4><ul>
-<li>page：代表与一个页面相关的对象和属性。</li>
-<li>request：代表与客户端发出的一个请求相关的对象和属性。一个请求可能跨越多个页面，涉及多个Web组件；需要在页面显示的临时数据可以置于此作用域。</li>
-<li>session：代表与某个用户与服务器建立的一次会话相关的对象和属性。跟某个用户相关的数据应该放在用户自己的session中。</li>
-<li>application：代表与整个Web应用程序相关的对象和属性，它实质上是跨越整个Web应用程序，包括多个页面、请求和会话的一个全局作用域。</li>
-</ul>
-<h4><span id="4session和cookie有什么区别">4.session和cookie有什么区别？</span></h4><ul>
-<li>存储位置不同：session存储在服务器端；cookie存储在浏览器端。</li>
-<li>安全性不同：cookie安全性一般，在浏览器存储，可以被伪造和修改。</li>
-<li>容量和个数限制：cookie有容量限制，每个站点下的cookie也有个数限制。</li>
-<li>存储的多样性：session可以存储在Redis中、数据库中、应用程序中；而cookie只能存储在浏览器中。</li>
-</ul>
-<h4><span id="5说一下session的工作原理">5.说一下session的工作原理？</span></h4><p>session的工作原理是客户端登录完成之后，服务器会创建对应的session，session创建完之后，会把session的id发送给客户端，客户端再存储到浏览器中。这样客户端每次访问服务器时，都会带着sessionid，服务器拿到sessionid之后，在内存找到与之对应的session这样就可以正常工作了。</p>
-<h4><span id="6如果客户端禁止cookie能实现session还能用吗">6.如果客户端禁止cookie能实现session还能用吗？</span></h4><p>可以用，session只是依赖cookie存储sessionid，如果cookie被禁用了，可以使用url中添加sessionid的方式保证session能正常使用。</p>
-<h4><span id="7spring-mvc和struts的区别是什么">7.spring mvc和struts的区别是什么？</span></h4><ul>
-<li><p>拦截级别：struts2是类级别的拦截；spring mvc是方法级别的拦截。</p>
-</li>
-<li><p>数据独立性：spring mvc的方法之间基本上独立的，独享request和response数据，请求数据通过参数获取，处理结果通过ModelMap交回给框架，方法之间不共享变量；而struts2虽然方法之间也是独立的，但其所有action变量是共享的，这不会影响程序运行，却给我们编码和读程序时带来了一定的麻烦。</p>
-</li>
-<li><p>拦截机制：struts2有以自己的interceptor机制，spring mvc用的是独立的aop方式，这样导致struts2的配置文件量比spring mvc大。</p>
-</li>
-<li><p>对ajax的支持：spring mvc集成了ajax，所有ajax使用很方便，只需要一个注解@ResponseBody就可以实现了；而struts2一般需要安装插件或者自己写代码才行。</p>
-<p>​</p>
-</li>
-</ul>
-<h4><span id="8如何避免sql注入">8.如何避免SQL注入</span></h4><ul>
-<li>使用预处理PreparedStatement。</li>
-<li>使用正则表达式过滤掉字符中的特殊字符。</li>
-</ul>
-<h4><span id="9什么是xss攻击如何避免">9.什么是XSS攻击，如何避免？</span></h4><p>XSS攻击：即跨站脚本攻击，它是Web程序中常见的漏洞。原理是攻击者往Web页面里插入恶意的脚本代码（css代码、JavaScript代码等），当用户浏览该页面时，嵌入其中的脚本代码会被执行，从而达到恶意攻击用户的目的，如盗取用户cookie、破坏页面结构、重定向到其他网站等。</p>
-<p>预防XSS的核心是必须对输入的数据做过滤处理。</p>
-<h4><span id="10什么是csrf攻击如何避免">10.什么是CSRF攻击，如何避免？</span></h4><p>CSRF：Cross-Site Request Forgery（中文：跨站请求伪造），可以理解为攻击者盗用了你的身份，以你的名义发送恶意请求，比如：以你名义发送邮件、发消息、购买商品、虚拟货币转账等。</p>
-<p>防御手段：</p>
-<ul>
-<li>验证请求来源地址；</li>
-<li>关键操作添加验证码；</li>
-<li>在请求地址添加token并验证。</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/05/21/面试/Java/六.JavaWeb/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 
@@ -1596,11 +1617,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java面试</a>
+                <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
+                <a href="javascript:void(0)" class="js-tag color2">java面试</a>
               </li>
             
             <div class="clearfix"></div>

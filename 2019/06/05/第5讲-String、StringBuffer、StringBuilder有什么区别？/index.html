@@ -8,18 +8,20 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>第5讲 | String、StringBuffer、StringBuilder有什么区别？ | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="理解java的字符串，String、StringBuffer、StringBuilder有什么区别？ 典型回答 String是Java语言非常基础和重要的类，提供了构造和管理字符串的各种基本逻辑。它是典型的Immutable类，被声明成为final class，所有属性也都是final的。也由于它的不可变性，类似拼接、剪裁字符串等动作，都会产生新的String对象。由于字符串操作的普遍性，所以相关">
+  <meta name="description" content="杨晓峰 2018-05-05  极客时间版权所有: https://time.geekbang.org/column/article/6845  理解java的字符串，String、StringBuffer、StringBuilder有什么区别？ 典型回答 String是Java语言非常基础和重要的类，提供了构造和管理字符串的各种基本逻辑。它是典型的Immutable类，被声明成为final cl">
 <meta name="keywords" content="JAVA,Java核心技术36讲">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第5讲 | String、StringBuffer、StringBuilder有什么区别？">
 <meta property="og:url" content="http://yoursite.com/2019/06/05/第5讲-String、StringBuffer、StringBuilder有什么区别？/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="理解java的字符串，String、StringBuffer、StringBuilder有什么区别？ 典型回答 String是Java语言非常基础和重要的类，提供了构造和管理字符串的各种基本逻辑。它是典型的Immutable类，被声明成为final class，所有属性也都是final的。也由于它的不可变性，类似拼接、剪裁字符串等动作，都会产生新的String对象。由于字符串操作的普遍性，所以相关">
+<meta property="og:description" content="杨晓峰 2018-05-05  极客时间版权所有: https://time.geekbang.org/column/article/6845  理解java的字符串，String、StringBuffer、StringBuilder有什么区别？ 典型回答 String是Java语言非常基础和重要的类，提供了构造和管理字符串的各种基本逻辑。它是典型的Immutable类，被声明成为final cl">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-07-05T07:06:20.448Z">
+<meta property="og:image" content="http://yoursite.com/picture/content/java36-title-05.jpg">
+<meta property="og:updated_time" content="2019-08-28T03:51:46.210Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="第5讲 | String、StringBuffer、StringBuilder有什么区别？">
-<meta name="twitter:description" content="理解java的字符串，String、StringBuffer、StringBuilder有什么区别？ 典型回答 String是Java语言非常基础和重要的类，提供了构造和管理字符串的各种基本逻辑。它是典型的Immutable类，被声明成为final class，所有属性也都是final的。也由于它的不可变性，类似拼接、剪裁字符串等动作，都会产生新的String对象。由于字符串操作的普遍性，所以相关">
+<meta name="twitter:description" content="杨晓峰 2018-05-05  极客时间版权所有: https://time.geekbang.org/column/article/6845  理解java的字符串，String、StringBuffer、StringBuilder有什么区别？ 典型回答 String是Java语言非常基础和重要的类，提供了构造和管理字符串的各种基本逻辑。它是典型的Immutable类，被声明成为final cl">
+<meta name="twitter:image" content="http://yoursite.com/picture/content/java36-title-05.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -170,7 +172,10 @@
     <div class="article-entry" itemprop="articleBody">
       
 	
-        <p><strong>理解java的字符串，String、StringBuffer、StringBuilder有什么区别？</strong></p>
+        <p>杨晓峰 2018-05-05 </p>
+<p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/6845" target="_blank" rel="noopener">https://time.geekbang.org/column/article/6845</a></p>
+<p><img src="/picture/content/java36-title-05.jpg" alt=""></p>
+<p><strong>理解java的字符串，String、StringBuffer、StringBuilder有什么区别？</strong></p>
 <p><strong>典型回答</strong></p>
 <p>String是Java语言非常基础和重要的类，提供了构造和管理字符串的各种基本逻辑。它是典型的Immutable类，被声明成为final class，所有属性也都是final的。也由于它的不可变性，类似拼接、剪裁字符串等动作，都会产生新的String对象。由于字符串操作的普遍性，所以相关操作的效率往往对应用性能有明显影响。</p>
 <p>StringBuffer是为解决上面提到拼接产生太多中间对象的问题而提供的一个类，我们可以用append或者add方法，把字符串添加到已有序列的末尾或者指定位置。StringBuffer本质是一个线程安全的可修改字符序列，它保证了线程安全，也随之带来了额外的性能开销，所以除非有线程安全的需要，不然还是推荐使用它的后继者，也就是StringBuilder。</p>
@@ -525,11 +530,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java面试</a>
+                <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
+                <a href="javascript:void(0)" class="js-tag color2">java面试</a>
               </li>
             
             <div class="clearfix"></div>

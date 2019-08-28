@@ -8,20 +8,21 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>第1讲 | 谈谈你对Java平台的理解？ | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="第1讲 | 谈谈你对Java平台的理解？杨晓峰 2018-05-05 极客时间版权所有: https://time.geekbang.org/column/article/6845 谈谈你对java平台的理解？ “java是解释执行”，这句话正确吗？ 典型回答 java本身是一种面向对象的语言，最显著的特性有两个方面，一是所谓的“书写一次，到处运行”（write once， run anywher">
+  <meta name="description" content="第1讲 | 谈谈你对Java平台的理解？杨晓峰 2018-05-05 极客时间版权所有: https://time.geekbang.org/column/article/6845  谈谈你对java平台的理解？ “java是解释执行”，这句话正确吗？ 典型回答 java本身是一种面向对象的语言，最显著的特性有两个方面，一是所谓的“书写一次，到处运行”（write once， run anywhe">
 <meta name="keywords" content="JAVA,Java核心技术36讲">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第1讲 | 谈谈你对Java平台的理解？">
 <meta property="og:url" content="http://yoursite.com/2019/04/24/第1讲-谈谈你对Java平台的理解？/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="第1讲 | 谈谈你对Java平台的理解？杨晓峰 2018-05-05 极客时间版权所有: https://time.geekbang.org/column/article/6845 谈谈你对java平台的理解？ “java是解释执行”，这句话正确吗？ 典型回答 java本身是一种面向对象的语言，最显著的特性有两个方面，一是所谓的“书写一次，到处运行”（write once， run anywher">
+<meta property="og:description" content="第1讲 | 谈谈你对Java平台的理解？杨晓峰 2018-05-05 极客时间版权所有: https://time.geekbang.org/column/article/6845  谈谈你对java平台的理解？ “java是解释执行”，这句话正确吗？ 典型回答 java本身是一种面向对象的语言，最显著的特性有两个方面，一是所谓的“书写一次，到处运行”（write once， run anywhe">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://static001.geekbang.org/resource/image/20/32/20bc6a900fc0b829c2f0e723df050732.png">
-<meta property="og:updated_time" content="2019-07-05T07:04:48.924Z">
+<meta property="og:image" content="http://yoursite.com/picture/content/java36-title-01.jpg">
+<meta property="og:image" content="http://yoursite.com/picture/content/java-36-1.png">
+<meta property="og:updated_time" content="2019-08-28T03:26:38.048Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="第1讲 | 谈谈你对Java平台的理解？">
-<meta name="twitter:description" content="第1讲 | 谈谈你对Java平台的理解？杨晓峰 2018-05-05 极客时间版权所有: https://time.geekbang.org/column/article/6845 谈谈你对java平台的理解？ “java是解释执行”，这句话正确吗？ 典型回答 java本身是一种面向对象的语言，最显著的特性有两个方面，一是所谓的“书写一次，到处运行”（write once， run anywher">
-<meta name="twitter:image" content="https://static001.geekbang.org/resource/image/20/32/20bc6a900fc0b829c2f0e723df050732.png">
+<meta name="twitter:description" content="第1讲 | 谈谈你对Java平台的理解？杨晓峰 2018-05-05 极客时间版权所有: https://time.geekbang.org/column/article/6845  谈谈你对java平台的理解？ “java是解释执行”，这句话正确吗？ 典型回答 java本身是一种面向对象的语言，最显著的特性有两个方面，一是所谓的“书写一次，到处运行”（write once， run anywhe">
+<meta name="twitter:image" content="http://yoursite.com/picture/content/java36-title-01.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -174,6 +175,7 @@
 	
         <h1><span id="第1讲-谈谈你对java平台的理解">第1讲 | 谈谈你对Java平台的理解？</span></h1><p>杨晓峰 2018-05-05</p>
 <p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/6845" target="_blank" rel="noopener">https://time.geekbang.org/column/article/6845</a></p>
+<p><img src="/picture/content/java36-title-01.jpg" alt=""></p>
 <p><strong>谈谈你对java平台的理解？ “java是解释执行”，这句话正确吗？</strong></p>
 <p><strong>典型回答</strong></p>
 <p>java本身是一种面向对象的语言，最显著的特性有两个方面，一是所谓的“<strong>书写一次，到处运行</strong>”（write once， run anywhere），能够非常容易地获得跨平台能力；另外就是<strong>垃圾收集</strong>（GC， Garbage Collection），java通过垃圾收集器回收分配内存，大部分情况下，程序员不需要自己操心内存的分配和回收。</p>
@@ -187,7 +189,7 @@
 <p>或者谈谈JVM的一些基础概念和机制，比如Java的类加载机制，常见版本JDK（如JDK8）内嵌的Class-Loader，例如Bootstap、Application和Extension Class-loader；类加载大致过程：加载、验证、链接、初始化（这里参考了周志明的《深入理解java虚拟机》）；自定义Class-loader等。还有垃圾收集的基本原理，最常见的垃圾收集器，如SerialGc、Parallel GC、CMS、G1等，对于适用于什么样的工作负载最好也心里有数。这些都是可以扩展开的领域。</p>
 <p>当然还有JDK包含哪些工具或者Java领域内其它工具等，如编译器、运行时环境、安全工具、诊断和监控工具等。这些基本工具是日常工作效率的保证，对于我们工作在其它语言平台上，同样有所帮助，很多都是触类旁通的。</p>
 <p>下图是一个相对宽泛的蓝图</p>
-<p><img src="https://static001.geekbang.org/resource/image/20/32/20bc6a900fc0b829c2f0e723df050732.png" alt="img"></p>
+<p><img src="/picture/content/java-36-1.png" alt="img"></p>
 <p>众所周知，我们通常把java分为编译期和运行时。这里说的java的编译和C/C++是有着不同的意义的，javac的编译，编译java源码生成“.class”文件里面实际是字节码，而不是可以直接执行的机器码。java通过字节码和java虚拟机（JVM）这种跨平台的抽象，屏蔽了操作系统和硬件的细节，这也是实现“一次编译，到处执行”的基础。</p>
 <p>在运行时，JVM会通过类加载器（Class-Loader）加载字节码，解释或者编译执行。主流java版本中，如JDK8实际是解释和编译混合的一种模式，即所谓的混合模式（-Xmixed）。通常运行在server模式的JVM，会进行上万次调用以收集足够的信息进行高效的编译，client模式这个门限是1500次。Oracle Hospot JVM内置了两个不同的JIT compiler， C1对应前面说的client模式，适用于对于启动速度敏感的应用，比如普通java桌面应用；C2对应server模式，它的优化是为长时间运行的服务器端应用设计的。默认是采用所谓的分层编译（TieredCompilation）。</p>
 <p>java虚拟机启动时，可以指定不同的参数对运行模式进行选择。比如，指定“-Xint”，就是告诉JVM只进行解释执行，不对代码进行编译，这种模式抛弃了JIT可能带来的性能优势。毕竟解释器（interpreter）是逐条读入，逐条解释运行的。与其相对应的，还有一个“-Xcomp” 参数，这是告诉JVM关闭解释器，不要进行解释执行，或者叫做最大优化级别。“-Xcomep”会导致JVM启动变慢非常多，同时有些JIT编译器优化方式，比如分支预测，如果不进行profiling，往往并不能进行有效优化。</p>
@@ -195,7 +197,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">jaotc --output libHelloWorld.so HelloWorld.class</span><br><span class="line">jaotc --output libjava.base.so --module java.base</span><br></pre></td></tr></table></figure>
 <p>然后，在启动时直接指定就可以了。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -XX:AOTLibrary=./libHelloWorld.so,./libjava.base.so HelloWorld</span><br></pre></td></tr></table></figure>
-<p>而且，Oracle JDK支持分层编译和AOT协作使用，这两者并不是二选一的关系。如果你有兴趣，可以参考相关文档：<a href="http://openjdk.java.net/jeps/295。AOT也不仅仅只有这一种方式，业界早就有第三方工具（如GCJ、Excelsior" target="_blank" rel="noopener">http://openjdk.java.net/jeps/295。AOT也不仅仅只有这一种方式，业界早就有第三方工具（如GCJ、Excelsior</a> JET）提供相关功能。</p>
+<p>而且，Oracle JDK支持分层编译和AOT协作使用，这两者并不是二选一的关系。如果你有兴趣，可以参考相关文档：<a href="http://openjdk.java.net/jeps/295" target="_blank" rel="noopener">openjdk</a> 。AOT也不仅仅只有这一种方式，业界早就有第三方工具（如GCJ、Excelsior JET）提供相关功能。</p>
 <p>另外，JVM作为一个强大的平台，不仅仅只有java语言可以运行在JVM上，本质上合规的字节码都可以运行，java语言自身也为此提供了便利，我们可以看到类似Clojure、Scala、Groovy、JRuby、Jython等大量JVM语言，活跃在不同的场景。</p>
 <p><strong>学习心得</strong></p>
 <p>“一次编译、到处运行”说的是Java语言跨平台的特性，Java的跨平台特性与Java虚拟机的存在密不可分，可在不同的环境中运行。比如说Windows平台和Linux平台都有相应的JDK，安装好JDK后也就有了java语言的运行环境。其实Java语言本身与其他的编程语言没有特别大的差异，并不是说Java语言可以跨平台，而是在不同的平台都有可以让Java语言运行的环境而已，所以才有了java一次编译，到处运行这样的效果。</p>
@@ -310,18 +312,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/04/24/计算机/第一章计算机基础知识/基础知识选择题/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/04/24/计算机/第一章计算机基础知识/第2讲/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          基础知识选择题
+          第2讲 计算机基础
         
       </div>
     </a>
   
   
-    <a href="/2019/04/24/计算机/第一章计算机基础知识/第4讲-微型计算机的硬件组成/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">第4讲-微型计算机的硬件组成</div>
+    <a href="/2019/04/24/计算机/选择题/1.基础知识选择题/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">基础知识选择题</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -486,11 +488,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java面试</a>
+                <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
+                <a href="javascript:void(0)" class="js-tag color2">java面试</a>
               </li>
             
             <div class="clearfix"></div>

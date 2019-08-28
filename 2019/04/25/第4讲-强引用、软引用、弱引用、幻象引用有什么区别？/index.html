@@ -8,21 +8,22 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>第4讲-强引用、软引用、弱引用、幻象引用有什么区别？ | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="第4讲-强引用、软引用、弱引用、幻象引用有什么区别？杨晓峰 2018-05-05 极客时间版权所有: https://time.geekbang.org/column/article/6845 强引用、软引用、弱引用、幻象引用有什么区别？具体使用场景是什么？ 典型回答 不同的引用类型，主要体现的是对象不同的可达性（reachable）状态和对垃圾收集的影响。 所谓强引用（“Strong” Refe">
+  <meta name="description" content="第4讲-强引用、软引用、弱引用、幻象引用有什么区别？杨晓峰 2018-05-05 极客时间版权所有: https://time.geekbang.org/column/article/6845  强引用、软引用、弱引用、幻象引用有什么区别？具体使用场景是什么？ 典型回答 不同的引用类型，主要体现的是对象不同的可达性（reachable）状态和对垃圾收集的影响。 所谓强引用（“Strong” Ref">
 <meta name="keywords" content="JAVA,Java核心技术36讲">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第4讲-强引用、软引用、弱引用、幻象引用有什么区别？">
 <meta property="og:url" content="http://yoursite.com/2019/04/25/第4讲-强引用、软引用、弱引用、幻象引用有什么区别？/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="第4讲-强引用、软引用、弱引用、幻象引用有什么区别？杨晓峰 2018-05-05 极客时间版权所有: https://time.geekbang.org/column/article/6845 强引用、软引用、弱引用、幻象引用有什么区别？具体使用场景是什么？ 典型回答 不同的引用类型，主要体现的是对象不同的可达性（reachable）状态和对垃圾收集的影响。 所谓强引用（“Strong” Refe">
+<meta property="og:description" content="第4讲-强引用、软引用、弱引用、幻象引用有什么区别？杨晓峰 2018-05-05 极客时间版权所有: https://time.geekbang.org/column/article/6845  强引用、软引用、弱引用、幻象引用有什么区别？具体使用场景是什么？ 典型回答 不同的引用类型，主要体现的是对象不同的可达性（reachable）状态和对垃圾收集的影响。 所谓强引用（“Strong” Ref">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://static001.geekbang.org/resource/image/36/b0/36d3c7b158eda9421ef32463cb4d4fb0.png">
-<meta property="og:image" content="https://static001.geekbang.org/resource/image/ba/3e/bae702d46c665e12113f5abd876eb53e.png">
-<meta property="og:updated_time" content="2019-07-05T07:08:47.176Z">
+<meta property="og:image" content="http://yoursite.com/picture/content/java36-title-04.jpg">
+<meta property="og:image" content="http://yoursite.com/picture/content/java36-4.png">
+<meta property="og:image" content="http://yoursite.com/picture/content/java36-4-02.png">
+<meta property="og:updated_time" content="2019-08-28T03:49:47.760Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="第4讲-强引用、软引用、弱引用、幻象引用有什么区别？">
-<meta name="twitter:description" content="第4讲-强引用、软引用、弱引用、幻象引用有什么区别？杨晓峰 2018-05-05 极客时间版权所有: https://time.geekbang.org/column/article/6845 强引用、软引用、弱引用、幻象引用有什么区别？具体使用场景是什么？ 典型回答 不同的引用类型，主要体现的是对象不同的可达性（reachable）状态和对垃圾收集的影响。 所谓强引用（“Strong” Refe">
-<meta name="twitter:image" content="https://static001.geekbang.org/resource/image/36/b0/36d3c7b158eda9421ef32463cb4d4fb0.png">
+<meta name="twitter:description" content="第4讲-强引用、软引用、弱引用、幻象引用有什么区别？杨晓峰 2018-05-05 极客时间版权所有: https://time.geekbang.org/column/article/6845  强引用、软引用、弱引用、幻象引用有什么区别？具体使用场景是什么？ 典型回答 不同的引用类型，主要体现的是对象不同的可达性（reachable）状态和对垃圾收集的影响。 所谓强引用（“Strong” Ref">
+<meta name="twitter:image" content="http://yoursite.com/picture/content/java36-title-04.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -175,6 +176,7 @@
 	
         <h1><span id="第4讲-强引用-软引用-弱引用-幻象引用有什么区别">第4讲-强引用、软引用、弱引用、幻象引用有什么区别？</span></h1><p>杨晓峰 2018-05-05</p>
 <p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/6845" target="_blank" rel="noopener">https://time.geekbang.org/column/article/6845</a></p>
+<p><img src="/picture/content/java36-title-04.jpg" alt=""></p>
 <p><strong>强引用、软引用、弱引用、幻象引用有什么区别？具体使用场景是什么？</strong></p>
 <p><strong>典型回答</strong></p>
 <p>不同的引用类型，主要体现的是<strong>对象不同的可达性（reachable）状态和对垃圾收集的影响</strong>。</p>
@@ -190,7 +192,7 @@
 <p><strong>知识扩展</strong></p>
 <p>1.对象可达性状态流转分析</p>
 <p>首先，请你看下面流程图，这里简单总结了对象生命周期和不同可达性状态，以及不同状态可能的改变关系，可能未必100%严谨，来阐述下可达性的变化。</p>
-<p><img src="https://static001.geekbang.org/resource/image/36/b0/36d3c7b158eda9421ef32463cb4d4fb0.png" alt="img"></p>
+<p><img src="/picture/content/java36-4.png" alt="img"></p>
 <p>我来解释一下上图的具体状态，这是java定义的不同可达性级别（reachability level），具体如下：</p>
 <p>（1）.强可达（Strongly Reachable），就是当一个对象可以有一个或多个线程可以不通过各种引用访问到的情况。比如，我们新创建一个对象，那么创建它的线程对它就是强可达。</p>
 <p>（2）.软可达（Softly Reachable），就是当我们只能通过软引用才能访问到对象的状态。</p>
@@ -199,7 +201,7 @@
 <p>（5）.不可达（unreachable），意味着对象可以被清除了。</p>
 <p>判断对象可达性，是JVM垃圾收集器决定如何处理对象的一部分考虑。</p>
 <p>所有引用类型，都是抽象类java.lang.ref.Reference的子类，你可能注意到它提供了get()方法：</p>
-<p><img src="https://static001.geekbang.org/resource/image/ba/3e/bae702d46c665e12113f5abd876eb53e.png" alt="img"></p>
+<p><img src="/picture/content/java36-4-02.png" alt="img"></p>
 <p>除了幻想引用（因为get永远返回null），如果对象还没有被销毁，都可以通过get方法获取原有对象。这意味着，利用软引用和弱引用，我们可以将访问到的对象，重新指向强引用，也就是人为的改变了对象的可达性状态！这也是为什么我在上图里有些地方画了双向箭头。</p>
 <p>所以，对于软引用、弱引用之类，垃圾收集器可能会存在二次确认的问题，以保证处于弱引用状态的对象，没有改变为强引用。</p>
 <p>如果我们错误的保持了强引用（比如，赋值给了static变量），那么对象可能就没有机会变回类似弱引用的可达性状态了，就回产生内存泄漏。所以，检查弱引用指向对象是否被垃圾收集，也是诊断是否有特定内存泄漏的一个思路，如果我们的框架使用到弱引用又怀疑有内存泄漏，就可以从这个角度检查。</p>
@@ -500,11 +502,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java面试</a>
+                <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
+                <a href="javascript:void(0)" class="js-tag color2">java面试</a>
               </li>
             
             <div class="clearfix"></div>

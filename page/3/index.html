@@ -146,6 +146,403 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-面试/Java/八.网络" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/23/面试/Java/八.网络/">八.网络</a>
+    </h1>
+  
+
+        
+        <a href="/2019/05/23/面试/Java/八.网络/" class="archive-article-date">
+  	<time datetime="2019-05-23T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <h2><span id="八网络">八.网络</span></h2><h4><span id="1-http-响应码-301-和-302-代表的是什么有什么区别">1. http 响应码 301 和 302 代表的是什么？有什么区别？</span></h4><p>301：永久重定向。</p>
+<p>302：暂时重定向。</p>
+<p>它们的区别是，301 对搜索引擎优化（SEO）更加有利；302 有被提示为网络拦截的风险。</p>
+<h4><span id="2-forward-和-redirect-的区别">2. forward 和 redirect 的区别？</span></h4><p>forward 是转发 和 redirect 是重定向：</p>
+<ul>
+<li>地址栏 url 显示：foward url 不会发生改变，redirect url 会发生改变；</li>
+<li>数据共享：forward 可以共享 request 里的数据，redirect 不能共享；</li>
+<li>效率：forward 比 redirect 效率高。</li>
+</ul>
+<h4><span id="3-简述-tcp-和-udp的区别">3. 简述 tcp 和 udp的区别？</span></h4><p>tcp 和 udp 是 OSI 模型中的运输层中的协议。tcp 提供可靠的通信传输，而 udp 则常被用于让广播和细节控制交给应用的通信传输。</p>
+<p>两者的区别大致如下：</p>
+<ul>
+<li>tcp 面向连接，udp 面向非连接即发送数据前不需要建立链接；</li>
+<li>tcp 提供可靠的服务（数据传输），udp 无法保证；</li>
+<li>tcp 面向字节流，udp 面向报文；</li>
+<li>tcp 数据传输慢，udp 数据传输快；</li>
+</ul>
+<h4><span id="4-tcp-为什么要三次握手两次不行吗为什么">4. tcp 为什么要三次握手，两次不行吗？为什么？</span></h4><p>如果采用两次握手，那么只要服务器发出确认数据包就会建立连接，但由于客户端此时并未响应服务器端的请求，那此时服务器端就会一直在等待客户端，这样服务器端就白白浪费了一定的资源。若采用三次握手，服务器端没有收到来自客户端的再此确认，则就会知道客户端并没有要求建立请求，就不会浪费服务器的资源。</p>
+<h4><span id="5-说一下-tcp-粘包是怎么产生的">5. 说一下 tcp 粘包是怎么产生的？</span></h4><p>tcp 粘包可能发生在发送端或者接收端，分别来看两端各种产生粘包的原因：</p>
+<ul>
+<li>发送端粘包：发送端需要等缓冲区满才发送出去，造成粘包；</li>
+<li>接收方粘包：接收方不及时接收缓冲区的包，造成多个包接收。</li>
+</ul>
+<h4><span id="6-osi-的七层模型都有哪些">6. OSI 的七层模型都有哪些？</span></h4><ul>
+<li>物理层：利用传输介质为数据链路层提供物理连接，实现比特流的透明传输。</li>
+<li>数据链路层：负责建立和管理节点间的链路。</li>
+<li>网络层：通过路由选择算法，为报文或分组通过通信子网选择最适当的路径。</li>
+<li>传输层：向用户提供可靠的端到端的差错和流量控制，保证报文的正确传输。</li>
+<li>会话层：向两个实体的表示层提供建立和使用连接的方法。</li>
+<li>表示层：处理用户信息的表示问题，如编码、数据格式转换和加密解密等。</li>
+<li>应用层：直接向用户提供服务，完成用户希望在网络上完成的各种工作。</li>
+</ul>
+<h4><span id="7-get-和-post-请求有哪些区别">7. get 和 post 请求有哪些区别？</span></h4><ul>
+<li>get 请求会被浏览器主动缓存，而 post 不会。</li>
+<li>get 传递参数有大小限制，而 post 没有。</li>
+<li>post 参数传输更安全，get 的参数会明文限制在 url 上，post 不会。</li>
+</ul>
+<h4><span id="8-如何实现跨域">8. 如何实现跨域？</span></h4><p>实现跨域有以下几种方案：</p>
+<ul>
+<li>服务器端运行跨域 设置 CORS 等于 *；</li>
+<li>在单个接口使用注解 @CrossOrigin 运行跨域；</li>
+<li>使用 jsonp 跨域；</li>
+</ul>
+<h4><span id="9-说一下-jsonp-实现原理">9. 说一下 JSONP 实现原理？</span></h4><p>jsonp：JSON with Padding，它是利用script标签的 src 连接可以访问不同源的特性，加载远程返回的“JS 函数”来执行的。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/05/23/面试/Java/八.网络/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-面试/Java/七.异常" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/22/面试/Java/七.异常/">七.异常</a>
+    </h1>
+  
+
+        
+        <a href="/2019/05/22/面试/Java/七.异常/" class="archive-article-date">
+  	<time datetime="2019-05-22T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-22</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <h2><span id="七异常">七.异常</span></h2><h4><span id="1-throw-和-throws-的区别">1. throw 和 throws 的区别？</span></h4><ul>
+<li>throw：是真实抛出一个异常。</li>
+<li>throws：是声明可能会抛出一个异常。</li>
+</ul>
+<h4><span id="2-final-finally-finalize-有什么区别">2. final、finally、finalize 有什么区别？</span></h4><ul>
+<li>final：是修饰符，如果修饰类，此类不能被继承；如果修饰方法和变量，则表示此方法和此变量不能在被改变，只能使用。</li>
+<li>finally：是 try{} catch{} finally{} 最后一部分，表示不论发生任何情况都会执行，finally 部分可以省略，但如果 finally 部分存在，则一定会执行 finally 里面的代码。</li>
+<li>finalize： 是 Object 类的一个方法，在垃圾收集器执行的时候会调用被回收对象的此方法。</li>
+</ul>
+<h4><span id="3-try-catch-finally-中哪个部分可以省略">3. try-catch-finally 中哪个部分可以省略？</span></h4><p>try-catch-finally 其中 catch 和 finally 都可以被省略，但是不能同时省略，也就是说有 try 的时候，必须后面跟一个 catch 或者 finally。</p>
+<h4><span id="4-try-catch-finally-中如果-catch-中-return-了finally-还会执行吗">4. try-catch-finally 中，如果 catch 中 return 了，finally 还会执行吗？</span></h4><p>finally 一定会执行，即使是 catch 中 return 了，catch 中的 return 会等 finally 中的代码执行完之后，才会执行。</p>
+<h4><span id="5-常见的异常类有哪些">5. 常见的异常类有哪些？</span></h4><ul>
+<li>NullPointerException 空指针异常</li>
+<li>ClassNotFoundException 指定类不存在</li>
+<li>NumberFormatException 字符串转换为数字异常</li>
+<li>IndexOutOfBoundsException 数组下标越界异常</li>
+<li>ClassCastException 数据类型转换异常</li>
+<li>FileNotFoundException 文件未找到异常</li>
+<li>NoSuchMethodException 方法不存在异常</li>
+<li>IOException IO 异常</li>
+<li>SocketException Socket 异常</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/05/22/面试/Java/七.异常/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
+    <article id="post-面试/Java/六.JavaWeb" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/05/21/面试/Java/六.JavaWeb/">六.Java Web</a>
+    </h1>
+  
+
+        
+        <a href="/2019/05/21/面试/Java/六.JavaWeb/" class="archive-article-date">
+  	<time datetime="2019-05-21T06:18:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-05-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+	
+        <h2><span id="六java-web">六.Java Web</span></h2><h4><span id="1jsp和servlet有什么区别">1.JSP和servlet有什么区别？</span></h4><p>JSP是servlet技术的扩展，本质上就是servlet的简易方式。servlet和JSP最主要的不同点在于，servlet的应用逻辑是在Java文件中，并且完全从表示层中的html里分离开来，而JSP的情况是Java和html可以组合成一个扩展名为JSP的文件。JSP侧重于视图，servlet主要用于控制逻辑。</p>
+<h4><span id="2jsp有哪些内置对象作用分别是什么">2.JSP有哪些内置对象？作用分别是什么？</span></h4><p>JSP有9大内置对象：</p>
+<ul>
+<li><p>request：封装客户端的请求，其中包含来自get或post请求的参数；</p>
+</li>
+<li><p>response：封装服务器对客户端的响应；</p>
+</li>
+<li><p>pageContext：通过该对象可以获取其他对象；</p>
+</li>
+<li><p>session：封装用户会话的对象；</p>
+</li>
+<li><p>application：封装服务器运行环境的对象；</p>
+</li>
+<li><p>out：输出服务器响应的输出流对象；</p>
+</li>
+<li><p>config：Web应用的配置对象；</p>
+</li>
+<li><p>page：JSP页面对象（相当于java程序中的this）；</p>
+</li>
+<li><p>exception：封装页面抛出异常的对象。</p>
+<p>​</p>
+</li>
+</ul>
+<h4><span id="3说一下jsp的4种作用域">3.说一下JSP的4种作用域？</span></h4><ul>
+<li>page：代表与一个页面相关的对象和属性。</li>
+<li>request：代表与客户端发出的一个请求相关的对象和属性。一个请求可能跨越多个页面，涉及多个Web组件；需要在页面显示的临时数据可以置于此作用域。</li>
+<li>session：代表与某个用户与服务器建立的一次会话相关的对象和属性。跟某个用户相关的数据应该放在用户自己的session中。</li>
+<li>application：代表与整个Web应用程序相关的对象和属性，它实质上是跨越整个Web应用程序，包括多个页面、请求和会话的一个全局作用域。</li>
+</ul>
+<h4><span id="4session和cookie有什么区别">4.session和cookie有什么区别？</span></h4><ul>
+<li>存储位置不同：session存储在服务器端；cookie存储在浏览器端。</li>
+<li>安全性不同：cookie安全性一般，在浏览器存储，可以被伪造和修改。</li>
+<li>容量和个数限制：cookie有容量限制，每个站点下的cookie也有个数限制。</li>
+<li>存储的多样性：session可以存储在Redis中、数据库中、应用程序中；而cookie只能存储在浏览器中。</li>
+</ul>
+<h4><span id="5说一下session的工作原理">5.说一下session的工作原理？</span></h4><p>session的工作原理是客户端登录完成之后，服务器会创建对应的session，session创建完之后，会把session的id发送给客户端，客户端再存储到浏览器中。这样客户端每次访问服务器时，都会带着sessionid，服务器拿到sessionid之后，在内存找到与之对应的session这样就可以正常工作了。</p>
+<h4><span id="6如果客户端禁止cookie能实现session还能用吗">6.如果客户端禁止cookie能实现session还能用吗？</span></h4><p>可以用，session只是依赖cookie存储sessionid，如果cookie被禁用了，可以使用url中添加sessionid的方式保证session能正常使用。</p>
+<h4><span id="7spring-mvc和struts的区别是什么">7.spring mvc和struts的区别是什么？</span></h4><ul>
+<li><p>拦截级别：struts2是类级别的拦截；spring mvc是方法级别的拦截。</p>
+</li>
+<li><p>数据独立性：spring mvc的方法之间基本上独立的，独享request和response数据，请求数据通过参数获取，处理结果通过ModelMap交回给框架，方法之间不共享变量；而struts2虽然方法之间也是独立的，但其所有action变量是共享的，这不会影响程序运行，却给我们编码和读程序时带来了一定的麻烦。</p>
+</li>
+<li><p>拦截机制：struts2有以自己的interceptor机制，spring mvc用的是独立的aop方式，这样导致struts2的配置文件量比spring mvc大。</p>
+</li>
+<li><p>对ajax的支持：spring mvc集成了ajax，所有ajax使用很方便，只需要一个注解@ResponseBody就可以实现了；而struts2一般需要安装插件或者自己写代码才行。</p>
+<p>​</p>
+</li>
+</ul>
+<h4><span id="8如何避免sql注入">8.如何避免SQL注入</span></h4><ul>
+<li>使用预处理PreparedStatement。</li>
+<li>使用正则表达式过滤掉字符中的特殊字符。</li>
+</ul>
+<h4><span id="9什么是xss攻击如何避免">9.什么是XSS攻击，如何避免？</span></h4><p>XSS攻击：即跨站脚本攻击，它是Web程序中常见的漏洞。原理是攻击者往Web页面里插入恶意的脚本代码（css代码、JavaScript代码等），当用户浏览该页面时，嵌入其中的脚本代码会被执行，从而达到恶意攻击用户的目的，如盗取用户cookie、破坏页面结构、重定向到其他网站等。</p>
+<p>预防XSS的核心是必须对输入的数据做过滤处理。</p>
+<h4><span id="10什么是csrf攻击如何避免">10.什么是CSRF攻击，如何避免？</span></h4><p>CSRF：Cross-Site Request Forgery（中文：跨站请求伪造），可以理解为攻击者盗用了你的身份，以你的名义发送恶意请求，比如：以你名义发送邮件、发消息、购买商品、虚拟货币转账等。</p>
+<p>防御手段：</p>
+<ul>
+<li>验证请求来源地址；</li>
+<li>关键操作添加验证码；</li>
+<li>在请求地址添加token并验证。</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">java面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/面试//" class="article-tag-list-link color3">面试</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2019/05/21/面试/Java/六.JavaWeb/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+  
     <article id="post-面试/Java/五.对象拷贝" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
@@ -956,6 +1353,7 @@
       
         <h1 id="第4讲-强引用、软引用、弱引用、幻象引用有什么区别？"><a href="#第4讲-强引用、软引用、弱引用、幻象引用有什么区别？" class="headerlink" title="第4讲-强引用、软引用、弱引用、幻象引用有什么区别？"></a>第4讲-强引用、软引用、弱引用、幻象引用有什么区别？</h1><p>杨晓峰 2018-05-05</p>
 <p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/6845" target="_blank" rel="noopener">https://time.geekbang.org/column/article/6845</a></p>
+<p><img src="/picture/content/java36-title-04.jpg" alt=""></p>
 <p><strong>强引用、软引用、弱引用、幻象引用有什么区别？具体使用场景是什么？</strong></p>
 <p><strong>典型回答</strong></p>
 <p>不同的引用类型，主要体现的是<strong>对象不同的可达性（reachable）状态和对垃圾收集的影响</strong>。</p>
@@ -1046,6 +1444,7 @@
       
         <h1 id="第3讲-谈谈final、finally、-finalize有什么不同？"><a href="#第3讲-谈谈final、finally、-finalize有什么不同？" class="headerlink" title="第3讲-谈谈final、finally、 finalize有什么不同？"></a>第3讲-谈谈final、finally、 finalize有什么不同？</h1><p>杨晓峰 2018-05-05</p>
 <p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/6845" target="_blank" rel="noopener">https://time.geekbang.org/column/article/6845</a></p>
+<p><img src="/picture/content/java36-title-03.jpg" alt=""></p>
 <p><strong>谈谈 final、finally、 finalize 有什么不同？</strong></p>
 <p><strong>典型回答</strong></p>
 <p>final可以用来修饰类、方法、变量，分别有不同的意义，final修饰的class代表不可以继承扩展，final的变量是不可以修改的，而final的方法是不可以重写的（override）。</p>
@@ -1111,389 +1510,9 @@
 
 
   
-    <article id="post-第2讲-Exception和Error有什么区别？" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/25/第2讲-Exception和Error有什么区别？/">第2讲-Exception和Error有什么区别？</a>
-    </h1>
-  
-
-        
-        <a href="/2019/04/25/第2讲-Exception和Error有什么区别？/" class="archive-article-date">
-  	<time datetime="2019-04-25T06:15:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="第2讲-Exception和Error有什么区别？"><a href="#第2讲-Exception和Error有什么区别？" class="headerlink" title="第2讲-Exception和Error有什么区别？"></a>第2讲-Exception和Error有什么区别？</h1><p>杨晓峰 2018-05-05</p>
-<p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/6845" target="_blank" rel="noopener">https://time.geekbang.org/column/article/6845</a></p>
-<p><strong>请对比Exception和Error，另外，运行时异常与一般异常有什么区别？</strong></p>
-<p><strong>典型回答</strong></p>
-<p>Exception和Error都是继承了Throwable类，在java中只有Throwable类型的实例才可以被抛出（throw）或者捕获（catch），它是异常处理机制的基本组成类型。</p>
-<p>Exception和Error体现了java平台设计者对不同异常情况的分类。Exception是程序正常运行中，可以预料的意外情况，可能并且应该被捕获，进行相应处理。</p>
-<p>Error是指在正常情况下，不大可能出现的情况，绝大部分的Error都会导致程序（比如JVM自身）处于非正常的、不可恢复状态。既然是非正常情况，所以不便于也不需要捕获。常见的比如OutOfMemoryError之类，都是Error的子类。</p>
-<p>Exception又分为<strong>可检查</strong>（checked）异常和<strong>不检查</strong>（unchecked）异常，可检查异常在源代码里必须显式地进行捕获处理，这是编译期检查的一部分。前面介绍的不检查的Error，是Throwable不是Exception。</p>
-<p>不检查异常就是所谓的运行时异常，类似NullPointerException、ArrayIndexOutOfBoundsException之类，通常是可以编码避免的逻辑错误，具体跟进需要来判断是否需要捕获，并不会在编译期强制要求。</p>
-        
-          <a class="article-more-a" href="/2019/04/25/第2讲-Exception和Error有什么区别？/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Java核心技术36讲</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/04/25/第2讲-Exception和Error有什么区别？/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-计算机/第一章计算机基础知识/第3讲-信息编码" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/24/计算机/第一章计算机基础知识/第3讲-信息编码/">第3讲 信息编码</a>
-    </h1>
-  
-
-        
-        <a href="/2019/04/24/计算机/第一章计算机基础知识/第3讲-信息编码/" class="archive-article-date">
-  	<time datetime="2019-04-24T06:15:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-	
-        <h1><span id="第3讲-信息编码">第3讲  信息编码</span></h1><h3><span id="1-数值在计算机中的表现形式">1、数值在计算机中的表现形式</span></h3><p>1）十进制数</p>
-<p>”逢十进一“</p>
-<p>数码：0、1、2、3、4、5、6、7、8、9、</p>
-<p>例如：（169）= 1x10的二次方 + 6x10的一次方+9x10的0次方</p>
-<p>2）二进制数</p>
-<p>”逢二进一“</p>
-<p>数码：0、1</p>
-<p>例如：（1010）=1x2的3次方 + 0x2的2次方 + 1x2的1次方 + 0x2的0次方</p>
-<p>说明：</p>
-<p>二进制只有0、1两种状态</p>
-<p>0和1可分别表示逻辑代数的”假“和”真“，适用于计算机进行逻辑运算</p>
-<p>二进制与十进制转换容易</p>
-<p>3）八进制数</p>
-<p>”逢八进一“</p>
-<p>数码：0、1、2、3、4、5、6、7</p>
-<p>例如：（133）=1x8的2次方 + 3x8的1次方+3x8的0次方</p>
-<p>4）十六进制数</p>
-<p>”逢十六进一“</p>
-<p>数码：0、1、2、3、4、5、6、7、8、9、A、B、C、D、E、F</p>
-<p>例如：（2A3）=2x16的2次方 + 10x16的1次方+3x16的0次方</p>
-<p>说明：由于二进制位数较长，所以常用八进制、十六进制来表示</p>
-<p>通常用最后一个字母来表示数制，D、B、O、H分别表示十进制、二进制、八进制和十六进制</p>
-<p>5）数制之间的转换</p>
-<p>（1）二进制数、八进制数、十六进制数转换为十进制数</p>
-<p>方法：按展开式展开后，求和</p>
-<p>例如：二进制（1101）=1x2的3次方+1x2的2次方 + 0 x 2的1次方 + 1x2的0次方</p>
-<p>=十进制（13）</p>
-<p>（2）十进制整数转换为二进制整数</p>
-<p>步骤：</p>
-<ul>
-<li><p>用2连续去除十进制数，直至商等于零为止</p>
-</li>
-<li><p>逆序排序余数</p>
-</li>
-<li><p>例如：13 = 1101</p>
-<p>13/2 余数为1 </p>
-<p>6/2余数为0  </p>
-<p>3/2余数为1</p>
-<p>1/2余数为1</p>
-<p>0/2 结束</p>
-</li>
-</ul>
-<p>（3）二进制整数与十六进制整数之间的转换</p>
-<p>方法：</p>
-<ul>
-<li>二进制到十六进制——从低位到高位，每4位二进制数用1位16进制数表示。高位不足4位时用0补齐。</li>
-<li>十六进制到二进制——每1位16进制数用相应4位二进制数表示</li>
-</ul>
-<p>例如：（1101110）2=（0110 1101）=（6E）16</p>
-<h3><span id="2-字符编码">2、字符编码</span></h3><p>将输入到计算机中的非数值型数据转换成二进制数</p>
-<p>1）字符编码</p>
-<p>美国标准信息交换代码：ASCII码</p>
-<p>ASCII码采用7位二进制编码，可以表示128个字符（0-9、52个大小写英文字母、32个标点符号和运算符、34个控制符）</p>
-<p>0——9的ASCII码：48——57</p>
-<p>A——Z的ASCII码：65——90</p>
-<p>a——z的ASCII码：97——122</p>
-<p>2）汉字编码</p>
-<p>汉字编码采用连续的两个字节表示，且规定每个字节的最高位为1</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">计算机</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/04/24/计算机/第一章计算机基础知识/第3讲-信息编码/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
-    <article id="post-计算机/第一章计算机基础知识/第2讲" class="article article-type-post  article-index" itemscope="" itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/04/24/计算机/第一章计算机基础知识/第2讲/">第2讲 计算机基础</a>
-    </h1>
-  
-
-        
-        <a href="/2019/04/24/计算机/第一章计算机基础知识/第2讲/" class="archive-article-date">
-  	<time datetime="2019-04-24T06:15:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-04-24</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-	
-        <h1><span id="第2讲-计算机基础">第2讲  计算机基础</span></h1><h3><span id="1-计算机系统的基本组成">1、计算机系统的基本组成</span></h3><p>有硬件系统和软件系统两部分组成</p>
-<ul>
-<li>硬件系统：由电子线路、元器件、机械部件等构成的具体装置</li>
-<li>软件系统：程序、数据、文档</li>
-</ul>
-<h3><span id="2-硬件系统">2、硬件系统</span></h3><p>1）冯 诺伊曼结构计算机及特点</p>
-<p>“存储程序”原理</p>
-<ul>
-<li><p>主要思想：将程序和数据存放到存储器中，计算机在程序的控制下进行数据处理，直到得到最终结果</p>
-</li>
-<li><p>主要特点：</p>
-<ul>
-<li><p>事先编制好程序，并输入到存储器中</p>
-</li>
-<li><p>程序由指令构成，程序和数据都用二进制数表示</p>
-</li>
-<li><p>指令有操作码和地址码构成</p>
-</li>
-<li><p>机器以CPU为中心</p>
-</li>
-<li><p>冯诺伊曼结构计算机由五大部分组成：</p>
-<p><img src="/picture/content/pc-02-1.png" alt=""></p>
-</li>
-</ul>
-<p>2) 运算器</p>
-<p>进行算术运算和逻辑运算</p>
-<p>3）控制器</p>
-<p>从存储器中取出指令、分析指令，根据指令完成相应操作，产生一系列控制命令</p>
-<p>4）存储器</p>
-<p>保存程序、数据、运算结果</p>
-<p>分内存、外存两种</p>
-<p>5）输入设备</p>
-<p>输入程序、数据以及各种信息</p>
-<p>常用输入设备：键盘、鼠标、扫描仪、磁盘驱动器、触摸屏等</p>
-<p>6）输出设备</p>
-<p>输出所需要的处理结果</p>
-<p>常用输出设备：显示器、打印机、绘图仪等</p>
-</li>
-</ul>
-<h3><span id="3-计算机中数据存储的概念">3、计算机中数据存储的概念</span></h3><p>数据存储单位：</p>
-<ul>
-<li><p>位（b）：二进制的最小单位</p>
-</li>
-<li><p>字节（B）：8位二进制数组成一个字节</p>
-</li>
-<li><p>字（word）：若干个字节组成1个字</p>
-</li>
-<li><p>存储容量：用字节（B）、KB、MB、GB、TB表示</p>
-<p>1B=8b                     1KB=1024B</p>
-<p>1MB=1024KB         1GB=1024MB</p>
-<p>1TB=1024GB           1PB=1024TB</p>
-</li>
-</ul>
-<h3><span id="4-软件系统">4、软件系统</span></h3><p>1）指令</p>
-<p>由操作码（规定操作的性质）和地址码（操作数和操作结果的存放地址）组成</p>
-<p>2）程序</p>
-<p>指令的集合</p>
-<p>3）程序设计语言</p>
-<p>（1）机器语言</p>
-<p>直接用二进制代码</p>
-<p>是计算机唯一能识别、直接执行的语言</p>
-<p>（2）汇编语言</p>
-<p>用助记符表示指令</p>
-<p>需要将汇编语言源程序“翻译”成目标程序，计算机才能执行</p>
-<p>汇编语言和机器语言被称为”低级语言“</p>
-<p>（3）高级语言</p>
-<p>面向程序、易于掌握</p>
-<p>需要将源程序”翻译“成目标程序</p>
-<p>（4）软件的定义</p>
-<p>软件：程序、数据以及与它们有关的文档、文字说明、图表资料等</p>
-<p>在计算机系统中，硬件是软件赖以运行的物质基础，软件是发挥计算机功能的关键因素</p>
-<p>5）软件的分类</p>
-<p>（1）系统软件</p>
-<p>必备软件，用以管理、监控和维护计算机资源，以及用以开发应用软件</p>
-<p>操作系统是软件的核心，其主要作用是管理索引硬件，控制程序的执行，为用户提供功能完备并且操作灵活方便的应用环境</p>
-<p>用户通过操作系统来操作计算机</p>
-<p>（2）应用软件</p>
-<p>为解决各类问题而编制的软件系统</p>
-<p>应用软件有两类</p>
-<ul>
-<li>用户程序：用户为解决自己特点的问题而开发的软件</li>
-<li>应用软件包：为实现某类专门功能而设计的独立阮籍系统</li>
-</ul>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">计算机</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2019/04/24/计算机/第一章计算机基础知识/第2讲/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
     </nav>
   
 
@@ -1612,11 +1631,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java面试</a>
+                <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
+                <a href="javascript:void(0)" class="js-tag color2">java面试</a>
               </li>
             
             <div class="clearfix"></div>

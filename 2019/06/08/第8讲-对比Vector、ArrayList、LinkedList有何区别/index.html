@@ -8,20 +8,21 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>第8讲 | String、StringBuffer、StringBuilder有什么区别？ | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="对比Vector、ArrayList、LinkedList有何区别？ 极客时间版权所有: https://time.geekbang.org/column/article/7810 典型回答 这三者都是实现集合框架中的list，也就是所谓的有序集合，因此具体功能也比较近似，比如都提供按照位置进行定位、添加或者删除的操作，都提供迭代器以遍历其内容等。但因为具体的设计区别，在行为、性能、线程安全等方面">
+  <meta name="description" content="对比Vector、ArrayList、LinkedList有何区别？ 极客时间版权所有: https://time.geekbang.org/column/article/7810  典型回答 这三者都是实现集合框架中的list，也就是所谓的有序集合，因此具体功能也比较近似，比如都提供按照位置进行定位、添加或者删除的操作，都提供迭代器以遍历其内容等。但因为具体的设计区别，在行为、性能、线程安全等方">
 <meta name="keywords" content="JAVA,Java核心技术36讲">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第8讲 | String、StringBuffer、StringBuilder有什么区别？">
 <meta property="og:url" content="http://yoursite.com/2019/06/08/第8讲-对比Vector、ArrayList、LinkedList有何区别/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="对比Vector、ArrayList、LinkedList有何区别？ 极客时间版权所有: https://time.geekbang.org/column/article/7810 典型回答 这三者都是实现集合框架中的list，也就是所谓的有序集合，因此具体功能也比较近似，比如都提供按照位置进行定位、添加或者删除的操作，都提供迭代器以遍历其内容等。但因为具体的设计区别，在行为、性能、线程安全等方面">
+<meta property="og:description" content="对比Vector、ArrayList、LinkedList有何区别？ 极客时间版权所有: https://time.geekbang.org/column/article/7810  典型回答 这三者都是实现集合框架中的list，也就是所谓的有序集合，因此具体功能也比较近似，比如都提供按照位置进行定位、添加或者删除的操作，都提供迭代器以遍历其内容等。但因为具体的设计区别，在行为、性能、线程安全等方">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/picture/content/java36-title-08.jpg">
 <meta property="og:image" content="http://yoursite.com/picture/content/java36-8.png">
-<meta property="og:updated_time" content="2019-08-27T15:23:32.059Z">
+<meta property="og:updated_time" content="2019-08-28T05:34:38.420Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="第8讲 | String、StringBuffer、StringBuilder有什么区别？">
-<meta name="twitter:description" content="对比Vector、ArrayList、LinkedList有何区别？ 极客时间版权所有: https://time.geekbang.org/column/article/7810 典型回答 这三者都是实现集合框架中的list，也就是所谓的有序集合，因此具体功能也比较近似，比如都提供按照位置进行定位、添加或者删除的操作，都提供迭代器以遍历其内容等。但因为具体的设计区别，在行为、性能、线程安全等方面">
-<meta name="twitter:image" content="http://yoursite.com/picture/content/java36-8.png">
+<meta name="twitter:description" content="对比Vector、ArrayList、LinkedList有何区别？ 极客时间版权所有: https://time.geekbang.org/column/article/7810  典型回答 这三者都是实现集合框架中的list，也就是所谓的有序集合，因此具体功能也比较近似，比如都提供按照位置进行定位、添加或者删除的操作，都提供迭代器以遍历其内容等。但因为具体的设计区别，在行为、性能、线程安全等方">
+<meta name="twitter:image" content="http://yoursite.com/picture/content/java36-title-08.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -174,6 +175,7 @@
 	
         <p><strong>对比Vector、ArrayList、LinkedList有何区别？</strong></p>
 <p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/7810" target="_blank" rel="noopener">https://time.geekbang.org/column/article/7810</a></p>
+<p><img src="/picture/content/java36-title-08.jpg" alt=""></p>
 <p><strong>典型回答</strong></p>
 <p>这三者都是实现集合框架中的list，也就是所谓的有序集合，因此具体功能也比较近似，比如都提供按照位置进行定位、添加或者删除的操作，都提供迭代器以遍历其内容等。但因为具体的设计区别，在行为、性能、线程安全等方面，表现又有很大不同。</p>
 <p>Vector是Java早期提供的 <strong>线程安全的动态数组</strong> ，如果不需要线程安全，并不建议选择，毕竟同步是有额外开销的。Vector内部是使用对象数组来保存数据，可以根据需要自动的增加容量，当数组已满时，会创建新的数组，并拷贝原有数组数据。</p>
@@ -532,11 +534,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java面试</a>
+                <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
+                <a href="javascript:void(0)" class="js-tag color2">java面试</a>
               </li>
             
             <div class="clearfix"></div>

@@ -8,20 +8,21 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>第6讲 | 动态代理是基于什么原理？ | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="谈谈Java反射机制，动态代理是基于什么原理？ 极客时间版权所有: https://time.geekbang.org/column/article/7489 典型回答 反射机制是Java语言提供的一种基础功能，赋予程序在运行时 自省（introspect，官方用语）的能力。通过反射我们可以直接操作类或者对象，比如获取某个对象的类定义，获取类声明的属性和方法，调用方法或者构造对象，甚至可以运行时修">
+  <meta name="description" content="谈谈Java反射机制，动态代理是基于什么原理？ 极客时间版权所有: https://time.geekbang.org/column/article/7489  典型回答 反射机制是Java语言提供的一种基础功能，赋予程序在运行时 自省（introspect，官方用语）的能力。通过反射我们可以直接操作类或者对象，比如获取某个对象的类定义，获取类声明的属性和方法，调用方法或者构造对象，甚至可以运行时">
 <meta name="keywords" content="JAVA,Java核心技术36讲">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第6讲 | 动态代理是基于什么原理？">
 <meta property="og:url" content="http://yoursite.com/2019/06/06/第6讲-动态代理是基于什么原理？/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="谈谈Java反射机制，动态代理是基于什么原理？ 极客时间版权所有: https://time.geekbang.org/column/article/7489 典型回答 反射机制是Java语言提供的一种基础功能，赋予程序在运行时 自省（introspect，官方用语）的能力。通过反射我们可以直接操作类或者对象，比如获取某个对象的类定义，获取类声明的属性和方法，调用方法或者构造对象，甚至可以运行时修">
+<meta property="og:description" content="谈谈Java反射机制，动态代理是基于什么原理？ 极客时间版权所有: https://time.geekbang.org/column/article/7489  典型回答 反射机制是Java语言提供的一种基础功能，赋予程序在运行时 自省（introspect，官方用语）的能力。通过反射我们可以直接操作类或者对象，比如获取某个对象的类定义，获取类声明的属性和方法，调用方法或者构造对象，甚至可以运行时">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/picture/content/java36-title-06.jpg">
 <meta property="og:image" content="http://yoursite.com/picture/content/java35-6.png">
-<meta property="og:updated_time" content="2019-07-30T08:56:07.654Z">
+<meta property="og:updated_time" content="2019-08-28T05:29:21.863Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="第6讲 | 动态代理是基于什么原理？">
-<meta name="twitter:description" content="谈谈Java反射机制，动态代理是基于什么原理？ 极客时间版权所有: https://time.geekbang.org/column/article/7489 典型回答 反射机制是Java语言提供的一种基础功能，赋予程序在运行时 自省（introspect，官方用语）的能力。通过反射我们可以直接操作类或者对象，比如获取某个对象的类定义，获取类声明的属性和方法，调用方法或者构造对象，甚至可以运行时修">
-<meta name="twitter:image" content="http://yoursite.com/picture/content/java35-6.png">
+<meta name="twitter:description" content="谈谈Java反射机制，动态代理是基于什么原理？ 极客时间版权所有: https://time.geekbang.org/column/article/7489  典型回答 反射机制是Java语言提供的一种基础功能，赋予程序在运行时 自省（introspect，官方用语）的能力。通过反射我们可以直接操作类或者对象，比如获取某个对象的类定义，获取类声明的属性和方法，调用方法或者构造对象，甚至可以运行时">
+<meta name="twitter:image" content="http://yoursite.com/picture/content/java36-title-06.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -174,6 +175,7 @@
 	
         <p><strong>谈谈Java反射机制，动态代理是基于什么原理？</strong></p>
 <p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/7489" target="_blank" rel="noopener">https://time.geekbang.org/column/article/7489</a></p>
+<p><img src="/picture/content/java36-title-06.jpg" alt=""></p>
 <p><strong>典型回答</strong></p>
 <p>反射机制是Java语言提供的一种基础功能，赋予程序在运行时 <strong>自省</strong>（introspect，官方用语）的能力。通过反射我们可以直接操作类或者对象，比如获取某个对象的类定义，获取类声明的属性和方法，调用方法或者构造对象，甚至可以运行时修改类定义。</p>
 <p>动态代理是一种方便运行时动态构建代理、动态处理代理方法调用的机制，很多场景都是利用类似机制做到的，比如用来包装RPC调用、面先切面的编程（AOP）。</p>
@@ -186,7 +188,7 @@
 <p>3.JDK动态代理在设计和实现上与cglib等方式有什么不同，进而如何取舍？</p>
 <p><strong>知识扩展</strong></p>
 <p>1.反射机制及其演进</p>
-<p>对于Java语言的反射机制本身，如果你去看一下java.lang或java.lang.reflect包下的相关抽象，就会有一个很直观的印象了。Class、Field、Method、Constructor等，这些完全就是我们去操作类和对象的元数据对应。反射各种典型用例的编程，相信有太多文章或书籍进行过详细的介绍，至少你需要掌握基本场景编程，这里是官方提供的参考文档：<a href="https://docs.oracle.com/javase/tutorial/reflect/index.html" target="_blank" rel="noopener">https://docs.oracle.com/javase/tutorial/reflect/index.html</a></p>
+<p>对于Java语言的反射机制本身，如果你去看一下java.lang或java.lang.reflect包下的相关抽象，就会有一个很直观的印象了。Class、Field、Method、Constructor等，这些完全就是我们去操作类和对象的元数据对应。反射各种典型用例的编程，相信有太多文章或书籍进行过详细的介绍，至少你需要掌握基本场景编程，这里是官方提供的参考文档：<a href="https://docs.oracle.com/javase/tutorial/reflect/index.html" target="_blank" rel="noopener">oracle</a></p>
 <p>关于反射，有一点我需要特意提一下，就是反射提供的AccessibleObject.setAccessible(boolean flag) 它的子类也大都重写了这个方法，这里的所谓accessible可以理解成修饰成员的public、protected、private，这意味着我们可以在运行时修改成员访问限制！</p>
 <p>setAccessible的应用场景非常普通，遍布我们的日常开发、测试、依赖注入等各种框架中。比如，在O/R Mapping框架中，我们为一个java实体对象，运行时自动生成setter、getter的逻辑，这是加载或者持久化数据非常必要的，框架通常可以利用反射做这个事情，而不需要开发者手动写类似的重复代码。</p>
 <p>另一个典型场景就是绕过API访问控制。我们日常开发时可能被迫要调用内部API去做些事情，比如，自定义的高性能NIO框架需要显式地释放DirectBuffer，使用反射绕开限制是一种常见办法。</p>
@@ -534,11 +536,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java面试</a>
+                <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
+                <a href="javascript:void(0)" class="js-tag color2">java面试</a>
               </li>
             
             <div class="clearfix"></div>
