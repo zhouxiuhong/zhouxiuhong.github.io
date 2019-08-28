@@ -16,18 +16,15 @@
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="02 | 日志架构：一条SQL更新语句是如何执行的？林晓斌 2019-08-09 地址  前面我们系统了解了一个查询语句的执行流程，并介绍了执行过程中涉及的处理模块。相信你还记得，一条查询语句的执行过程一般是经过连接器、分析器、优化器、执行器等功能模块，最后到达存储引擎。 那么，一条更新语句的执行流程又是怎样的呢？ 之前你可能经常听DBA同事说，MySQL可以恢复到半个月内任意一秒的状态，惊叹的同">
 <meta property="og:locale" content="default">
-<meta property="og:image" content="https://static001.geekbang.org/resource/image/7e/7d/7e43cabc6f9e71f8a1292c86d40a237d.jpg">
+<meta property="og:image" content="http://yoursite.com/picture/content/mysql-title-02.jsp">
 <meta property="og:image" content="http://yoursite.com/picture/content/mysql-01.png">
-<meta property="og:image" content="https://static001.geekbang.org/resource/image/0d/d9/0d2070e8f84c4801adbfa03bda1f98d9.png">
 <meta property="og:image" content="http://yoursite.com/picture/content/mysql-02.png">
-<meta property="og:image" content="https://static001.geekbang.org/resource/image/16/a7/16a7950217b3f0f4ed02db5db59562a7.png">
 <meta property="og:image" content="http://yoursite.com/picture/content/mysql-02-2.png">
-<meta property="og:image" content="https://static001.geekbang.org/resource/image/2e/be/2e5bff4910ec189fe1ee6e2ecc7b4bbe.png">
-<meta property="og:updated_time" content="2019-08-25T10:34:49.986Z">
+<meta property="og:updated_time" content="2019-08-28T08:43:52.053Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="02 | 日志架构：一条SQL更新语句是如何执行的？">
 <meta name="twitter:description" content="02 | 日志架构：一条SQL更新语句是如何执行的？林晓斌 2019-08-09 地址  前面我们系统了解了一个查询语句的执行流程，并介绍了执行过程中涉及的处理模块。相信你还记得，一条查询语句的执行过程一般是经过连接器、分析器、优化器、执行器等功能模块，最后到达存储引擎。 那么，一条更新语句的执行流程又是怎样的呢？ 之前你可能经常听DBA同事说，MySQL可以恢复到半个月内任意一秒的状态，惊叹的同">
-<meta name="twitter:image" content="https://static001.geekbang.org/resource/image/7e/7d/7e43cabc6f9e71f8a1292c86d40a237d.jpg">
+<meta name="twitter:image" content="http://yoursite.com/picture/content/mysql-title-02.jsp">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -171,7 +168,7 @@
       
 	
         <h1><span id="02-日志架构一条sql更新语句是如何执行的">02 | 日志架构：一条SQL更新语句是如何执行的？</span></h1><p>林晓斌 2019-08-09 <a href="https://time.geekbang.org/column/article/115537" target="_blank" rel="noopener">地址</a></p>
-<p><img src="https://static001.geekbang.org/resource/image/7e/7d/7e43cabc6f9e71f8a1292c86d40a237d.jpg" alt=""></p>
+<p><img src="/picture/content/mysql-title-02.jsp" alt=""></p>
 <p>前面我们系统了解了一个查询语句的执行流程，并介绍了执行过程中涉及的处理模块。相信你还记得，一条查询语句的执行过程一般是经过连接器、分析器、优化器、执行器等功能模块，最后到达存储引擎。</p>
 <p>那么，一条更新语句的执行流程又是怎样的呢？</p>
 <p>之前你可能经常听DBA同事说，MySQL可以恢复到半个月内任意一秒的状态，惊叹的同时，你是不是心中也不免会好奇，这是怎样做到的呢？</p>
@@ -181,7 +178,6 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; update T set c=c+1 where ID=2;</span><br></pre></td></tr></table></figure>
 <p>前面我有跟你介绍过SQL语句基本的执行链路，这里我再把那张图拿过来，你也可以先简单看看这个图回顾下。首先，可以确定的说，查询语句的那一套流程，更新语句也是同样会走一遍。</p>
 <p><img src="/picture/content/mysql-01.png" alt="MySQL的逻辑架构图"></p>
-<p><img src="https://static001.geekbang.org/resource/image/0d/d9/0d2070e8f84c4801adbfa03bda1f98d9.png" alt="MySQL的逻辑架构图"></p>
 <p>你执行语句前要先连接数据库，这是连接器的工作。</p>
 <p>前面我们说过，在一个表上有更新的时候，跟这个表有关的查询缓存会失效，所以这条语句就会把表T上所有缓存结果都清空。这也就是我们一般不建议使用查询缓存的原因。</p>
 <p>接下来，分析器会通过词法和语法解析知道这是一条更新语句。优化器决定要使用ID这个索引。然后，执行器负责具体执行，找到这一行，然后更新。</p>
@@ -200,7 +196,6 @@
 <p>如果今天赊账的不多，掌柜可以等打烊后再整理。但如果某天赊账的特别多，粉板写满了，又怎么办呢？这个时候掌柜只好放下手中的活儿，把粉板中的一部分赊账记录更新到账本中，然后把这些记录从粉板上擦掉，为记新帐腾出空间。</p>
 <p>与此类似，InnoDB的redo log 是固定大小的，比如可以配置为一组4个文件，每个文件的大小是1GB，那么这块“粉板”总共就可以记录4GB的操作。从头开始写，写到末尾就又回到开头循环写，如下面这图所示。</p>
 <p><img src="/picture/content/mysql-02.png" alt=""></p>
-<p><img src="https://static001.geekbang.org/resource/image/16/a7/16a7950217b3f0f4ed02db5db59562a7.png" alt=""></p>
 <p>write pos是当前记录的位置，一边写一边后移，写到第3号文件末尾后就回到0号文件开头。checkpoint是当前要擦除的位置，也是往后推移并且循环的，擦除记录前要把记录更新到数据文件。</p>
 <p>write pos 和checkpoint之间的是“粉板”上还空着的部分，可以用来记录新的操作。如果write pos追上checkpoint，表示“粉板”满了，这时候不能再执行新的更新，得停下来先擦掉一些记录，把checkpoint推进一下。</p>
 <p>有了redo log，InnoDB就可以保证即使数据库发生异常重启，之前提交的记录都不会丢失，这个能力称为 <strong>crash-safe</strong> 。</p>
@@ -224,7 +219,6 @@
 </ol>
 <p>这里我给出这个update语句的执行流程图，图中浅色框表示是在InnoDB内部执行的，深色框表示是在执行器中执行的。</p>
 <p><img src="/picture/content/mysql-02-2.png" alt="update语句执行流程"></p>
-<p><img src="https://static001.geekbang.org/resource/image/2e/be/2e5bff4910ec189fe1ee6e2ecc7b4bbe.png" alt=""></p>
 <p>你可能注意到了，最后三步看上去有点“绕”，将redo log的写入拆成了两个步骤：prepare和commit，这就是“两阶段提交”。</p>
 <h3><span id="两阶段提交">两阶段提交</span></h3><p>为什么必须有“两阶段提交”呢？这是为了让两份日志之间的逻辑一致。要说明这个问题，我们得从文章开头的那个问题说起： <strong>怎样让数据库恢复到半个月内任意一秒的状态？</strong></p>
 <p>前面我们说过了，binlog会记录所有的逻辑操作，并且是采用 “追加写” 的形式。如果你的DBA承诺说半个月内可以恢复，那么备份系统中一定会保存最近半个月的所有binlog，同时系统会定期做整库备份。这里的“定期”取决于系统的重要性，可以是一天一备，也可以是一周一备。</p>
@@ -236,6 +230,28 @@
 <p>这样你的临时库就跟误删之前的线上库一样了，然后你可以把表数据从临时库取出来，按需要恢复到线上库去。<br>好了，说完了数据恢复过程，我们回来说说，为什么日志需要“两阶段提交”。这里不妨用反证法来进行解释。</p>
 <p>由于redo log和binlog是两个独立的逻辑，如果不用两阶段提交，要么就是先写完redo log再写binlog，或者采用反过来的顺序。我们看看这两种方式会有什么问题。</p>
 <p>仍然用前面的update语句做例子。假设当前ID=2的行，字段c的值是0，再假设执行update语句过程中在写完第一个日志后，第二个日志还没有写完期间发生了crash，会出现什么情况呢？</p>
+<ol>
+<li><p><strong>先写redo log后写binlog</strong> 。假设在redo log写完，binlog还没有写完的时候，MySQL进程异常重启。由于我们前面说过的，redu log写完之后，系统即使崩溃，仍然能够把数据恢复回来，所以恢复后这一行c的值是1。</p>
+<p>但是由于binlog没写完就crash了，这时候binlog里面就没有记录这个语句。因此，之后备份日志的时候，存起来的binlog里面就没有这条语句。</p>
+<p>然后你会发现，如果需要用这个binlog来恢复临时库的话，由于这个语句的binlog丢失，这个临时库就会少了这一次更新，恢复出来的这一行c的值就是0，与原库的值不同。</p>
+</li>
+<li><p><strong>先写binlog后写redo log</strong>。如果在binlog写完之后crash，由于redo log还没写，崩溃恢复以后这个事务无效，所以这一行c的值是0。但是binlog里面已经记录了“把c从0改成1”这个日志。所以，在之后用binlog来恢复的时候就多了一个事务出来，恢复出来的这一行c的值就是1，与原库的值不同。</p>
+</li>
+</ol>
+<p>可以看到，如果不使用“两阶段提交”，那么数据库的状态就有可能和用它的日志恢复出来的库的状态不一致。</p>
+<p>你可能会说，这个概率是不是很低，平时也没有什么动不动就需要恢复临时库的场景呀？</p>
+<p>其实不是的，不只是误操作后需要用这个过程来恢复数据。当你需要扩容的时候，也就是需要再多搭建一些备库来增加系统的读能力的时候，现在常见的做法也是用全量备份加上应用binlog来实现的，这个“不一致”就会导致你的线上出现主从数据库不一致的情况。</p>
+<p>简单说，redo log 和binlog都可以用于表示事务的提交状态，而两阶段提交就是让这两个状态保持逻辑上的一致。</p>
+<h3><span id="小结">小结</span></h3><p>今天，我介绍了MySQL里面最重要的两个日志，即物理日志redo log和逻辑日志binlog。</p>
+<p>redo log用于保证crash-safe能力。innodb_flush_log_at_trx_commit 这个参数设置成1的时候，表示每次事务的redo log 都直接持久化到磁盘。这个参数我建议你设置成1，这样可以保证MySQL异常重启之后数据不丢失。</p>
+<p>sync_binlog这个参数设置成1的时候，表示每次事务的binlog都持久化到磁盘。这个参数我也建议你设置成1，这样可以保证Mysql异常重启之后binlog不丢失。</p>
+<p>我还跟你介绍了与MySQL日志系统密切相关的“两阶段提交”。两阶段提交是跨系统维持数据逻辑一致性时常用的一个方案，即使你不做数据库内核开发，日常开发者也有可能会用到。</p>
+<p>文章的最后，我给你留一个思考题吧。前面我说到定期全量备份的周期“取决于系统重要性，有的是一天一备，有的是一周一备”。那么在什么场景下，一天一备会比一周一备更有优势呢？或者说，它影响了这个数据库系统的哪个指标？</p>
+<p>好处是“最长恢复时间”更短。</p>
+<p>在一天一备的模式里，最坏情况下需要应用一天的binlog。比如，你每天0点做一次全量备份，而要恢复出一个到昨天晚上23点的备份。</p>
+<p>一周一备最坏情况就要应用一周的binlog了。</p>
+<p>系统的对应指标就是RTO（恢复目标时间）。</p>
+<p>当然这个是有成本的，因为更频繁全量备份需要消耗更多存储空间，所以这个RTO是成本换来的，就需要你根据业务重要性来评估了。</p>
 
       
 
@@ -340,18 +356,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/08/09/MySql基础/01.基础架构：一条SQL查询语句是如何执行的？ - 副本/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/08/10/MySql基础/03.事务隔离：为什么你改了我还看不见？/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          01 | 基础架构：一条SQL查询语句是如何执行的？
+          03 | 事务隔离：为什么你改了我还看不见
         
       </div>
     </a>
   
   
-    <a href="/2019/07/03/tags/随笔/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Hello World</div>
+    <a href="/2019/08/09/MySql基础/01.基础架构：一条SQL查询语句是如何执行的？/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">01 | 基础架构：一条SQL查询语句是如何执行的？</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -378,7 +394,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">02 | 日志架构：一条SQL更新语句是如何执行的？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.1.</span> <span class="toc-text">重要的日志模块：redo log</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.2.</span> <span class="toc-text">重要的日志模块：binlog</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.3.</span> <span class="toc-text">两阶段提交</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">02 | 日志架构：一条SQL更新语句是如何执行的？</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.1.</span> <span class="toc-text">重要的日志模块：redo log</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.2.</span> <span class="toc-text">重要的日志模块：binlog</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.3.</span> <span class="toc-text">两阶段提交</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#undefined"><span class="toc-number">1.0.4.</span> <span class="toc-text">小结</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -505,6 +521,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">计算机习题</a>
               </li>
             
             <div class="clearfix"></div>

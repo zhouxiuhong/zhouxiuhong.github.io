@@ -6,20 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Hexo</title>
+  <title>第7讲-int和Integer有什么区别？谈谈Integer的值缓存范围 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="-  title:第7讲-int和Integer有什么区别？谈谈Integer的值缓存范围 date:2019-06-07 11:17:05 tags:-    JAVA - Java核心技术36讲 toc:trueint和Integer有什么区别？谈谈Integer的值缓存范围 极客时间版权所有: https://time.geekbang.org/column/article/7489">
+  <meta name="description" content="int和Integer有什么区别？谈谈Integer的值缓存范围 极客时间版权所有: https://time.geekbang.org/column/article/7489  典型回答 int是我们常说的整形数字，是Java的8个原始数据类型（Primitive Types， boolean、byte、short、char、int、float、double、long）之一。 Java语言虽然号">
+<meta name="keywords" content="JAVA,Java核心技术36讲">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://yoursite.com/2019/08/27/第7讲-int和Integer有什么区别？谈谈Integer的值缓存范围/index.html">
+<meta property="og:title" content="第7讲-int和Integer有什么区别？谈谈Integer的值缓存范围">
+<meta property="og:url" content="http://yoursite.com/2019/06/07/第7讲-int和Integer有什么区别？谈谈Integer的值缓存范围/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="-  title:第7讲-int和Integer有什么区别？谈谈Integer的值缓存范围 date:2019-06-07 11:17:05 tags:-    JAVA - Java核心技术36讲 toc:trueint和Integer有什么区别？谈谈Integer的值缓存范围 极客时间版权所有: https://time.geekbang.org/column/article/7489">
+<meta property="og:description" content="int和Integer有什么区别？谈谈Integer的值缓存范围 极客时间版权所有: https://time.geekbang.org/column/article/7489  典型回答 int是我们常说的整形数字，是Java的8个原始数据类型（Primitive Types， boolean、byte、short、char、int、float、double、long）之一。 Java语言虽然号">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://yoursite.com/picture/content/java36-title-07.jpg">
-<meta property="og:updated_time" content="2019-08-28T05:44:34.782Z">
+<meta property="og:updated_time" content="2019-08-28T07:59:26.489Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
-<meta name="twitter:description" content="-  title:第7讲-int和Integer有什么区别？谈谈Integer的值缓存范围 date:2019-06-07 11:17:05 tags:-    JAVA - Java核心技术36讲 toc:trueint和Integer有什么区别？谈谈Integer的值缓存范围 极客时间版权所有: https://time.geekbang.org/column/article/7489">
+<meta name="twitter:title" content="第7讲-int和Integer有什么区别？谈谈Integer的值缓存范围">
+<meta name="twitter:description" content="int和Integer有什么区别？谈谈Integer的值缓存范围 极客时间版权所有: https://time.geekbang.org/column/article/7489  典型回答 int是我们常说的整形数字，是Java的8个原始数据类型（Primitive Types， boolean、byte、short、char、int、float、double、long）之一。 Java语言虽然号">
 <meta name="twitter:image" content="http://yoursite.com/picture/content/java36-title-07.jpg">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -145,14 +146,25 @@
             <article id="post-第7讲-int和Integer有什么区别？谈谈Integer的值缓存范围" class="article article-type-post " itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      第7讲-int和Integer有什么区别？谈谈Integer的值缓存范围
+    </h1>
+  
+
+        
+        <a href="/2019/06/07/第7讲-int和Integer有什么区别？谈谈Integer的值缓存范围/" class="archive-article-date">
+  	<time datetime="2019-06-07T06:15:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-06-07</time>
+</a>
+        
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
 	
-        <hr>
-<blockquote>
-<p>-<br>  title:第7讲-int和Integer有什么区别？谈谈Integer的值缓存范围 date:2019-06-07 11:17:05 tags:-</p>
-</blockquote>
-<h2><span id="java-java核心技术36讲-toctrue">  JAVA - Java核心技术36讲 toc:true</span></h2><p><strong>int和Integer有什么区别？谈谈Integer的值缓存范围</strong></p>
+        <p><strong>int和Integer有什么区别？谈谈Integer的值缓存范围</strong></p>
 <p>极客时间版权所有: <a href="https://time.geekbang.org/column/article/7489" target="_blank" rel="noopener">https://time.geekbang.org/column/article/7489</a></p>
 <p><img src="/picture/content/java36-title-07.jpg" alt=""></p>
 <p><strong>典型回答</strong></p>
@@ -277,6 +289,21 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">JAVA</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Java核心技术36讲</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
 
       
@@ -327,7 +354,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/08/27/第7讲-int和Integer有什么区别？谈谈Integer的值缓存范围/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2019/06/07/第7讲-int和Integer有什么区别？谈谈Integer的值缓存范围/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -341,18 +368,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/08/27/计算机/选择题/2.操作系统及应用/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/06/08/第8讲-对比Vector、ArrayList、LinkedList有何区别/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          (no title)
+          第8讲 | String、StringBuffer、StringBuilder有什么区别？
         
       </div>
     </a>
   
   
-    <a href="/2019/08/27/第9将-对比Hashtable、HashMap、TreeMap有什么不同？/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title"></div>
+    <a href="/2019/06/06/第6讲-动态代理是基于什么原理？/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">第6讲 | 动态代理是基于什么原理？</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -371,6 +398,19 @@
             </div>
         </div>
         
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    目录，不存在的…
+                    </div>
+                </span>
+            </div>
+        </div>
         
     </div>
 </aside>
@@ -493,6 +533,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">计算机习题</a>
               </li>
             
             <div class="clearfix"></div>
