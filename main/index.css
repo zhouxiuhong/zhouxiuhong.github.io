@@ -1,0 +1,19 @@
+.logo {
+	color: #08c;
+	border: 8px solid #e5e5e5;
+	background: #ededed;
+    moz-user-select: none; 
+    webkit-user-select: none; 
+    ms-user-select: none; 
+    khtml-user-select: none; 
+	user-select: none;
+
+
+	
+}
+
+div.img-box{
+		margin: 0;
+		width: 90%;
+		height: 90%;
+	}
