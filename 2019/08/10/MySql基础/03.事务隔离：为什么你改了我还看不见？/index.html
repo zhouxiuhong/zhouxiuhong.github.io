@@ -19,7 +19,7 @@
 <meta property="og:image" content="http://yoursite.com/picture/content/mysql-title-03.jsp">
 <meta property="og:image" content="http://yoursite.com/picture/content/mysql-03.png">
 <meta property="og:image" content="http://yoursite.com/picture/content/mysql-03-2.png">
-<meta property="og:updated_time" content="2019-08-28T10:17:52.157Z">
+<meta property="og:updated_time" content="2019-08-29T02:10:14.567Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="03 | 事务隔离：为什么你改了我还看不见">
 <meta name="twitter:description" content="03 | 事务隔离：为什么你改了我还看不见？林晓斌 2019-08-09 地址  提到事务，你肯定不陌生，和数据库打交道的时候，我们总是会用到事务。最经典的例子就是转账，你要给朋友小王转100块钱，而此时你的银行卡只有100块钱。 转转过程具体到程序里会有一系列的操作，比如查询余额、做加减法、更新余额等，这些操作必须保证是一体的，不然等程序查完之后，还没做减法之前，你这100块钱，完全可以借着这个">
@@ -223,6 +223,24 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from information_schema.innodb_trx where TIME_TO_SEC(timediff(now(),trx_started))&gt;60</span><br></pre></td></tr></table></figure>
 <h3><span id="小结">小结</span></h3><p>z这篇文章里面，我介绍了MySQL的事务隔离级别的现象和实现，根据实现原理分析了长事务存在的风险，以及如何用正确的方式避免长事务。希望我举得例子能够帮助你理解事务，并更好地使用MySQL的事务特性。</p>
 <p>你现在知道了系统里面应该避免长事务，如果你是业务开发负责人同时也是数据库负责人，你会有什么方案来避免出现或者处理这种情况呢？</p>
+<p><strong>首先，从应用开发端来看：</strong></p>
+<ol>
+<li>确认是否使用了set autocommit=0。这个确认工作可以在测试环境中开展，把MySQL的general_log开起来，然后随便跑一个业务逻辑，通过general_log的日志来确认。一般框架如果会设置这个值，也就会提供参数来控制行为，你的目标就是把它改成1。</li>
+<li>确认是否有不必要的只读事务。这些框架会习惯不管什么语句先用begin/commit框起来。我见过有些是业务并没有这个需要，但是也把好几个select语句放到了事务中。这种只读事务可以去掉。</li>
+<li>业务连接数据库的时候，根据业务本身的预估，通过SET MAX_EXECUTION_TIME命令，来控制每个语句执行的最长时间，避免单个语句意外执行太长时间。</li>
+</ol>
+<p><strong>其次，从数据库端来看：</strong></p>
+<ol>
+<li><p>监控information_scheme.Innodb_trx表，设置长事务阙值，超过就报警 / 或者kill；</p>
+</li>
+<li><p>Percona的pt-kill这个工具不错，推荐使用；</p>
+</li>
+<li><p>在业务功能测试阶段要求输出所有的general_log，分析日志行为提前发现问题；</p>
+</li>
+<li><p>如果使用的是MySQL5.6或者更新版本，把innodb_undo_tablespaces设置成2（或更大的值）。如果针对出现大事务导致回滚段过大，这样设置后清理起来更方便。</p>
+<p>​</p>
+</li>
+</ol>
 
       
 
@@ -327,18 +345,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2019/08/24/计算机/选择题/5.演示文稿/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2019/08/12/MySql基础/04.深入浅出索引（上）/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          5.演示文稿
+          04 | 深入浅出索引（上）
         
       </div>
     </a>
   
   
-    <a href="/2019/08/09/MySql基础/02.日志架构：一条SQL更新语句是如何执行的？/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">02 | 日志架构：一条SQL更新语句是如何执行的？</div>
+    <a href="/2019/08/09/MySql基础/01.基础架构：一条SQL查询语句是如何执行的？/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">01 | 基础架构：一条SQL查询语句是如何执行的？</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -479,6 +497,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">计算机习题</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">前端</a>
               </li>
              
@@ -487,15 +509,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">java面试</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Java面试</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">计算机习题</a>
+                <a href="javascript:void(0)" class="js-tag color2">java面试</a>
               </li>
             
             <div class="clearfix"></div>
